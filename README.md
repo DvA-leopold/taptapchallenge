@@ -1,4 +1,4 @@
-Проект TapTapChallenge
+#Проект TapTapChallenge#
 
 Эксперты: Михальченко, Казинцев.
 
