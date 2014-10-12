@@ -15,22 +15,20 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.awt.*;
+import java.util.Iterator;
 
 public class TapTap implements ApplicationListener {
 	@Override
 	public void create () {
 	    tapImage = new Texture(Gdx.files.internal("badlogic.jpg"));
+
         menuScreenTheme = Gdx.audio.newMusic(Gdx.files.internal("Black Vortex.mp3"));
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
 
-        bucket = new Rectangle();
-        bucket.x = 800/2-64/2;
-        bucket.y = 20;
-        bucket.width = 64;
-        bucket.height = 64;
+        bucket = new Rectangle(800/2-64/2, 20, 64, 64);
 
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
         //mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("main_theme.mp3"));
@@ -57,7 +55,9 @@ public class TapTap implements ApplicationListener {
         // здесь мы запоминаем что надо отрисвать
         batch.draw(tapImage, bucket.x, bucket.y);
         for(Rectangle raindrop : raindrops) {
+            System.out.println("raindrop " + raindrop.x + raindrop.y);
             batch.draw(tapImage, raindrop.x, raindrop.y);
+
         }
         batch.end();
 
@@ -73,7 +73,10 @@ public class TapTap implements ApplicationListener {
         if(bucket.x < 0) bucket.x = 0;
         if(bucket.x > 800 - 64) bucket.x = 800 - 64;
 
-        if(TimeUtils.nanoTime() - lastDropTime > 100000000) spawnRaindrop();
+        if(TimeUtils.nanoTime() - lastDropTime > 100000000){
+            spawnRaindrop();
+        }
+
     }
 
     @Override
@@ -96,11 +99,9 @@ public class TapTap implements ApplicationListener {
     }
 
     private void spawnRaindrop() {
-        Rectangle raindrop = new Rectangle();
-        raindrop.x = MathUtils.random(0, 800 - 64);
-        raindrop.y = 480;
-        raindrop.width = 64;
-        raindrop.height = 64;
+        Rectangle raindrop = new Rectangle(
+                MathUtils.random(0, 800 - 64),
+                MathUtils.random(0, 480 - 64), 64, 64);
         raindrops.add(raindrop);
         lastDropTime = TimeUtils.nanoTime();
     }
