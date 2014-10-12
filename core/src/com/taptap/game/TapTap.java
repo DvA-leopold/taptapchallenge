@@ -61,7 +61,7 @@ public class TapTap implements ApplicationListener {
         }
         batch.end();
 
-        if (Gdx.input.isTouched()){
+        if (Gdx.input.isTouched()){ // todo здесь нужно поработать с обработкой нажатий
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             bucket.x = (int)touchPos.x - 64 / 2;
@@ -88,7 +88,6 @@ public class TapTap implements ApplicationListener {
     public void resume() {
 
     }
-
     @Override
     public void dispose() {
 //        mainMusicTheme.dispose();
