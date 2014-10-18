@@ -55,7 +55,7 @@ public class MainMenuScreen implements Screen {
 
         table.add(buttonPlay).row().pad(20);
         table.add(buttonHelp).row().pad(20);
-        table.debug(); // todo remove dat shitty debug later
+//        table.debug(); // todo remove dat shitty debug later
 
     }
 
@@ -105,7 +105,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        table.invalidateHierarchy();
+        table.setSize(width, height);
     }
 
     @Override
@@ -121,7 +122,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         menuMusicTheme.dispose();
-//        batch.dispose();
         blackFont.dispose();
         whiteFont.dispose();
         stage.dispose();
@@ -136,7 +136,6 @@ public class MainMenuScreen implements Screen {
     private BitmapFont whiteFont, blackFont;
     private Label heading;
 
-    private SpriteBatch batch;
     private Music menuMusicTheme;
     private OrthographicCamera camera;
     private final TapTap game;
