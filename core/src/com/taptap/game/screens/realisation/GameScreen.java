@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
         this.game = game;
         tapImage = new Texture(Gdx.files.internal("badlogic.jpg"));
 
-        mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("Black Vortex.mp3"));
+        mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         mainMusicTheme.setLooping(true);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
