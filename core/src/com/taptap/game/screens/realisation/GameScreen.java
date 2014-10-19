@@ -21,8 +21,10 @@ public class GameScreen implements Screen {
 
         mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         mainMusicTheme.setLooping(true);
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+
+        // todo решилась проблема с координатами, но теперь все прорисовывается вверх ногими(скорее всего и шрифты)
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         batch = new SpriteBatch();
 
@@ -32,7 +34,7 @@ public class GameScreen implements Screen {
         //mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("main_theme.mp3"));
 
         iconsForTap = new Array<Rectangle>();
-        spawnTapIcon();
+        //spawnTapIcon();
 
     }
 
@@ -44,7 +46,6 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         // здесь мы запоминаем что надо отрисвать
-//        batch.draw(tapImage, bucket.x, bucket.y);
         for(Rectangle raindrop : iconsForTap) {
             batch.draw(tapImage, raindrop.x, raindrop.y);
         }
@@ -71,7 +72,7 @@ public class GameScreen implements Screen {
                         Gdx.input.getY() < temp.getY() + temp.getHeight()){
                     iconsForTap.removeIndex(i);
                     System.out.println("removed " + Gdx.input.getX() + " "+ Gdx.input.getY());
-                    break; // todo оптимизировать эту шнягу
+                    break;
                 }
             }
         }
@@ -107,18 +108,17 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        //        mainMusicTheme.dispose();
         tapImage.dispose();
         mainMusicTheme.dispose();
 //        tapSound.dispose();
         batch.dispose();
     }
-
     private void spawnTapIcon() {
         iconsForTap.add(new Rectangle(
-                MathUtils.random(0, 800 - 64),
-                MathUtils.random(0, 480 - 64), 64, 64));
+                MathUtils.random(0, Gdx.graphics.getWidth() - 64),
+                MathUtils.random(0, Gdx.graphics.getHeight() - 64), 64, 64));
         lastDropTime = TimeUtils.nanoTime();
+        // todo заменить захардкоденые размеры
     }
 
 //    private Vector3 touchPos = new Vector3();
