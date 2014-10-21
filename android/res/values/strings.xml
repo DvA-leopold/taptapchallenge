@@ -2,5 +2,5 @@
 <resources>
 
     <string name="app_name">TapTapChallenge</string>
-
+    <string name="version_name">0.1</string>
 </resources>

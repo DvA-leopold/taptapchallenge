@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
@@ -24,7 +25,7 @@ public class GameScreen implements Screen {
 
         // todo решилась проблема с координатами, но теперь все прорисовывается вверх ногими(скорее всего и шрифты)
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         batch = new SpriteBatch();
 
@@ -66,10 +67,12 @@ public class GameScreen implements Screen {
         if (Gdx.input.isTouched()){
             for (int i=0; i<iconsForTap.size; ++i){
                 Rectangle temp = iconsForTap.get(i);
+                Vector3 some = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0); // todo пиздец че за костыль
+                camera.unproject(some);
                 if (Gdx.input.getX() > temp.getX() &&
-                        Gdx.input.getY() > temp.getY() &&
+                        some.y > temp.getY() &&
                         Gdx.input.getX() < temp.getX() + temp.getWidth() &&
-                        Gdx.input.getY() < temp.getY() + temp.getHeight()){
+                        some.y < temp.getY() + temp.getHeight()){
                     iconsForTap.removeIndex(i);
                     System.out.println("removed " + Gdx.input.getX() + " "+ Gdx.input.getY());
                     break;
