@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.TapTap;
-
-import java.awt.*;
+import com.taptap.game.screens.realisation.help_screen_loop.HelpScreen;
+import com.taptap.game.screens.realisation.main_screen_loop.GameScreen;
 
 public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapTap game){
@@ -27,14 +26,15 @@ public class MainMenuScreen implements Screen {
         menuMusicTheme.setLooping(true);
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // buttons and styles
-        atlas = new TextureAtlas("skins/buttons.pack");
+        atlas = new TextureAtlas("skins/main_menu/buttons.pack");
         skin = new Skin (atlas);
         stage = new Stage();
         table= new Table(skin);
         table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        // todo move all of this to json file (optional)
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.up = skin.getDrawable("button.up"); // get this names from the .pack file
         textButtonStyle.down = skin.getDrawable("button.down");
@@ -49,7 +49,7 @@ public class MainMenuScreen implements Screen {
         buttonHelp.pad(10);
 
         //heading
-        Label.LabelStyle headingStyle = new Label.LabelStyle(whiteFont, Color.WHITE);
+        Label.LabelStyle headingStyle = new Label.LabelStyle(whiteFont, Color.CYAN);
         heading = new Label("TAP TAP MOTHER FUCKER", headingStyle);
         table.add(heading).row().padTop(100);
 

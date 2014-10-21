@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation;
+package com.taptap.game.screens.realisation.help_screen_loop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

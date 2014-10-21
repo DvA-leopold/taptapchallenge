@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation;
+package com.taptap.game.screens.realisation.main_screen_loop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
@@ -23,7 +26,7 @@ public class GameScreen implements Screen {
         mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         mainMusicTheme.setLooping(true);
 
-        // todo решилась проблема с координатами, но теперь все прорисовывается вверх ногими(скорее всего и шрифты)
+        // todo решилась проблема с переворотом+правильно реагируют координаты(оптимизированный костыль)
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -35,7 +38,11 @@ public class GameScreen implements Screen {
         //mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("main_theme.mp3"));
 
         iconsForTap = new Array<Rectangle>();
-        //spawnTapIcon();
+
+        // todo move to json
+        Button.ButtonStyle style = new Button.ButtonStyle();
+
+        optionButton = new Button(style);
 
     }
 
@@ -51,28 +58,16 @@ public class GameScreen implements Screen {
             batch.draw(tapImage, raindrop.x, raindrop.y);
         }
         batch.end();
-/*
-        if (Gdx.input.isTouched()){ // todo здесь нужно поработать с обработкой нажатий
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            bucket.x = (int)touchPos.x - 64 / 2;
-        }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) bucket.x -= 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) bucket.x += 200 * Gdx.graphics.getDeltaTime();
-
-        if(bucket.x < 0) bucket.x = 0;
-        if(bucket.x > 800 - 64) bucket.x = 800 - 64;
-*/
+        Vector3 touchPoint = new Vector3(); // todo костыль с координатами(улучшеный)
         if (Gdx.input.isTouched()){
             for (int i=0; i<iconsForTap.size; ++i){
                 Rectangle temp = iconsForTap.get(i);
-                Vector3 some = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0); // todo пиздец че за костыль
-                camera.unproject(some);
+                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (Gdx.input.getX() > temp.getX() &&
-                        some.y > temp.getY() &&
+                        touchPoint.y > temp.getY() &&
                         Gdx.input.getX() < temp.getX() + temp.getWidth() &&
-                        some.y < temp.getY() + temp.getHeight()){
+                        touchPoint.y < temp.getY() + temp.getHeight()){
                     iconsForTap.removeIndex(i);
                     System.out.println("removed " + Gdx.input.getX() + " "+ Gdx.input.getY());
                     break;
@@ -82,6 +77,13 @@ public class GameScreen implements Screen {
         if(TimeUtils.nanoTime() - lastDropTime > 1000000000){
             spawnTapIcon();
         }
+        optionButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // pause game and call option menu
+            }
+        });
     }
 
     @Override
@@ -133,7 +135,7 @@ public class GameScreen implements Screen {
     private Music mainMusicTheme;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-//    private Rectangle bucket;
+    private Button optionButton;
 
     private final TapTap game;
 }
