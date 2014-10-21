@@ -137,5 +137,6 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Button optionButton;
 
+    private StateManager states;
     private final TapTap game;
 }
