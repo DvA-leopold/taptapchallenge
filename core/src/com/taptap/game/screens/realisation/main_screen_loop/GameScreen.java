@@ -108,7 +108,10 @@ public class GameScreen implements Screen {
     public void resume() {
 
     }
-
+    //http://stackoverflow.com/questions/21576181/pause-resume-a-simple-libgdx-game-for-android
+    //https://github.com/libgdx/libgdx-demo-superjumper/blob/master/core/src/com/badlogicgames/superjumper/GameScreen.java
+    //http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
+    //
     @Override
     public void dispose() {
         tapImage.dispose();
