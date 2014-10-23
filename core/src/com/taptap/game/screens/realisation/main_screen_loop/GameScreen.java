@@ -7,15 +7,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
+import com.taptap.game.screens.realisation.MainMenuScreen;
 
 
 public class GameScreen implements Screen {
@@ -26,9 +31,15 @@ public class GameScreen implements Screen {
         mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         mainMusicTheme.setLooping(true);
 
-        // todo решилась проблема с переворотом+правильно реагируют координаты(оптимизированный костыль)
+        // решилась проблема с переворотом+правильно реагируют координаты(оптимизированный костыль)
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        atlasGameMenu = new TextureAtlas("skins/game_menu/GameOptions.pack");
+        skinGameMenu = new Skin(atlasGameMenu);
+        stage = new Stage();
+        table = new Table(skinGameMenu);
+        //table.setBounds(0,0, 10, 10); // width height
 
         batch = new SpriteBatch();
 
@@ -39,15 +50,21 @@ public class GameScreen implements Screen {
 
         iconsForTap = new Array<Rectangle>();
         // todo move to json
-        Button.ButtonStyle style = new Button.ButtonStyle();
-
-        optionButton = new Button(style);
+        Button.ButtonStyle optionButtonStyle = new Button.ButtonStyle();
+        optionButtonStyle.up = skinGameMenu.getDrawable("tick_up"); // get this names from the .pack file
+        optionButtonStyle.down = skinGameMenu.getDrawable("tick_down");
+        optionButton = new Button(optionButtonStyle);
+        //todo change this hardcode values
+        table.add(optionButton).padTop(-430).padLeft(-750);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0.2f,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act();
+        stage.draw();
+
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -57,7 +74,7 @@ public class GameScreen implements Screen {
         }
         batch.end();
 
-        Vector3 touchPoint = new Vector3(); // todo костыль с координатами(улучшеный)
+        Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
         if (Gdx.input.isTouched()){
             for (int i=0; i<iconsForTap.size; ++i){
                 Rectangle temp = iconsForTap.get(i);
@@ -67,7 +84,6 @@ public class GameScreen implements Screen {
                         Gdx.input.getX() < temp.getX() + temp.getWidth() &&
                         touchPoint.y < temp.getY() + temp.getHeight()){
                     iconsForTap.removeIndex(i);
-                    System.out.println("removed " + Gdx.input.getX() + " "+ Gdx.input.getY());
                     break;
                 }
             }
@@ -79,13 +95,18 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // pause game and call option menu
+                // todo cange some of this for better menu
+                game.setScreen(new MainMenuScreen(game));
             }
         });
     }
 
     @Override
     public void show() {
+        table.setFillParent(true);
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+
         mainMusicTheme.play();
     }
 
@@ -108,16 +129,17 @@ public class GameScreen implements Screen {
     public void resume() {
 
     }
-    //http://stackoverflow.com/questions/21576181/pause-resume-a-simple-libgdx-game-for-android
-    //https://github.com/libgdx/libgdx-demo-superjumper/blob/master/core/src/com/badlogicgames/superjumper/GameScreen.java
-    //http://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
-    //
+
     @Override
     public void dispose() {
         tapImage.dispose();
         mainMusicTheme.dispose();
 //        tapSound.dispose();
         batch.dispose();
+        atlasGameMenu.dispose();
+        skinGameMenu.dispose();
+        stage.dispose();
+
     }
     private void spawnTapIcon() {
         iconsForTap.add(new Rectangle(
@@ -128,9 +150,13 @@ public class GameScreen implements Screen {
         // todo заменить захардкоденые размеры
     }
 
-//    private Vector3 touchPos = new Vector3();
     private Array<Rectangle> iconsForTap;
     private long lastDropTime;
+
+    private TextureAtlas atlasGameMenu;
+    private Skin skinGameMenu;
+    private Stage stage;
+    private Table table;
 
     private Texture tapImage;
 //    private Sound tapSound;
@@ -139,6 +165,6 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private Button optionButton;
 
-    private StateManager states;
+    //private StateManager states;
     private final TapTap game;
 }

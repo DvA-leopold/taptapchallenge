@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,21 +26,25 @@ public class MainMenuScreen implements Screen {
         menuMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/The Path of the Goblin King.mp3"));
         menuMusicTheme.setLooping(true);
 
+        batch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("skins/main_menu/bg_desert.png"));
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         // buttons and styles
-        atlas = new TextureAtlas("skins/main_menu/buttons.pack");
-        skin = new Skin (atlas);
+        atlasMainMenu = new TextureAtlas("skins/main_menu/buttons.pack");
+        skinMainMenu = new Skin (atlasMainMenu);
         stage = new Stage();
-        table= new Table(skin);
+        table = new Table(skinMainMenu);
         table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // todo move all of this to json file (optional)
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up"); // get this names from the .pack file
-        textButtonStyle.down = skin.getDrawable("button.down");
+        textButtonStyle.up = skinMainMenu.getDrawable("button.up"); // get this names from the .pack file
+        textButtonStyle.down = skinMainMenu.getDrawable("button.down");
         textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
+        textButtonStyle.pressedOffsetY = -2;
         textButtonStyle.font = whiteFont;
 
         buttonPlay = new TextButton("Play", textButtonStyle);
@@ -49,29 +54,32 @@ public class MainMenuScreen implements Screen {
         buttonHelp.pad(10);
 
         //heading
-        Label.LabelStyle headingStyle = new Label.LabelStyle(whiteFont, Color.CYAN);
+        Label.LabelStyle headingStyle = new Label.LabelStyle(whiteFont, Color.WHITE);
         heading = new Label("TAP TAP MOTHER FUCKER", headingStyle);
         table.add(heading).row().padTop(100);
 
-        table.add(buttonPlay).row().pad(20);
-        table.add(buttonHelp).row().pad(20);
+        table.add(buttonPlay).row().pad(30);
+        table.add(buttonHelp).row().pad(30);
 //        table.debug(); // todo remove dat shitty debug later
 
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0.3f, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+//        whiteFont.draw(batch, "Welcome to TapTap !", 100, 150);
+//        whiteFont.draw(batch, "Tap anywhere to begin!", 100, 100);
+        batch.end();
+
         stage.act();
         stage.draw();
 
         camera.update();
 //        batch.setProjectionMatrix(camera.combined);
-//        batch.begin();
-//        whiteFont.draw(batch, "Welcome to TapTap !", 100, 150);
-//        whiteFont.draw(batch, "Tap anywhere to begin!", 100, 100);
-//        batch.end();
+
         buttonPlay.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -125,16 +133,23 @@ public class MainMenuScreen implements Screen {
         blackFont.dispose();
         whiteFont.dispose();
         stage.dispose();
-        skin.dispose();
+        atlasMainMenu.dispose();
+        skinMainMenu.dispose();
+        batch.dispose();
+        background.dispose();
     }
 
     private Stage stage;
-    private TextureAtlas atlas;
+    private TextureAtlas atlasMainMenu;
     private Table table;
-    private Skin skin;
+    private Skin skinMainMenu;
+
     private TextButton buttonPlay, buttonHelp;
     private BitmapFont whiteFont, blackFont;
     private Label heading;
+
+    private SpriteBatch batch;
+    private Texture background;
 
     private Music menuMusicTheme;
     private OrthographicCamera camera;

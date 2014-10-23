@@ -1,0 +1,20 @@
+GameOptions.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tick_down
+  rotate: false
+  xy: 1, 1
+  size: 36, 36
+  split: 35, 0, 35, 0
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+tick_up
+  rotate: false
+  xy: 39, 1
+  size: 36, 36
+  split: 35, 0, 35, 0
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
