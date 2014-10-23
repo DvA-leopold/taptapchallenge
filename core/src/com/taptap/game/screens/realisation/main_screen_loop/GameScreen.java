@@ -21,7 +21,7 @@ import com.taptap.game.TapTap;
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
-        tapImage = new Texture(Gdx.files.internal("badlogic.jpg"));
+        tapImage = new Texture(Gdx.files.internal("skins/tap_icons/hud_gem_green.png"));
 
         mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         mainMusicTheme.setLooping(true);
@@ -38,12 +38,10 @@ public class GameScreen implements Screen {
         //mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("main_theme.mp3"));
 
         iconsForTap = new Array<Rectangle>();
-
         // todo move to json
         Button.ButtonStyle style = new Button.ButtonStyle();
 
         optionButton = new Button(style);
-
     }
 
     @Override
@@ -120,8 +118,9 @@ public class GameScreen implements Screen {
     }
     private void spawnTapIcon() {
         iconsForTap.add(new Rectangle(
-                MathUtils.random(0, Gdx.graphics.getWidth() - 64),
-                MathUtils.random(0, Gdx.graphics.getHeight() - 64), 64, 64));
+                MathUtils.random(0, Gdx.graphics.getWidth() - tapImage.getWidth()),
+                MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight()),
+                tapImage.getWidth(), tapImage.getHeight()));
         lastDropTime = TimeUtils.nanoTime();
         // todo заменить захардкоденые размеры
     }
