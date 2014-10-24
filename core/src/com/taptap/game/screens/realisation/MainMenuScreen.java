@@ -55,7 +55,7 @@ public class MainMenuScreen implements Screen {
 
         //heading
         Label.LabelStyle headingStyle = new Label.LabelStyle(whiteFont, Color.WHITE);
-        heading = new Label("TAP TAP MOTHER FUCKER", headingStyle);
+        heading = new Label("TAP TAP Game", headingStyle);
         table.add(heading).row().padTop(100);
 
         table.add(buttonPlay).row().pad(30);

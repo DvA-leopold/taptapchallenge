@@ -22,7 +22,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 
-
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
@@ -54,8 +53,7 @@ public class GameScreen implements Screen {
         optionButtonStyle.up = skinGameMenu.getDrawable("tick_up"); // get this names from the .pack file
         optionButtonStyle.down = skinGameMenu.getDrawable("tick_down");
         optionButton = new Button(optionButtonStyle);
-        //todo change this hardcode values
-        table.add(optionButton).padTop(-430).padLeft(-750);
+        table.add(optionButton).padTop(-Gdx.graphics.getHeight()+50).padLeft(-Gdx.graphics.getWidth()+50);
     }
 
     @Override
@@ -74,6 +72,7 @@ public class GameScreen implements Screen {
         }
         batch.end();
 
+        // todo работа с памятью, поработать с удалением.
         Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
         if (Gdx.input.isTouched()){
             for (int i=0; i<iconsForTap.size; ++i){
@@ -95,7 +94,6 @@ public class GameScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // todo cange some of this for better menu
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -113,6 +111,7 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
         mainMusicTheme.pause();
+        dispose();
     }
 
     @Override
@@ -132,6 +131,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        System.out.println("disposed");
         tapImage.dispose();
         mainMusicTheme.dispose();
 //        tapSound.dispose();
@@ -139,7 +139,6 @@ public class GameScreen implements Screen {
         atlasGameMenu.dispose();
         skinGameMenu.dispose();
         stage.dispose();
-
     }
     private void spawnTapIcon() {
         iconsForTap.add(new Rectangle(
@@ -147,7 +146,6 @@ public class GameScreen implements Screen {
                 MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight()),
                 tapImage.getWidth(), tapImage.getHeight()));
         lastDropTime = TimeUtils.nanoTime();
-        // todo заменить захардкоденые размеры
     }
 
     private Array<Rectangle> iconsForTap;
