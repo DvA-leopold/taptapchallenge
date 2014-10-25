@@ -22,8 +22,6 @@ public class HelpScreen implements Screen {
         background = new Texture(Gdx.files.internal("skins/help_menu/bg_shroom.png"));
         stage = new Stage();
 
-        //music = new MusicManager();
-
         Label.LabelStyle headingStyle1 = new Label.LabelStyle(font, Color.BLACK);
         Label.LabelStyle headingStyle2 = new Label.LabelStyle(font, Color.WHITE);
         Label helpString1 = new Label("ПРОСТО ТЫКАЙ В ПОЯВЛЯЮЩИЕСЯ ШТУЧКИ", headingStyle1);

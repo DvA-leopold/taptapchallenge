@@ -151,8 +151,6 @@ public class GameScreen implements Screen {
     private Stage stage;
     private Table table;
 
-    //private MusicManager music;
-
     private Texture tapImage;
 //    private Sound tapSound;
     private SpriteBatch batch;

@@ -2,10 +2,7 @@ package com.taptap.game.screens.realisation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -21,41 +18,26 @@ import com.taptap.game.screens.realisation.game.GameScreen;
 public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapTap game){
         this.game = game;
-        whiteFont = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
-        blackFont = new BitmapFont(Gdx.files.internal("fonts/blackFont.fnt"), false);
-
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("skins/main_menu/bg_desert.png"));
-
-        music = new MusicManager();
+        background = new Texture(Gdx.files.internal("skins/main_menu/background/bg_desert.png"));
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // buttons and styles
-        atlasMainMenu = new TextureAtlas("skins/main_menu/buttons.pack");
-        skinMainMenu = new Skin (atlasMainMenu);
+        atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
+        skinMainMenu = new Skin(Gdx.files.internal("skins/main_menu/menuSkin.json"), atlasMainMenu);
         stage = new Stage();
         table = new Table(skinMainMenu);
         table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // todo move all of this to json file (optional)
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skinMainMenu.getDrawable("button.up"); // get this names from the .pack file
-        textButtonStyle.down = skinMainMenu.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -2;
-        textButtonStyle.font = whiteFont;
-
-        buttonPlay = new TextButton("Play", textButtonStyle);
-        buttonHelp = new TextButton("Help", textButtonStyle);
-
+        // default is for a TextButtonStyle in .json
+        buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
+        buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
         buttonPlay.pad(10);
         buttonHelp.pad(10);
 
-        //heading
-        Label.LabelStyle headingStyle = new Label.LabelStyle(whiteFont, Color.WHITE);
-        heading = new Label("TAP TAP Game", headingStyle);
+        Label heading = new Label("TAP TAP Game", skinMainMenu);
         table.add(heading).row().padTop(100);
 
         table.add(buttonPlay).row().pad(30);
@@ -97,8 +79,7 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-
-        music.play(this);
+        MusicManager.play(this);
     }
 
     @Override
@@ -124,16 +105,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-//        menuMusicTheme.dispose();
-        blackFont.dispose();
-        whiteFont.dispose();
         stage.dispose();
         atlasMainMenu.dispose();
         skinMainMenu.dispose();
         batch.dispose();
         background.dispose();
     }
-    private MusicManager music;
 
     private Stage stage;
     private TextureAtlas atlasMainMenu;
@@ -141,9 +118,6 @@ public class MainMenuScreen implements Screen {
     private Skin skinMainMenu;
 
     private TextButton buttonPlay, buttonHelp;
-    private BitmapFont whiteFont, blackFont;
-    private Label heading;
-
     private SpriteBatch batch;
     private Texture background;
 

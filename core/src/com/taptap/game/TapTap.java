@@ -8,8 +8,6 @@ public class TapTap extends Game {
 
     @Override
     public void create() {
-        // todo fix this later
-        MusicManager.init();
         setScreen(new MainMenuScreen(this));
     }
 
