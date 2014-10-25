@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.main_screen_loop;
+package com.taptap.game.screens.realisation.game;
 
 public enum StateManager {
     GAME_RUNNING,

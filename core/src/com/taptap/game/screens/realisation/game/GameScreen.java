@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.main_screen_loop;
+package com.taptap.game.screens.realisation.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,16 +20,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
+import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
         tapImage = new Texture(Gdx.files.internal("skins/tap_icons/hud_gem_green.png"));
-
-        mainMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
-        mainMusicTheme.setLooping(true);
-
+        //music = new MusicManager();
         // решилась проблема с переворотом+правильно реагируют координаты(оптимизированный костыль)
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -72,7 +70,6 @@ public class GameScreen implements Screen {
         }
         batch.end();
 
-        // todo работа с памятью, поработать с удалением.
         Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
         if (Gdx.input.isTouched()){
             for (int i=0; i<iconsForTap.size; ++i){
@@ -105,12 +102,11 @@ public class GameScreen implements Screen {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 
-        mainMusicTheme.play();
+        MusicManager.play(this);
     }
 
     @Override
     public void hide() {
-        mainMusicTheme.pause();
         dispose();
     }
 
@@ -131,15 +127,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println("disposed");
         tapImage.dispose();
-        mainMusicTheme.dispose();
-//        tapSound.dispose();
+//        mainMusicTheme.dispose();
         batch.dispose();
         atlasGameMenu.dispose();
         skinGameMenu.dispose();
         stage.dispose();
     }
+
     private void spawnTapIcon() {
         iconsForTap.add(new Rectangle(
                 MathUtils.random(0, Gdx.graphics.getWidth() - tapImage.getWidth()),
@@ -156,9 +151,10 @@ public class GameScreen implements Screen {
     private Stage stage;
     private Table table;
 
+    //private MusicManager music;
+
     private Texture tapImage;
 //    private Sound tapSound;
-    private Music mainMusicTheme;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Button optionButton;

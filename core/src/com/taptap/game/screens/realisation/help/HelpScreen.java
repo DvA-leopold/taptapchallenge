@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.help_screen_loop;
+package com.taptap.game.screens.realisation.help;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.taptap.game.TapTap;
+import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 
 public class HelpScreen implements Screen {
@@ -20,6 +21,8 @@ public class HelpScreen implements Screen {
         batch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("skins/help_menu/bg_shroom.png"));
         stage = new Stage();
+
+        //music = new MusicManager();
 
         Label.LabelStyle headingStyle1 = new Label.LabelStyle(font, Color.BLACK);
         Label.LabelStyle headingStyle2 = new Label.LabelStyle(font, Color.WHITE);
@@ -72,6 +75,7 @@ public class HelpScreen implements Screen {
     public void show() {
         table.setFillParent(true);
         stage.addActor(table);
+        MusicManager.play(this);
     }
 
     @Override
@@ -91,11 +95,14 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
+//        music.dispose();
         font.dispose();
         stage.dispose();
         batch.dispose();
         background.dispose();
     }
+
+    //private MusicManager music;
 
     private BitmapFont font;
     private Table table;

@@ -14,20 +14,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.TapTap;
-import com.taptap.game.screens.realisation.help_screen_loop.HelpScreen;
-import com.taptap.game.screens.realisation.main_screen_loop.GameScreen;
+import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.screens.realisation.help.HelpScreen;
+import com.taptap.game.screens.realisation.game.GameScreen;
 
 public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapTap game){
         this.game = game;
-//        batch = new SpriteBatch();
         whiteFont = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
         blackFont = new BitmapFont(Gdx.files.internal("fonts/blackFont.fnt"), false);
-        menuMusicTheme = Gdx.audio.newMusic(Gdx.files.internal("music/The Path of the Goblin King.mp3"));
-        menuMusicTheme.setLooping(true);
 
         batch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("skins/main_menu/bg_desert.png"));
+
+        music = new MusicManager();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -60,8 +60,6 @@ public class MainMenuScreen implements Screen {
 
         table.add(buttonPlay).row().pad(30);
         table.add(buttonHelp).row().pad(30);
-//        table.debug(); // todo remove dat shitty debug later
-
     }
 
     @Override
@@ -70,15 +68,12 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-//        whiteFont.draw(batch, "Welcome to TapTap !", 100, 150);
-//        whiteFont.draw(batch, "Tap anywhere to begin!", 100, 100);
         batch.end();
 
         stage.act();
         stage.draw();
 
         camera.update();
-//        batch.setProjectionMatrix(camera.combined);
 
         buttonPlay.addListener(new ClickListener(){
             @Override
@@ -103,7 +98,7 @@ public class MainMenuScreen implements Screen {
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 
-        menuMusicTheme.play();
+        music.play(this);
     }
 
     @Override
@@ -129,7 +124,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        menuMusicTheme.dispose();
+//        menuMusicTheme.dispose();
         blackFont.dispose();
         whiteFont.dispose();
         stage.dispose();
@@ -138,6 +133,7 @@ public class MainMenuScreen implements Screen {
         batch.dispose();
         background.dispose();
     }
+    private MusicManager music;
 
     private Stage stage;
     private TextureAtlas atlasMainMenu;
@@ -151,7 +147,6 @@ public class MainMenuScreen implements Screen {
     private SpriteBatch batch;
     private Texture background;
 
-    private Music menuMusicTheme;
     private OrthographicCamera camera;
     private final TapTap game;
 }

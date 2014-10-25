@@ -1,12 +1,15 @@
 package com.taptap.game;
 
 import com.badlogic.gdx.Game;
+import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 
 public class TapTap extends Game {
 
     @Override
     public void create() {
+        // todo fix this later
+        MusicManager.init();
         setScreen(new MainMenuScreen(this));
     }
 
@@ -14,5 +17,6 @@ public class TapTap extends Game {
     public void render(){
         super.render();
     }
+
 
 }
