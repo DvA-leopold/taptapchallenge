@@ -15,6 +15,4 @@ public class TapTap extends Game {
     public void render(){
         super.render();
     }
-
-
 }

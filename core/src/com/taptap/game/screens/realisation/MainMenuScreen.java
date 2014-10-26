@@ -31,13 +31,12 @@ public class MainMenuScreen implements Screen {
         table = new Table(skinMainMenu);
         table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // default is for a TextButtonStyle in .json
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
         buttonPlay.pad(10);
         buttonHelp.pad(10);
 
-        Label heading = new Label("TAP TAP Game", skinMainMenu);
+        Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
         table.add(heading).row().padTop(100);
 
         table.add(buttonPlay).row().pad(30);
@@ -95,7 +94,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void pause() {
-
+        MusicManager.pause(this);
     }
 
     @Override

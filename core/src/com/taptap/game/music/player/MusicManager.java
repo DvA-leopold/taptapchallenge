@@ -15,7 +15,7 @@ public class MusicManager {
     }
 
     public static void play(Screen screen){
-        mainGameMusic.setLooping(true);
+/*        mainGameMusic.setLooping(true);
         notGameLoopMusic.setLooping(true);
         if ((screen instanceof MainMenuScreen ||
                 screen instanceof HelpScreen) &&
@@ -26,16 +26,17 @@ public class MusicManager {
         if (screen instanceof GameScreen){
             notGameLoopMusic.stop();
             mainGameMusic.play();
+        }*/
+    }
+
+    public static void pause(Screen screen){
+        if (screen instanceof MainMenuScreen ||
+                screen instanceof HelpScreen){
+            notGameLoopMusic.pause();
         }
-    }
-
-    public void setLooping(boolean flag){
-    //    if (screen instanceof MainMenuScreen ||
-    //            screen instanceof HelpScreen)
-    }
-
-    public void dispose(){
-//        notGameLoopMusic.dispose();
+        if (screen instanceof GameScreen){
+            notGameLoopMusic.pause();
+        }
     }
 
     private static Music notGameLoopMusic;
