@@ -1,0 +1,5 @@
+{
+    "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle":{
+        "gameButton": { "up": "tick_up", "down": "tick_down" }
+    }
+}

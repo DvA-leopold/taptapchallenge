@@ -26,15 +26,15 @@ public class MainMenuScreen implements Screen {
 
         // buttons and styles
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        skinMainMenu = new Skin(Gdx.files.internal("skins/main_menu/menuSkin.json"), atlasMainMenu);
+        skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
         stage = new Stage();
         table = new Table(skinMainMenu);
-        table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
         buttonPlay.pad(10);
-        buttonHelp.pad(10);
+        buttonHelp.pad(10); //todo add this to .json??
 
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
         table.add(heading).row().padTop(100);

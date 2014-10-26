@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -27,46 +28,40 @@ public class GameScreen implements Screen {
         this.game = game;
         stateManager  = StateManager.GAME_RUNNING;
         tapImage = new Texture(Gdx.files.internal("skins/tap_icons/hud_gem_green.png"));
-        popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/bg_castle.png"));
+        popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/bg_popup_panel.png"));
         // решилась проблема с переворотом+правильно реагируют координаты(оптимизированный костыль)
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         iconsForTap = new Array<Rectangle>();
 
-        //-------------------- main menu buttons etc
+        //-------------------- popup menu caller button
         atlasGameMenu = new TextureAtlas("skins/game_menu/GameOptions.pack");
-        skinGameMenu = new Skin(atlasGameMenu);
+        skinGameMenu = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasGameMenu);
         mainTable = new Table(skinGameMenu);
-        // todo move to json
-        Button.ButtonStyle optionButtonStyle = new Button.ButtonStyle();
-        optionButtonStyle.up = skinGameMenu.getDrawable("tick_up"); // get this names from the .pack file
-        optionButtonStyle.down = skinGameMenu.getDrawable("tick_down");
-        optionButton = new Button(optionButtonStyle);
+        optionButton = new Button(skinGameMenu, "gameButton");
         mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+50).padLeft(-Gdx.graphics.getWidth()+50);
 
         //--------------------- popup menu buttons etc
         atlasPopupMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack"); //todo change style later
-        skinPopupMenu = new Skin(atlasPopupMenu);
+        skinPopupMenu = new Skin(Gdx.files.internal("skins/json_skins/popUpSkin.json"), atlasPopupMenu);
         popupTable = new Table(skinPopupMenu);
-        Button.ButtonStyle popupMenuStyleButtons = new Button.ButtonStyle();
-        popupMenuStyleButtons.up = skinPopupMenu.getDrawable("button.up");
-        popupMenuStyleButtons.down = skinPopupMenu.getDrawable("button.down");
-        resumeGameButton = new Button(popupMenuStyleButtons);
-        exitMainMenuButton = new Button(popupMenuStyleButtons);
-        popupTable.add(resumeGameButton).row();
-        popupTable.add(exitMainMenuButton);
-        //stagePopupButton = new Stage();
+        resumeGameButton = new TextButton("return", skinPopupMenu, "popUpButtons");
+        exitMainMenuButton = new TextButton("save & exit", skinPopupMenu, "popUpButtons");
+
+        resumeGameButton.pad(10); //todo add this to .json??
+        exitMainMenuButton.pad(10);
+        popupTable.add(resumeGameButton).row().pad(20);
+        popupTable.add(exitMainMenuButton).row().pad(20);
 
         batch = new SpriteBatch();
         stage = new Stage();
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
-
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(1,1,1,0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
 
@@ -101,34 +96,35 @@ public class GameScreen implements Screen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
+                        stateManager = StateManager.GAME_PAUSED;
                         stage.clear();
                         stage.addActor(popupTable);
-                        stage.act();
-                        stage.draw();
-                        stateManager = StateManager.GAME_PAUSED;
                     }
                 });
                 break;
             case GAME_PAUSED:
                 batch.begin();
-                batch.draw(popUpMenuBackground, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2); // todo coordinates
+                batch.draw(popUpMenuBackground,
+                        Gdx.graphics.getWidth()/2 -  popUpMenuBackground.getWidth()/2,
+                        Gdx.graphics.getHeight()/2 - popUpMenuBackground.getHeight()/2); // todo coordinates
                 batch.end();
 
                 resumeGameButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         super.clicked(event, x, y);
+                        stateManager = StateManager.GAME_RUNNING;
                         stage.clear();
                         stage.addActor(mainTable);
-                        stage.act();
-                        stage.draw();
-                        stateManager = StateManager.GAME_RUNNING;
                     }
                 });
-
-                break;
-            case GAME_LEVEL_END:
-
+                exitMainMenuButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        super.clicked(event, x, y);
+                        stateManager = StateManager.GAME_OVER;
+                    }
+                });
                 break;
             case GAME_OVER:
                 game.setScreen(new MainMenuScreen(game));
@@ -179,7 +175,7 @@ public class GameScreen implements Screen {
         stage.dispose();
         atlasPopupMenu.dispose();
         skinPopupMenu.dispose();
-
+        popUpMenuBackground.dispose();
     }
 
     private void spawnTapIcon() {
@@ -201,12 +197,11 @@ public class GameScreen implements Screen {
     private Button optionButton;
 
     // pop up menu buttons
-   // private Stage stagePopupButton;
     private TextureAtlas atlasPopupMenu;
     private Skin skinPopupMenu;
     private Table popupTable;
-    private Button resumeGameButton;
-    private Button exitMainMenuButton;
+    private TextButton resumeGameButton;
+    private TextButton exitMainMenuButton;
     private Button soundButton;
 
     private Texture tapImage;
@@ -214,7 +209,6 @@ public class GameScreen implements Screen {
 //    private Sound tapSound;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-
 
     private StateManager stateManager;
     private final TapTap game;
