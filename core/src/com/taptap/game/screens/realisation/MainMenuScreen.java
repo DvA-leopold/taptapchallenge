@@ -111,6 +111,7 @@ public class MainMenuScreen implements Screen {
         background.dispose();
     }
 
+
     private Stage stage;
     private TextureAtlas atlasMainMenu;
     private Table table;

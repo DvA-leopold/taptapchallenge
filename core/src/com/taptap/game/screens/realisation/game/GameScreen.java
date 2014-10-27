@@ -186,6 +186,12 @@ public class GameScreen implements Screen {
         lastDropTime = TimeUtils.nanoTime();
     }
 
+    private enum StateManager {
+        GAME_RUNNING,
+        GAME_PAUSED,
+        GAME_OVER
+    }
+
     private Array<Rectangle> iconsForTap;
     private long lastDropTime;
 
