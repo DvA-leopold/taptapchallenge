@@ -7,10 +7,10 @@ import com.taptap.game.screens.realisation.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
 
-// todo release some dispose method
+// todo add dispose method
 public class MusicManager {
     static {
-        mainGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Trance sample.mp3"));
+        mainGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         notGameLoopMusic = Gdx.audio.newMusic(Gdx.files.internal("music/The Path of the Goblin King.mp3"));
     }
 

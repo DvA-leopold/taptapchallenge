@@ -26,9 +26,10 @@ import com.taptap.game.screens.realisation.MainMenuScreen;
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
-        stateManager  = StateManager.GAME_RUNNING;
-        tapImage = new Texture(Gdx.files.internal("skins/tap_icons/hud_gem_green.png"));
+        stateManager = StateManager.GAME_RUNNING;
+        tapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_green.png"));
         popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/bg_popup_panel.png"));
+        gameBackground = new Texture (Gdx.files.internal("skins/game_menu/game_bg.png"));
         // решилась проблема с переворотом+правильно реагируют координаты(оптимизированный костыль)
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -54,7 +55,8 @@ public class GameScreen implements Screen {
         popupTable.add(resumeGameButton).row().pad(20);
         popupTable.add(exitMainMenuButton).row().pad(20);
 
-        batch = new SpriteBatch();
+        mainBatch = new SpriteBatch();
+        transparentBatch = new SpriteBatch();
         stage = new Stage();
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
@@ -63,18 +65,19 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1,1,1,0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(camera.combined);
-
+        mainBatch.setProjectionMatrix(camera.combined);
+        transparentBatch.setProjectionMatrix(camera.combined);
         camera.update();
 
         switch (stateManager){
             case GAME_RUNNING:
-                batch.begin();
+                mainBatch.begin();
+                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 // здесь мы запоминаем что надо отрисовать
                 for(Rectangle raindrop : iconsForTap) {
-                    batch.draw(tapImage, raindrop.x, raindrop.y);
+                    mainBatch.draw(tapImage, raindrop.x, raindrop.y);
                 }
-                batch.end();
+                mainBatch.end();
                 Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
                 if (Gdx.input.isTouched()){
                     for (int i=0; i<iconsForTap.size; ++i){
@@ -85,12 +88,14 @@ public class GameScreen implements Screen {
                                 Gdx.input.getX() < temp.getX() + temp.getWidth() &&
                                 touchPoint.y < temp.getY() + temp.getHeight()){
                             iconsForTap.removeIndex(i);
-                            break;
+                            numberOfFigures--;
+                            break; // todo delete only 1 per time
                         }
                     }
                 }
-                if(TimeUtils.nanoTime() - lastDropTime > 1000000000){
-                    spawnTapIcon();
+                if(TimeUtils.nanoTime() - lastDropTime > 100000000){
+                    numberOfFigures++;
+                    spawnAndControlIcons();
                 }
                 optionButton.addListener(new ClickListener(){
                     @Override
@@ -103,11 +108,22 @@ public class GameScreen implements Screen {
                 });
                 break;
             case GAME_PAUSED:
-                batch.begin();
-                batch.draw(popUpMenuBackground,
-                        Gdx.graphics.getWidth()/2 -  popUpMenuBackground.getWidth()/2,
-                        Gdx.graphics.getHeight()/2 - popUpMenuBackground.getHeight()/2); // todo coordinates
-                batch.end();
+                mainBatch.begin();
+                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                mainBatch.end();
+
+                transparentBatch.begin();
+                transparentBatch.setColor(0, 0, 0, 0.6f);
+                for(Rectangle raindrop : iconsForTap) {
+                    transparentBatch.draw(tapImage, raindrop.x, raindrop.y);
+                }
+                transparentBatch.end();
+
+                mainBatch.begin();
+                mainBatch.draw(popUpMenuBackground,
+                        Gdx.graphics.getWidth() / 2 - popUpMenuBackground.getWidth() / 2,
+                        Gdx.graphics.getHeight() / 2 - popUpMenuBackground.getHeight() / 2);
+                mainBatch.end();
 
                 resumeGameButton.addListener(new ClickListener() {
                     @Override
@@ -152,7 +168,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
@@ -169,21 +184,28 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         tapImage.dispose();
-        batch.dispose();
+        mainBatch.dispose();
+        transparentBatch.dispose();
         atlasGameMenu.dispose();
         skinGameMenu.dispose();
         stage.dispose();
         atlasPopupMenu.dispose();
         skinPopupMenu.dispose();
         popUpMenuBackground.dispose();
+        gameBackground.dispose();
     }
 
-    private void spawnTapIcon() {
+    private void spawnAndControlIcons() {
         iconsForTap.add(new Rectangle(
-                MathUtils.random(0, Gdx.graphics.getWidth() - tapImage.getWidth()),
-                MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight()),
+                MathUtils.random(optionButton.getHeight()+20, Gdx.graphics.getWidth() - tapImage.getWidth()),
+                MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() - optionButton.getWidth()-20),
                 tapImage.getWidth(), tapImage.getHeight()));
         lastDropTime = TimeUtils.nanoTime();
+        if (numberOfFigures > 10){
+            iconsForTap.removeIndex(0);
+            numberOfFigures--;
+        }
+        //new Rectangle()
     }
 
     private enum StateManager {
@@ -193,6 +215,7 @@ public class GameScreen implements Screen {
     }
 
     private Array<Rectangle> iconsForTap;
+    private int numberOfFigures;
     private long lastDropTime;
 
     // main menu buttons
@@ -212,8 +235,10 @@ public class GameScreen implements Screen {
 
     private Texture tapImage;
     private Texture popUpMenuBackground;
+    private Texture gameBackground;
 //    private Sound tapSound;
-    private SpriteBatch batch;
+    private SpriteBatch mainBatch;
+    private SpriteBatch transparentBatch;
     private OrthographicCamera camera;
 
     private StateManager stateManager;
