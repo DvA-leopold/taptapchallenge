@@ -33,7 +33,7 @@ public class HelpScreen implements Screen {
 
         button = new Button(skin, "default");
 
-
+        // baobab, сиквояview
         Label.LabelStyle headingStyle1 = new Label.LabelStyle(font, Color.BLACK);
         Label.LabelStyle headingStyle2 = new Label.LabelStyle(font, Color.WHITE);
         Label helpString1 = new Label("ПРОСТО ТЫКАЙ В ПОЯВЛЯЮЩИЕСЯ ШТУЧКИ", headingStyle1);
@@ -41,13 +41,12 @@ public class HelpScreen implements Screen {
         Label helpString3 = new Label("В ПРАВИЛЬНЫЕ ШТУЧКИ ТЫКАТЬ МОЖНО", headingStyle1);
         Label helpString4 = new Label("И да прибудет с тобой сила", headingStyle2);
 
-        button.pad(30); // todo change position and etc
+        // todo change position and etc
         table.add(helpString1).row().pad(10);
         table.add(helpString2).row().pad(10);
         table.add(helpString3).row().pad(10);
-        table.add(helpString4).pad(10);
-        table.pad(10);
-        table.add(button).pad(10);
+        table.add(helpString4).row().pad(10);
+        table.add(button).padLeft(10);
     }
 
     @Override
@@ -105,6 +104,7 @@ public class HelpScreen implements Screen {
         stage.dispose();
         batch.dispose();
         background.dispose();
+        MusicManager.dispose();
     }
 
     private TextureAtlas atlas;

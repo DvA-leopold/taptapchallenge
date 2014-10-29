@@ -65,82 +65,14 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1,1,1,0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mainBatch.setProjectionMatrix(camera.combined);
-        transparentBatch.setProjectionMatrix(camera.combined);
         camera.update();
 
         switch (stateManager){
             case GAME_RUNNING:
-                mainBatch.begin();
-                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                // здесь мы запоминаем что надо отрисовать
-                for(Rectangle raindrop : iconsForTap) {
-                    mainBatch.draw(tapImage, raindrop.x, raindrop.y);
-                }
-                mainBatch.end();
-                Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
-                if (Gdx.input.isTouched()){
-                    for (int i=0; i<iconsForTap.size; ++i){
-                        Rectangle temp = iconsForTap.get(i);
-                        camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                        if (Gdx.input.getX() > temp.getX() &&
-                                touchPoint.y > temp.getY() &&
-                                Gdx.input.getX() < temp.getX() + temp.getWidth() &&
-                                touchPoint.y < temp.getY() + temp.getHeight()){
-                            iconsForTap.removeIndex(i);
-                            numberOfFigures--;
-                            break; // todo delete only 1 per time
-                        }
-                    }
-                }
-                if(TimeUtils.nanoTime() - lastDropTime > 100000000){
-                    numberOfFigures++;
-                    spawnAndControlIcons();
-                }
-                optionButton.addListener(new ClickListener(){
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        super.clicked(event, x, y);
-                        stateManager = StateManager.GAME_PAUSED;
-                        stage.clear();
-                        stage.addActor(popupTable);
-                    }
-                });
+                runState();
                 break;
             case GAME_PAUSED:
-                mainBatch.begin();
-                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                mainBatch.end();
-
-                transparentBatch.begin();
-                transparentBatch.setColor(0, 0, 0, 0.6f);
-                for(Rectangle raindrop : iconsForTap) {
-                    transparentBatch.draw(tapImage, raindrop.x, raindrop.y);
-                }
-                transparentBatch.end();
-
-                mainBatch.begin();
-                mainBatch.draw(popUpMenuBackground,
-                        Gdx.graphics.getWidth() / 2 - popUpMenuBackground.getWidth() / 2,
-                        Gdx.graphics.getHeight() / 2 - popUpMenuBackground.getHeight() / 2);
-                mainBatch.end();
-
-                resumeGameButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        super.clicked(event, x, y);
-                        stateManager = StateManager.GAME_RUNNING;
-                        stage.clear();
-                        stage.addActor(mainTable);
-                    }
-                });
-                exitMainMenuButton.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        super.clicked(event, x, y);
-                        stateManager = StateManager.GAME_OVER;
-                    }
-                });
+                pauseState();
                 break;
             case GAME_OVER:
                 game.setScreen(new MainMenuScreen(game));
@@ -155,9 +87,11 @@ public class GameScreen implements Screen {
         // данный метод вызывается один раз и поэтому отрисовывает только какой-то первый экран
         mainTable.setFillParent(true);
         popupTable.setFillParent(true);
+        //mainBatch.setProjectionMatrix(camera.combined);
+        //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(mainTable);
         Gdx.input.setInputProcessor(stage);
-
+        addButtonsListeners();
         MusicManager.play(this);
     }
 
@@ -193,6 +127,7 @@ public class GameScreen implements Screen {
         skinPopupMenu.dispose();
         popUpMenuBackground.dispose();
         gameBackground.dispose();
+        MusicManager.dispose();
     }
 
     private void spawnAndControlIcons() {
@@ -205,9 +140,83 @@ public class GameScreen implements Screen {
             iconsForTap.removeIndex(0);
             numberOfFigures--;
         }
-        //new Rectangle()
     }
 
+    private void pauseState(){
+        mainBatch.begin();
+        mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        mainBatch.end();
+
+        transparentBatch.begin();
+        transparentBatch.setColor(0, 0, 0, 0.6f);
+        for(Rectangle raindrop : iconsForTap) {
+            transparentBatch.draw(tapImage, raindrop.x, raindrop.y);
+        }
+        transparentBatch.end();
+
+        mainBatch.begin();
+        mainBatch.draw(popUpMenuBackground,
+                Gdx.graphics.getWidth() / 2 - popUpMenuBackground.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - popUpMenuBackground.getHeight() / 2);
+        mainBatch.end();
+    }
+
+    private void addButtonsListeners(){
+        resumeGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                stateManager = StateManager.GAME_RUNNING;
+                stage.clear();
+                stage.addActor(mainTable);
+            }
+        });
+        exitMainMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                stateManager = StateManager.GAME_OVER;
+            }
+        });
+        optionButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                stateManager = StateManager.GAME_PAUSED;
+                stage.clear();
+                stage.addActor(popupTable);
+            }
+        });
+    }
+
+    private void runState(){
+        mainBatch.begin();
+        mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // здесь мы запоминаем что надо отрисовать
+        for(Rectangle raindrop : iconsForTap) {
+            mainBatch.draw(tapImage, raindrop.x, raindrop.y);
+        }
+        mainBatch.end();
+        Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
+        if (Gdx.input.isTouched()){
+            for (int i=0; i<iconsForTap.size; ++i){
+                Rectangle temp = iconsForTap.get(i);
+                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                if (Gdx.input.getX() > temp.getX() &&
+                        touchPoint.y > temp.getY() &&
+                        Gdx.input.getX() < temp.getX() + temp.getWidth() &&
+                        touchPoint.y < temp.getY() + temp.getHeight()){
+                    iconsForTap.removeIndex(i);
+                    numberOfFigures--;
+                    break; // todo здесь все передалать и опрос событий прикосновения из рендера
+                }
+            }
+        }
+        if(TimeUtils.nanoTime() - lastDropTime > 1000000000){
+            numberOfFigures++;
+            spawnAndControlIcons();
+        }
+    }
     private enum StateManager {
         GAME_RUNNING,
         GAME_PAUSED,

@@ -7,7 +7,6 @@ import com.taptap.game.screens.realisation.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
 
-// todo add dispose method
 public class MusicManager {
     static {
         mainGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
@@ -37,6 +36,11 @@ public class MusicManager {
         if (screen instanceof GameScreen){
             notGameLoopMusic.pause();
         }
+    }
+
+    public static void dispose(){
+        notGameLoopMusic.dispose();
+        mainGameMusic.dispose();
     }
 
     private static Music notGameLoopMusic;
