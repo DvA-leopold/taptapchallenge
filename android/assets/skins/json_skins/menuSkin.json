@@ -1,0 +1,20 @@
+{
+    "com.badlogic.gdx.graphics.Color":{
+        "white": { "r": 1, "g": 1, "b": 1, "a": 1 },
+        "black": { "r": 0, "g": 0, "b": 0, "a": 1 }
+    },
+
+    "com.badlogic.gdx.graphics.g2d.BitmapFont":{
+        "whiteFont": { "file": "fonts/whiteFont.fnt" },
+        "blackFont": { "file": "fonts/blackFont.fnt" }
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle":{ // $ is an inner class
+        "default": { "font": whiteFont, "fontColor": white}
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle":{
+        "mainButtons": { "up": "button.up", "down": "button.down",
+            "pressedOffsetX": 1, "pressedOffsetY": -2, "font": whiteFont }
+    }
+}
