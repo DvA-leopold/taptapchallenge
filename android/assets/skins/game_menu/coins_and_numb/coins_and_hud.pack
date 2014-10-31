@@ -1,0 +1,82 @@
+
+coins_and_hud.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+hudCoins
+  rotate: false
+  xy: 1, 43
+  size: 47, 47
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+hud8
+  rotate: false
+  xy: 1, 1
+  size: 32, 40
+  orig: 32, 40
+  offset: 0, 0
+  index: -1
+hud7
+  rotate: false
+  xy: 50, 51
+  size: 32, 39
+  orig: 32, 39
+  offset: 0, 0
+  index: -1
+hud9
+  rotate: false
+  xy: 84, 51
+  size: 32, 39
+  orig: 32, 39
+  offset: 0, 0
+  index: -1
+hud2
+  rotate: false
+  xy: 118, 52
+  size: 32, 38
+  orig: 32, 38
+  offset: 0, 0
+  index: -1
+hud0
+  rotate: false
+  xy: 152, 52
+  size: 30, 38
+  orig: 30, 38
+  offset: 0, 0
+  index: -1
+hud3
+  rotate: false
+  xy: 35, 3
+  size: 28, 38
+  orig: 28, 38
+  offset: 0, 0
+  index: -1
+hud6
+  rotate: false
+  xy: 65, 11
+  size: 30, 38
+  orig: 30, 38
+  offset: 0, 0
+  index: -1
+hud4
+  rotate: false
+  xy: 97, 11
+  size: 29, 38
+  orig: 29, 38
+  offset: 0, 0
+  index: -1
+hud5
+  rotate: false
+  xy: 128, 12
+  size: 28, 38
+  orig: 28, 38
+  offset: 0, 0
+  index: -1
+hud1
+  rotate: false
+  xy: 158, 13
+  size: 26, 37
+  orig: 26, 37
+  offset: 0, 0
+  index: -1

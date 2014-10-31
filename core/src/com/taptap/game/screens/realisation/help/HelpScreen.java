@@ -104,7 +104,7 @@ public class HelpScreen implements Screen {
         stage.dispose();
         batch.dispose();
         background.dispose();
-        MusicManager.dispose();
+        //MusicManager.dispose();
     }
 
     private TextureAtlas atlas;
