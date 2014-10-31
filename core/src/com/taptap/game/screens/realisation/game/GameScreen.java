@@ -12,16 +12,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
+import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
 import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.Icon;
 import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
@@ -43,23 +41,10 @@ public class GameScreen implements Screen {
         tapIcons = new Array<Icon>(10);
 
         //-------------------- popup menu caller button
-        atlasGameMenu = new TextureAtlas("skins/game_menu/GameOptions.pack");
-        skinGameMenu = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasGameMenu);
-        mainTable = new Table(skinGameMenu);
-        optionButton = new Button(skinGameMenu, "gameButton");
-        mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+50).padLeft(-Gdx.graphics.getWidth()+50);
+        gameButtons = new gameButtonsInitializer();
 
         //--------------------- popup menu buttons etc
-        atlasPopupMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack"); //todo change style later
-        skinPopupMenu = new Skin(Gdx.files.internal("skins/json_skins/popUpSkin.json"), atlasPopupMenu);
-        popupTable = new Table(skinPopupMenu);
-        resumeGameButton = new TextButton("return", skinPopupMenu, "popUpButtons");
-        exitMainMenuButton = new TextButton("save & exit", skinPopupMenu, "popUpButtons");
-
-        resumeGameButton.pad(10); //todo add this to .json??
-        exitMainMenuButton.pad(10);
-        popupTable.add(resumeGameButton).row().pad(20);
-        popupTable.add(exitMainMenuButton).row().pad(20);
+        popUpButtons = new popUpButtonsInitializer();
 
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
@@ -81,7 +66,7 @@ public class GameScreen implements Screen {
                 pauseState();
                 break;
             case GAME_OVER:
-                overState();
+                gameOverState();
                 break;
             case GAME_EXIT:
                 game.setScreen(new MainMenuScreen(game));
@@ -94,11 +79,11 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         // данный метод вызывается один раз и поэтому отрисовывает только какой-то первый экран
-        mainTable.setFillParent(true);
-        popupTable.setFillParent(true);
+        gameButtons.getTable().setFillParent(true);
+        popUpButtons.getPopupTable().setFillParent(true);
         //mainBatch.setProjectionMatrix(camera.combined); todo don`t know is this needed
         //transparentBatch.setProjectionMatrix(camera.combined);
-        stage.addActor(mainTable);
+        stage.addActor(gameButtons.getTable());
         Gdx.input.setInputProcessor(stage);
         addButtonsListeners();
         MusicManager.play(this);
@@ -129,48 +114,12 @@ public class GameScreen implements Screen {
         tapImage.dispose();
         mainBatch.dispose();
         transparentBatch.dispose();
-        atlasGameMenu.dispose();
-        skinGameMenu.dispose();
         stage.dispose();
-        atlasPopupMenu.dispose();
-        skinPopupMenu.dispose();
         popUpMenuBackground.dispose();
         gameBackground.dispose();
+        gameButtons.dispose();
+        popUpButtons.dispose();
         MusicManager.dispose();
-    }
-
-    private void spawnAndControlIcons(){
-        int rand = MathUtils.random(0,100);
-        if (rand < 25){
-            tapIcons.add(new RedIcons(
-                    MathUtils.random(optionButton.getHeight()+20, Gdx.graphics.getWidth() - tapImage.getWidth()),
-                    MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() - optionButton.getWidth()-20),
-                    tapImage.getWidth(), tapImage.getHeight())
-            );
-        } else if (rand > 25 && rand < 60){
-            tapIcons.add(new BlueIcons(
-                    MathUtils.random(optionButton.getHeight()+20, Gdx.graphics.getWidth() - tapImage.getWidth()),
-                    MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() - optionButton.getWidth()-20),
-                    tapImage.getWidth(), tapImage.getHeight())
-            );
-        } else {
-            tapIcons.add(new YellowIcons(
-                    MathUtils.random(optionButton.getHeight()+20, Gdx.graphics.getWidth() - tapImage.getWidth()),
-                    MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() - optionButton.getWidth()-20),
-                    tapImage.getWidth(), tapImage.getHeight())
-            );
-        }
-        // todo add more stuff
-        lastDropTime = TimeUtils.nanoTime();
-        if (numberOfFigures > 10){
-            tapIcons.removeIndex(0);
-            totalScore -=50;
-            if (totalScore < 0){
-                totalScore = 0;
-                stateManager = StateManager.GAME_OVER;
-            }
-            numberOfFigures--;
-        }
     }
 
     private void runState(){
@@ -222,7 +171,7 @@ public class GameScreen implements Screen {
         mainBatch.end();
     }
 
-    private void overState(){
+    private void gameOverState(){
         mainBatch.begin();
         mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
         mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -235,34 +184,73 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void spawnAndControlIcons(){
+        int rand = MathUtils.random(0,100);
+        if (rand < 25){
+            tapIcons.add(new RedIcons(
+                            MathUtils.random(gameButtons.getOptionButton().getHeight()+20,
+                                    Gdx.graphics.getWidth() - tapImage.getWidth()),
+                            MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() -
+                                    gameButtons.getOptionButton().getWidth()-20),
+                            tapImage.getWidth(), tapImage.getHeight())
+            );
+        } else if (rand > 25 && rand < 60){
+            tapIcons.add(new BlueIcons(
+                            MathUtils.random(gameButtons.getOptionButton().getHeight()+20,
+                                    Gdx.graphics.getWidth() - tapImage.getWidth()),
+                            MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() -
+                                    gameButtons.getOptionButton().getWidth()-20),
+                            tapImage.getWidth(), tapImage.getHeight())
+            );
+        } else {
+            tapIcons.add(new YellowIcons(
+                            MathUtils.random(gameButtons.getOptionButton().getHeight()+20,
+                                    Gdx.graphics.getWidth() - tapImage.getWidth()),
+                            MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() -
+                                    gameButtons.getOptionButton().getWidth()-20),
+                            tapImage.getWidth(), tapImage.getHeight())
+            );
+        }
+        // todo add more stuff
+        lastDropTime = TimeUtils.nanoTime();
+        if (numberOfFigures > 10){
+            tapIcons.removeIndex(0);
+            totalScore -=50;
+            if (totalScore < 0){
+                stateManager = StateManager.GAME_OVER;
+            }
+            numberOfFigures--;
+        }
+    }
+
     private void addButtonsListeners(){
-        resumeGameButton.addListener(new ClickListener() {
+        popUpButtons.getResumeGameButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 stateManager = StateManager.GAME_RUNNING;
                 stage.clear();
-                stage.addActor(mainTable);
+                stage.addActor(gameButtons.getTable());
             }
         });
-        exitMainMenuButton.addListener(new ClickListener() {
+        popUpButtons.getExitMainMenuButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 stateManager = StateManager.GAME_EXIT;
             }
         });
-        optionButton.addListener(new ClickListener(){
+        gameButtons.getOptionButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 stateManager = StateManager.GAME_PAUSED;
                 stage.clear();
-                stage.addActor(popupTable);
+                stage.addActor(popUpButtons.getPopupTable());
             }
         });
-
     }
+
     private void renderTotalScore(){
         if (totalScore>0){
             long temp = totalScore;
@@ -322,25 +310,12 @@ public class GameScreen implements Screen {
     private Array<Icon> tapIcons;
     private int numberOfFigures;
     private long lastDropTime;
-    private long totalScore;
-
-    //coins and numbers
+    private int totalScore;
     private TextureAtlas coinsAndNumbers;
 
-    // main menu buttons
+    private gameButtonsInitializer gameButtons;
+    private popUpButtonsInitializer popUpButtons;
     private Stage stage;
-    private TextureAtlas atlasGameMenu;
-    private Skin skinGameMenu;
-    private Table mainTable;
-    private Button optionButton;
-
-    // pop up menu buttons
-    private TextureAtlas atlasPopupMenu;
-    private Skin skinPopupMenu;
-    private Table popupTable;
-    private TextButton resumeGameButton;
-    private TextButton exitMainMenuButton;
-    private Button soundButton;
 
     private Texture tapImage;
     private Texture popUpMenuBackground;

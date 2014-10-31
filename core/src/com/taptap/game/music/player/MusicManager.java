@@ -11,30 +11,35 @@ public class MusicManager {
     static {
         mainGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         notGameLoopMusic = Gdx.audio.newMusic(Gdx.files.internal("music/The Path of the Goblin King.mp3"));
+        soundEnableFlag = true;
     }
 
     public static void play(Screen screen){
-        mainGameMusic.setLooping(true);
-        notGameLoopMusic.setLooping(true);
-        if ((screen instanceof MainMenuScreen ||
-                screen instanceof HelpScreen) &&
-                !notGameLoopMusic.isPlaying()){
-            mainGameMusic.stop();
-            notGameLoopMusic.play();
-        }
-        if (screen instanceof GameScreen){
-            notGameLoopMusic.stop();
-            mainGameMusic.play();
+        if (soundEnableFlag){
+            mainGameMusic.setLooping(true);
+            notGameLoopMusic.setLooping(true);
+            if ((screen instanceof MainMenuScreen ||
+                    screen instanceof HelpScreen) &&
+                    !notGameLoopMusic.isPlaying()){
+                mainGameMusic.stop();
+                notGameLoopMusic.play();
+            }
+            if (screen instanceof GameScreen){
+                notGameLoopMusic.stop();
+                mainGameMusic.play();
+            }
         }
     }
 
     public static void pause(Screen screen){
-        if (screen instanceof MainMenuScreen ||
-                screen instanceof HelpScreen){
-            notGameLoopMusic.pause();
-        }
-        if (screen instanceof GameScreen){
-            notGameLoopMusic.pause();
+        if (soundEnableFlag){
+            if (screen instanceof MainMenuScreen ||
+                    screen instanceof HelpScreen){
+                notGameLoopMusic.pause();
+            }
+            if (screen instanceof GameScreen){
+                notGameLoopMusic.pause();
+            }
         }
     }
 
@@ -43,6 +48,7 @@ public class MusicManager {
         mainGameMusic.dispose();
     }
 
+    private static boolean soundEnableFlag;
     private static Music notGameLoopMusic;
     private static Music mainGameMusic;
 }
