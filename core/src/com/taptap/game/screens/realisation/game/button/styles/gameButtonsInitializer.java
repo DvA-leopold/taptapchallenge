@@ -8,11 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class gameButtonsInitializer {
     public gameButtonsInitializer(){
-        atlasGameMenu = new TextureAtlas("skins/game_menu/GameOptions.pack");
+        atlasGameMenu = new TextureAtlas("skins/game_menu/gameOption.pack");
         skinGameMenu = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasGameMenu);
         mainTable = new Table(skinGameMenu);
         optionButton = new Button(skinGameMenu, "gameButton");
-        mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+50).padLeft(-Gdx.graphics.getWidth()+50);
+        mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
+                padLeft(-Gdx.graphics.getWidth()+Gdx.graphics.getWidth()/15).
+                width(Gdx.graphics.getWidth()/15).
+                height(Gdx.graphics.getHeight()/10);
+        //mainTable.debug();
     }
     public Table getTable(){
         return mainTable;

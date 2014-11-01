@@ -46,7 +46,8 @@ public class HelpScreen implements Screen {
         table.add(helpString2).row().pad(10);
         table.add(helpString3).row().pad(10);
         table.add(helpString4).row().pad(10);
-        table.add(button).padLeft(10);
+        table.add(button).padRight(Gdx.graphics.getWidth() - button.getWidth());
+        //table.debug();
     }
 
     @Override

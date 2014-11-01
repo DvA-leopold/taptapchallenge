@@ -14,11 +14,15 @@ public class popUpButtonsInitializer {
         popupTable = new Table(skinPopupMenu);
         resumeGameButton = new TextButton("return", skinPopupMenu, "popUpButtons");
         exitMainMenuButton = new TextButton("save & exit", skinPopupMenu, "popUpButtons");
+        int buttonWidth = Gdx.graphics.getWidth()/4;
+        int buttonHeight = Gdx.graphics.getHeight()/10;
 
         resumeGameButton.pad(10); //todo add this to .json??
         exitMainMenuButton.pad(10);
-        popupTable.add(resumeGameButton).row().pad(20);
+        popupTable.add().row().pad(10).height(buttonHeight).width(buttonWidth);
+        popupTable.add(resumeGameButton).row().pad(20).width(buttonWidth).height(buttonHeight);
         popupTable.add(exitMainMenuButton).row().pad(20);
+        //popupTable.debug();
     }
 
     public Table getPopupTable(){

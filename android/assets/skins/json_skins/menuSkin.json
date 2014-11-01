@@ -10,11 +10,17 @@
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle":{ // $ is an inner class
-        "default": { "font": whiteFont, "fontColor": white}
+        "default": { "font": blackFont, "fontColor": black}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle":{
         "mainButtons": { "up": "button.up", "down": "button.down",
-            "pressedOffsetX": 1, "pressedOffsetY": -2, "font": whiteFont }
+            "pressedOffsetX": 1, "pressedOffsetY": -2, "font": blackFont }
+    },
+
+    "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle":{
+         "default": { "up": "button.up", "down": "button.down",
+             "pressedOffsetX": 1, "pressedOffsetY": -2},
+         "sound": { "up": "button.up" }
     }
 }

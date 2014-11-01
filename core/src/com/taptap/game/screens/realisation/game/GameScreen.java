@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
         this.game = game;
         stateManager = StateManager.GAME_RUNNING;
         tapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_green.png"));
-        popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/bg_popup_panel.png"));
+        popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/panel_blue.png"));
         gameBackground = new Texture (Gdx.files.internal("skins/game_menu/game_bg.png"));
         gameOver = new Texture (Gdx.files.internal("skins/game_menu/game_over.png"));
         coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
@@ -40,10 +40,7 @@ public class GameScreen implements Screen {
 
         tapIcons = new Array<Icon>(10);
 
-        //-------------------- popup menu caller button
         gameButtons = new gameButtonsInitializer();
-
-        //--------------------- popup menu buttons etc
         popUpButtons = new popUpButtonsInitializer();
 
         mainBatch = new SpriteBatch();
@@ -78,7 +75,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        // данный метод вызывается один раз и поэтому отрисовывает только какой-то первый экран
+        // данный метод вызывается один раз
         gameButtons.getTable().setFillParent(true);
         popUpButtons.getPopupTable().setFillParent(true);
         //mainBatch.setProjectionMatrix(camera.combined); todo don`t know is this needed
@@ -96,6 +93,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true); // resize method dont work
     }
 
     @Override
@@ -106,6 +104,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
+        MusicManager.play(this);
         stateManager = StateManager.GAME_RUNNING;
     }
 
@@ -119,7 +118,7 @@ public class GameScreen implements Screen {
         gameBackground.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
-        MusicManager.dispose();
+        //MusicManager.dispose();
     }
 
     private void runState(){
@@ -167,7 +166,7 @@ public class GameScreen implements Screen {
         mainBatch.begin();
         mainBatch.draw(popUpMenuBackground,
                 Gdx.graphics.getWidth() / 2 - popUpMenuBackground.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - popUpMenuBackground.getHeight() / 2);
+                Gdx.graphics.getHeight() / 2 - popUpMenuBackground.getHeight() / 2); // todo change that stuff
         mainBatch.end();
     }
 

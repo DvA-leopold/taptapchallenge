@@ -1,20 +1,19 @@
-GameOptions.png
+
+gameOption.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-tick_down
+button.up
   rotate: false
   xy: 1, 1
-  size: 36, 36
-  split: 35, 0, 35, 0
-  orig: 36, 36
+  size: 47, 51
+  orig: 47, 51
   offset: 0, 0
   index: -1
-tick_up
+button.down
   rotate: false
-  xy: 39, 1
-  size: 36, 36
-  split: 35, 0, 35, 0
-  orig: 36, 36
+  xy: 50, 5
+  size: 47, 47
+  orig: 47, 47
   offset: 0, 0
   index: -1

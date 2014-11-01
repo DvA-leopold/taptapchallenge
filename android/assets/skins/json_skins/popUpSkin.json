@@ -11,6 +11,6 @@
 
         "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle":{
             "popUpButtons": { "up": "button.up", "down": "button.down",
-            "pressedOffsetX": 1, "pressedOffsetY": -2, "font": whiteFont }
+            "pressedOffsetX": 1, "pressedOffsetY": -2, "font": blackFont }
         }
 }

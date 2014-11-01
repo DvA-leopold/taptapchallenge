@@ -23,24 +23,28 @@ public class MainMenuScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+        int buttonWidth = Gdx.graphics.getWidth()/4;
+        int buttonHeight = Gdx.graphics.getHeight()/10; // todo mb some trouble with this
+        stage = new Stage();
         // buttons and styles
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
-        stage = new Stage();
+        skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);// todo .json, assets, or src?
         table = new Table(skinMainMenu);
-        //table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
+        soundButton = new Button(skinMainMenu);
         buttonPlay.pad(10);
         buttonHelp.pad(10); //todo add this to .json??
+        soundButton.pad(10);
 
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
-        table.add(heading).row().padTop(100);
-
-        table.add(buttonPlay).row().pad(30);
-        table.add(buttonHelp).row().pad(30);
+        table.add(heading).row().padTop(100).width(buttonWidth).height(buttonHeight);
+        table.add(buttonPlay).row().pad(30).width(buttonWidth).height(buttonHeight);
+        table.add(buttonHelp).row().pad(30).width(buttonWidth).height(buttonHeight);
+        table.add(soundButton).row().pad(30); //todo sound button checked
+        //table.debug();
     }
 
     @Override
@@ -55,6 +59,13 @@ public class MainMenuScreen implements Screen {
         stage.draw();
 
         camera.update();
+    }
+
+    @Override
+    public void show() {
+        table.setFillParent(true);
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
 
         buttonPlay.addListener(new ClickListener(){
             @Override
@@ -70,14 +81,13 @@ public class MainMenuScreen implements Screen {
                 game.setScreen(new HelpScreen(game));
             }
         });
-
-    }
-
-    @Override
-    public void show() {
-        table.setFillParent(true);
-        stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+        soundButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                MusicManager.onOffSound();
+            }
+        });
         MusicManager.play(this);
     }
 
@@ -88,8 +98,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        table.invalidateHierarchy();
-        table.setSize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -99,7 +108,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resume() {
-
+        MusicManager.play(this);
     }
 
     @Override
@@ -116,9 +125,11 @@ public class MainMenuScreen implements Screen {
     private Table table;
     private Skin skinMainMenu;
 
-    private TextButton buttonPlay, buttonHelp;
     private SpriteBatch batch;
     private Texture background;
+
+    private TextButton buttonPlay, buttonHelp;
+    private Button soundButton;
 
     private OrthographicCamera camera;
     private final TapTap game;
