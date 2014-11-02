@@ -1,5 +1,6 @@
 package com.taptap.game.screens.realisation.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -57,13 +58,13 @@ public class GameScreen implements Screen {
 
         switch (stateManager){
             case GAME_RUNNING:
-                runState();
+                stateManager.runState(this);
                 break;
             case GAME_PAUSED:
-                pauseState();
+                stateManager.pauseState(this);
                 break;
             case GAME_OVER:
-                gameOverState();
+                stateManager.gameOverState(this);
                 break;
             case GAME_EXIT:
                 game.setScreen(new MainMenuScreen(game));
@@ -119,68 +120,6 @@ public class GameScreen implements Screen {
         gameButtons.dispose();
         popUpButtons.dispose();
         //MusicManager.dispose();
-    }
-
-    private void runState(){
-        mainBatch.begin();
-        mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        for(Icon raindrop : tapIcons) {
-            mainBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
-        }
-        renderTotalScore();
-        mainBatch.end();
-        Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
-        if (Gdx.input.isTouched()){
-            for (int i=0; i<tapIcons.size; ++i){
-                Icon temp = tapIcons.get(i);
-                camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                if (Gdx.input.getX() > temp.getX() &&
-                        touchPoint.y > temp.getY() &&
-                        Gdx.input.getX() < temp.getX() + temp.getWidth() &&
-                        touchPoint.y < temp.getY() + temp.getHeight()){
-                    tapIcons.removeIndex(i);
-                    numberOfFigures--;
-                    totalScore +=temp.addScore();
-                    break; // todo здесь вывести функцию опроса событий из рендера
-                }
-            }
-        }
-        if(TimeUtils.nanoTime() - lastDropTime > 1000000000){
-            numberOfFigures++;
-            spawnAndControlIcons();
-        }
-    }
-
-    private void pauseState(){
-        mainBatch.begin();
-        mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        mainBatch.end();
-
-        transparentBatch.begin();
-        transparentBatch.setColor(0, 0, 0, 0.6f);
-        for(Icon raindrop : tapIcons) {
-            transparentBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
-        }
-        transparentBatch.end();
-
-        mainBatch.begin();
-        mainBatch.draw(popUpMenuBackground,
-                Gdx.graphics.getWidth() / 2 - popUpMenuBackground.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - popUpMenuBackground.getHeight() / 2); // todo change that stuff
-        mainBatch.end();
-    }
-
-    private void gameOverState(){
-        mainBatch.begin();
-        mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
-        mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        mainBatch.draw(gameOver,
-                Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
-        mainBatch.end();
-        if (Gdx.input.isTouched()){
-            game.setScreen(new MainMenuScreen(game));
-        }
     }
 
     private void spawnAndControlIcons(){
@@ -303,7 +242,69 @@ public class GameScreen implements Screen {
         GAME_RUNNING,
         GAME_PAUSED,
         GAME_OVER,
-        GAME_EXIT
+        GAME_EXIT;
+
+        private void runState(GameScreen screen){
+            screen.mainBatch.begin();
+            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            for(Icon raindrop : screen.tapIcons) {
+                screen.mainBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
+            }
+            screen.renderTotalScore();
+            screen.mainBatch.end();
+            Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
+            if (Gdx.input.isTouched()){
+                for (int i=0; i<screen.tapIcons.size; ++i){
+                    Icon temp = screen.tapIcons.get(i);
+                    screen.camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+                    if (Gdx.input.getX() > temp.getX() &&
+                            touchPoint.y > temp.getY() &&
+                            Gdx.input.getX() < temp.getX() + temp.getWidth() &&
+                            touchPoint.y < temp.getY() + temp.getHeight()){
+                        screen.tapIcons.removeIndex(i);
+                        screen.numberOfFigures--;
+                        screen.totalScore +=temp.addScore();
+                        break; // todo здесь вывести функцию опроса событий из рендера
+                    }
+                }
+            }
+            if(TimeUtils.nanoTime() - screen.lastDropTime > 1000000000){
+                screen.numberOfFigures++;
+                screen.spawnAndControlIcons();
+            }
+        }
+
+        private void pauseState(GameScreen screen){
+            screen.mainBatch.begin();
+            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            screen.mainBatch.end();
+
+            screen.transparentBatch.begin();
+            screen.transparentBatch.setColor(0, 0, 0, 0.6f);
+            for(Icon raindrop : screen.tapIcons) {
+                screen.transparentBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
+            }
+            screen.transparentBatch.end();
+
+            screen.mainBatch.begin();
+            screen.mainBatch.draw(screen.popUpMenuBackground,
+                    Gdx.graphics.getWidth() / 2 - screen.popUpMenuBackground.getWidth() / 2,
+                    Gdx.graphics.getHeight() / 2 - screen.popUpMenuBackground.getHeight() / 2); // todo change that stuff
+            screen.mainBatch.end();
+        }
+
+        private void gameOverState(GameScreen screen){
+            screen.mainBatch.begin();
+            screen.mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
+            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            screen.mainBatch.draw(screen.gameOver,
+                    Gdx.graphics.getWidth() / 2 - screen.gameOver.getWidth() / 2,
+                    Gdx.graphics.getHeight() / 2 - screen.gameOver.getHeight() / 2);
+            screen.mainBatch.end();
+            if (Gdx.input.isTouched()){
+                screen.game.setScreen(new MainMenuScreen(screen.game));
+            }
+        }
     }
 
     private Array<Icon> tapIcons;

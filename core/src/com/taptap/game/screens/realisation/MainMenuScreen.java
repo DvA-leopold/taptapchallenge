@@ -23,8 +23,8 @@ public class MainMenuScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        int buttonWidth = Gdx.graphics.getWidth()/4;
-        int buttonHeight = Gdx.graphics.getHeight()/10; // todo mb some trouble with this
+        int buttonWidth = Gdx.graphics.getWidth()/3;
+        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change to global variables
         stage = new Stage();
         // buttons and styles
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
@@ -41,9 +41,9 @@ public class MainMenuScreen implements Screen {
 
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
         table.add(heading).row().padTop(100).width(buttonWidth).height(buttonHeight);
-        table.add(buttonPlay).row().pad(30).width(buttonWidth).height(buttonHeight);
-        table.add(buttonHelp).row().pad(30).width(buttonWidth).height(buttonHeight);
-        table.add(soundButton).row().pad(30); //todo sound button checked
+        table.add(buttonPlay).row().pad(1).width(buttonWidth).height(buttonHeight);
+        table.add(buttonHelp).row().pad(1).width(buttonWidth).height(buttonHeight);
+        table.add(soundButton).row().pad(1); //todo sound button checked
         //table.debug();
     }
 

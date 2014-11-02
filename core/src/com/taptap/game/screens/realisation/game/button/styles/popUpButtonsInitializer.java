@@ -14,8 +14,8 @@ public class popUpButtonsInitializer {
         popupTable = new Table(skinPopupMenu);
         resumeGameButton = new TextButton("return", skinPopupMenu, "popUpButtons");
         exitMainMenuButton = new TextButton("save & exit", skinPopupMenu, "popUpButtons");
-        int buttonWidth = Gdx.graphics.getWidth()/4;
-        int buttonHeight = Gdx.graphics.getHeight()/10;
+        int buttonWidth = Gdx.graphics.getWidth()/3;
+        int buttonHeight = Gdx.graphics.getHeight()/7; // todo cange to global variables
 
         resumeGameButton.pad(10); //todo add this to .json??
         exitMainMenuButton.pad(10);
