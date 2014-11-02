@@ -1,6 +1,5 @@
 package com.taptap.game.screens.realisation.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,40 +8,41 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
 import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
-import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.Icon;
-import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
-import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
+import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractIconFactory;
 
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
         stateManager = StateManager.GAME_RUNNING;
-        tapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_green.png"));
+        tapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_green.png")); // todo remove
         popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/panel_blue.png"));
         gameBackground = new Texture (Gdx.files.internal("skins/game_menu/game_bg.png"));
         gameOver = new Texture (Gdx.files.internal("skins/game_menu/game_over.png"));
         coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
 
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        tapIcons = new Array<Icon>(10);
-
         gameButtons = new gameButtonsInitializer();
         popUpButtons = new popUpButtonsInitializer();
+
+        icons = new AbstractIconFactory(
+                tapImage.getHeight(),
+                tapImage.getWidth(),
+                gameButtons.getOptionButton().getHeight(),
+                gameButtons.getOptionButton().getWidth()
+        );
+
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
@@ -59,6 +59,8 @@ public class GameScreen implements Screen {
         switch (stateManager){
             case GAME_RUNNING:
                 stateManager.runState(this);
+                //checkForOver(); // todo какое-то дерьмо
+                //System.out.println(icons.getNumberOfFigures());
                 break;
             case GAME_PAUSED:
                 stateManager.pauseState(this);
@@ -94,7 +96,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // resize method dont work
+        stage.getViewport().update(width, height, true); // resize method don`t work
     }
 
     @Override
@@ -120,45 +122,6 @@ public class GameScreen implements Screen {
         gameButtons.dispose();
         popUpButtons.dispose();
         //MusicManager.dispose();
-    }
-
-    private void spawnAndControlIcons(){
-        int rand = MathUtils.random(0,100);
-        if (rand < 25){
-            tapIcons.add(new RedIcons(
-                            MathUtils.random(gameButtons.getOptionButton().getHeight()+20,
-                                    Gdx.graphics.getWidth() - tapImage.getWidth()),
-                            MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() -
-                                    gameButtons.getOptionButton().getWidth()-20),
-                            tapImage.getWidth(), tapImage.getHeight())
-            );
-        } else if (rand > 25 && rand < 60){
-            tapIcons.add(new BlueIcons(
-                            MathUtils.random(gameButtons.getOptionButton().getHeight()+20,
-                                    Gdx.graphics.getWidth() - tapImage.getWidth()),
-                            MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() -
-                                    gameButtons.getOptionButton().getWidth()-20),
-                            tapImage.getWidth(), tapImage.getHeight())
-            );
-        } else {
-            tapIcons.add(new YellowIcons(
-                            MathUtils.random(gameButtons.getOptionButton().getHeight()+20,
-                                    Gdx.graphics.getWidth() - tapImage.getWidth()),
-                            MathUtils.random(0, Gdx.graphics.getHeight() - tapImage.getHeight() -
-                                    gameButtons.getOptionButton().getWidth()-20),
-                            tapImage.getWidth(), tapImage.getHeight())
-            );
-        }
-        // todo add more stuff
-        lastDropTime = TimeUtils.nanoTime();
-        if (numberOfFigures > 10){
-            tapIcons.removeIndex(0);
-            totalScore -=50;
-            if (totalScore < 0){
-                stateManager = StateManager.GAME_OVER;
-            }
-            numberOfFigures--;
-        }
     }
 
     private void addButtonsListeners(){
@@ -191,11 +154,11 @@ public class GameScreen implements Screen {
 
     private void renderTotalScore(){
         if (totalScore>0){
-            long temp = totalScore;
+            int temp = totalScore;
             float range = Gdx.graphics.getWidth();
             Sprite picture = new Sprite();
             while (temp!=0){
-                int val = (int)(temp % 10);
+                int val = temp % 10;
                 temp/=10;
                 switch (val){
                     case 0:
@@ -247,30 +210,40 @@ public class GameScreen implements Screen {
         private void runState(GameScreen screen){
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            for(Icon raindrop : screen.tapIcons) {
+            for(Icon raindrop : screen.icons.getIconsArray()) {
                 screen.mainBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
             }
             screen.renderTotalScore();
             screen.mainBatch.end();
             Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
             if (Gdx.input.isTouched()){
-                for (int i=0; i<screen.tapIcons.size; ++i){
-                    Icon temp = screen.tapIcons.get(i);
+                for (int i=0; i<screen.icons.getIconsArray().size; ++i){
+                    Icon temp = screen.icons.getIconsArray().get(i);
                     screen.camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                     if (Gdx.input.getX() > temp.getX() &&
                             touchPoint.y > temp.getY() &&
                             Gdx.input.getX() < temp.getX() + temp.getWidth() &&
                             touchPoint.y < temp.getY() + temp.getHeight()){
-                        screen.tapIcons.removeIndex(i);
-                        screen.numberOfFigures--;
-                        screen.totalScore +=temp.addScore();
-                        break; // todo здесь вывести функцию опроса событий из рендера
+                        screen.icons.removeIcon(i);
+                        screen.icons.decNumberOfFigures();
+                        screen.totalScore += temp.addScore();
+                        break; // todo переделать это убогое решение
                     }
                 }
             }
+            System.out.println(TimeUtils.nanoTime() - screen.lastDropTime );
             if(TimeUtils.nanoTime() - screen.lastDropTime > 1000000000){
-                screen.numberOfFigures++;
-                screen.spawnAndControlIcons();
+                screen.icons.incNumberOfFigures();
+                screen.icons.spawn();
+                screen.lastDropTime = TimeUtils.nanoTime();
+            }
+            if (screen.icons.getNumberOfFigures() > 10){
+                screen.icons.removeIcon(0);
+                screen.totalScore -=50;
+                if (screen.totalScore < 0){
+                    screen.stateManager = StateManager.GAME_OVER;
+                }
+                screen.icons.decNumberOfFigures();
             }
         }
 
@@ -281,15 +254,15 @@ public class GameScreen implements Screen {
 
             screen.transparentBatch.begin();
             screen.transparentBatch.setColor(0, 0, 0, 0.6f);
-            for(Icon raindrop : screen.tapIcons) {
-                screen.transparentBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
+            for(Icon tapIcon : screen.icons.getIconsArray()) {
+                screen.transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
             }
             screen.transparentBatch.end();
 
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.popUpMenuBackground,
                     Gdx.graphics.getWidth() / 2 - screen.popUpMenuBackground.getWidth() / 2,
-                    Gdx.graphics.getHeight() / 2 - screen.popUpMenuBackground.getHeight() / 2); // todo change that stuff
+                    Gdx.graphics.getHeight() / 2 - screen.popUpMenuBackground.getHeight() / 2);
             screen.mainBatch.end();
         }
 
@@ -307,8 +280,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    private Array<Icon> tapIcons;
-    private int numberOfFigures;
+    private AbstractIconFactory icons;
     private long lastDropTime;
     private int totalScore;
     private TextureAtlas coinsAndNumbers;
