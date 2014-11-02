@@ -12,7 +12,6 @@ public class MusicManager {
         mainGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
         notGameLoopMusic = Gdx.audio.newMusic(Gdx.files.internal("music/The Path of the Goblin King.mp3"));
         soundEnableFlag = true;
-        System.out.println("mew");
     }
 
     public static void play(Screen screen){
@@ -43,6 +42,7 @@ public class MusicManager {
             }
         }
     }
+
     public static void onOffSound(){
         soundEnableFlag = !soundEnableFlag;
         if (soundEnableFlag){

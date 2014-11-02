@@ -59,8 +59,8 @@ public class GameScreen implements Screen {
         switch (stateManager){
             case GAME_RUNNING:
                 stateManager.runState(this);
-                //checkForOver(); // todo какое-то дерьмо
-                //System.out.println(icons.getNumberOfFigures());
+                checkForOver(); // todo какое-то дерьмо
+
                 break;
             case GAME_PAUSED:
                 stateManager.pauseState(this);
@@ -201,6 +201,21 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void checkForOver(){
+        if(TimeUtils.nanoTime() - lastDropTime > 1000000000){
+            icons.incNumberOfFigures();
+            icons.spawn();
+            lastDropTime = TimeUtils.nanoTime();
+        }
+        if (icons.getNumberOfFigures() > 10){
+            icons.removeIcon(0);
+            totalScore -=50;
+            if (totalScore < 0){
+                stateManager = StateManager.GAME_OVER;
+            }
+            icons.decNumberOfFigures();
+        }
+    }
     private enum StateManager {
         GAME_RUNNING,
         GAME_PAUSED,
@@ -230,20 +245,6 @@ public class GameScreen implements Screen {
                         break; // todo переделать это убогое решение
                     }
                 }
-            }
-            System.out.println(TimeUtils.nanoTime() - screen.lastDropTime );
-            if(TimeUtils.nanoTime() - screen.lastDropTime > 1000000000){
-                screen.icons.incNumberOfFigures();
-                screen.icons.spawn();
-                screen.lastDropTime = TimeUtils.nanoTime();
-            }
-            if (screen.icons.getNumberOfFigures() > 10){
-                screen.icons.removeIcon(0);
-                screen.totalScore -=50;
-                if (screen.totalScore < 0){
-                    screen.stateManager = StateManager.GAME_OVER;
-                }
-                screen.icons.decNumberOfFigures();
             }
         }
 
