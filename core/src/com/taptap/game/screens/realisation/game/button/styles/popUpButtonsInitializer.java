@@ -22,7 +22,6 @@ public class popUpButtonsInitializer {
         popupTable.add().row().pad(10).height(buttonHeight).width(buttonWidth);
         popupTable.add(resumeGameButton).row().pad(20).width(buttonWidth).height(buttonHeight);
         popupTable.add(exitMainMenuButton).row().pad(20);
-        //popupTable.debug();
     }
 
     public Table getPopupTable(){

@@ -44,7 +44,6 @@ public class MainMenuScreen implements Screen {
         table.add(buttonPlay).row().pad(1).width(buttonWidth).height(buttonHeight);
         table.add(buttonHelp).row().pad(1).width(buttonWidth).height(buttonHeight);
         table.add(soundButton).row().pad(1); //todo sound button checked
-        //table.debug();
     }
 
     @Override
