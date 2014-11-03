@@ -23,8 +23,6 @@ public class MainMenuScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change to global variables
         stage = new Stage();
         // buttons and styles
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
@@ -34,11 +32,13 @@ public class MainMenuScreen implements Screen {
 
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
-        soundButton = new Button(skinMainMenu);
+        soundButton = new TextButton("Music", skinMainMenu,"mainButtons");// todo remove from .json
         buttonPlay.pad(10);
         buttonHelp.pad(10); //todo add this to .json??
-        soundButton.pad(10);
+        soundButton.pad(20);
 
+        int buttonWidth = Gdx.graphics.getWidth()/3;
+        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change to global variables
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
         table.add(heading).row().padTop(100).width(buttonWidth).height(buttonHeight);
         table.add(buttonPlay).row().pad(1).width(buttonWidth).height(buttonHeight);
@@ -128,7 +128,7 @@ public class MainMenuScreen implements Screen {
     private Texture background;
 
     private TextButton buttonPlay, buttonHelp;
-    private Button soundButton;
+    private TextButton soundButton;
 
     private OrthographicCamera camera;
     private final TapTap game;
