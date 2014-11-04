@@ -31,8 +31,8 @@ public class GameScreen implements Screen {
         gameOver = new Texture (Gdx.files.internal("skins/game_menu/game_over.png"));
         coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
 
-        gameButtons = new gameButtonsInitializer();
-        popUpButtons = new popUpButtonsInitializer();
+        gameButtons = new gameButtonsInitializer(this);
+        popUpButtons = new popUpButtonsInitializer(this);
 
         icons = new AbstractItemFactory(
                 gameButtons.getOptionButton().getHeight(),
@@ -80,7 +80,8 @@ public class GameScreen implements Screen {
         //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(gameButtons.getTable());
         Gdx.input.setInputProcessor(stage);
-        addButtonsListeners();
+        popUpButtons.setListeners(stage, gameButtons.getTable());
+        gameButtons.setListeners(stage, popUpButtons.getPopupTable());
         MusicManager.play(this);
 
         Timer timer = new Timer(); //todo по-моему это должно быть не здесь
@@ -126,31 +127,9 @@ public class GameScreen implements Screen {
     }
 
     private void addButtonsListeners(){ //todo перенести это в button initializer
-        popUpButtons.getResumeGameButton().addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                stateManager = StateManager.GAME_RUNNING;
-                stage.clear();
-                stage.addActor(gameButtons.getTable());
-            }
-        });
-        popUpButtons.getExitMainMenuButton().addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                stateManager = StateManager.GAME_EXIT;
-            }
-        });
-        gameButtons.getOptionButton().addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                stateManager = StateManager.GAME_PAUSED;
-                stage.clear();
-                stage.addActor(popUpButtons.getPopupTable());
-            }
-        });
+
+
+
     }
 
     private void renderNumbers(int numbForRender, float renderPosition){
@@ -310,7 +289,7 @@ public class GameScreen implements Screen {
     private SpriteBatch transparentBatch;
     private OrthographicCamera camera;
 
-    private StateManager stateManager;
+    public StateManager stateManager; // todo change to private
     final static StorageManager storage = new StorageManager(true);
     private final TapTap game;
 }
