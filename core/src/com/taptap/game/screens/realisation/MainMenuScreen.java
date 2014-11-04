@@ -14,6 +14,7 @@ import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.help.HelpScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
+import com.taptap.game.screens.realisation.records.RecordScreen;
 
 public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapTap game){
@@ -26,24 +27,27 @@ public class MainMenuScreen implements Screen {
         stage = new Stage();
         // buttons and styles
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);// todo .json, assets, or src?
+        skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
         table = new Table(skinMainMenu);
         table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
-        soundButton = new TextButton("Music", skinMainMenu,"mainButtons");// todo remove from .json
+        buttonRecords = new TextButton("Records", skinMainMenu, "mainButtons");
+        soundButton = new TextButton("Music: on", skinMainMenu,"soundTest");
         buttonPlay.pad(10);
-        buttonHelp.pad(10); //todo add this to .json??
-        soundButton.pad(20);
+        buttonHelp.pad(10);
+        buttonRecords.pad(10);
+        soundButton.pad(10);
 
         int buttonWidth = Gdx.graphics.getWidth()/3;
         int buttonHeight = Gdx.graphics.getHeight()/7; // todo change to global variables
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
         table.add(heading).row().padTop(100).width(buttonWidth).height(buttonHeight);
         table.add(buttonPlay).row().pad(1).width(buttonWidth).height(buttonHeight);
-        table.add(buttonHelp).row().pad(1).width(buttonWidth).height(buttonHeight);
-        table.add(soundButton).row().pad(1); //todo sound button checked
+        table.add(buttonRecords).row().pad(1).width(buttonWidth).height(buttonHeight);
+        table.add(buttonHelp).row().pad(5).width(buttonWidth).height(buttonHeight);
+        table.add(soundButton);
     }
 
     @Override
@@ -80,10 +84,25 @@ public class MainMenuScreen implements Screen {
                 game.setScreen(new HelpScreen(game));
             }
         });
-        soundButton.addListener(new ClickListener() {
+        buttonRecords.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                game.setScreen(new RecordScreen(game));
+            }
+        });
+        soundButton.addListener(new ClickListener() {
+            boolean help=true; // todo изменить эту штуку просто на перечеркнутый динамик
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                if (help){
+                    soundButton.setText("Music: off");
+                    help = false;
+                } else {
+                    soundButton.setText("Music: on");
+                    help=true;
+                }
                 MusicManager.onOffSound();
             }
         });
@@ -92,6 +111,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
+        MusicManager.pause(this);
         dispose();
     }
 
@@ -127,8 +147,11 @@ public class MainMenuScreen implements Screen {
     private SpriteBatch batch;
     private Texture background;
 
-    private TextButton buttonPlay, buttonHelp;
-    private TextButton soundButton;
+    private final TextButton
+            buttonPlay,
+            buttonHelp,
+            soundButton,
+            buttonRecords;
 
     private OrthographicCamera camera;
     private final TapTap game;

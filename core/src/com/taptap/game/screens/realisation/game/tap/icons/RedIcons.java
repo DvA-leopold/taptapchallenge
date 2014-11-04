@@ -3,6 +3,7 @@ package com.taptap.game.screens.realisation.game.tap.icons;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 
 public class RedIcons implements Icon {
     public RedIcons(float x, float y, int W, int H){

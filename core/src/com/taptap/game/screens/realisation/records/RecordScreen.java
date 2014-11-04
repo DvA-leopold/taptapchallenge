@@ -1,9 +1,10 @@
-package com.taptap.game.screens.realisation.help;
+package com.taptap.game.screens.realisation.records;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,53 +16,54 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
+import com.taptap.game.screens.realisation.game.GameScreen;
 
-public class HelpScreen implements Screen {
-    public HelpScreen(TapTap game) {
+public class RecordScreen implements Screen {
+    public RecordScreen(final TapTap game){
         this.game = game;
-        font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
-        batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("skins/help_menu/bg_grasslands.png"));
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        atlas = new TextureAtlas("skins/help_menu/buttons/helpButton.pack");
-        skin = new Skin(Gdx.files.internal("skins/json_skins/helpSkin.json"), atlas);
-        table = new Table(skin);
+        final TextureAtlas atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
+        final Skin skinRecords = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
+        table = new Table(skinRecords);
+        exitButton = new Button(skinRecords);
+
         stage = new Stage();
+        batch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("skins/main_menu/background/bg_desert.png"));
 
-        button = new Button(skin, "default");
-
-        // baobab, сиквояview
-        Label.LabelStyle headingStyle1 = new Label.LabelStyle(font, Color.BLACK);
-        Label.LabelStyle headingStyle2 = new Label.LabelStyle(font, Color.WHITE);
-        Label helpString1 = new Label("ПРОСТО ТЫКАЙ В ПОЯВЛЯЮЩИЕСЯ ШТУЧКИ", headingStyle1);
-        Label helpString2 = new Label("нельзя тыкать в неправильные штучки", headingStyle2);
-        Label helpString3 = new Label("В ПРАВИЛЬНЫЕ ШТУЧКИ ТЫКАТЬ МОЖНО", headingStyle1);
-        Label helpString4 = new Label("И да прибудет с тобой сила", headingStyle2);
-
-        int buttonWidth = Gdx.graphics.getWidth()/8;
+        int buttonWidth = Gdx.graphics.getWidth()/3;
         int buttonHeight = Gdx.graphics.getHeight()/7;
-        // todo change position and etc
-        table.add(helpString1).row().pad(10);
-        table.add(helpString2).row().pad(10);
-        table.add(helpString3).row().pad(10);
-        table.add(helpString4).row().pad(10);
-        table.add(button).padRight(Gdx.graphics.getWidth()-buttonWidth).height(buttonHeight).width(buttonWidth);
+
+        font = new BitmapFont(Gdx.files.internal("fonts/blackFont.fnt"), false);
+        Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.BLACK);
+        ObjectMap<String, Object> saves = GameScreen.getStorage().getAllData();
+
+        String[] scores = saves.toString().replace("}","").replace("{"," ").split(",");
+        for (String score : scores){
+            table.add(new Label(score, textStyle)).pad(10).row();
+        }
+        table.add(exitButton).height(buttonHeight).width(buttonWidth);
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        batch.draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
         stage.act();
         stage.draw();
 
+        camera.update();
     }
 
     @Override
@@ -76,14 +78,13 @@ public class HelpScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         MusicManager.play(this);
 
-        button.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 game.setScreen(new MainMenuScreen(game));
             }
         });
-
     }
 
     @Override
@@ -104,25 +105,21 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
-        atlas.dispose();
-        skin.dispose();
-        font.dispose();
-        stage.dispose();
         batch.dispose();
         background.dispose();
-        //MusicManager.dispose();
+        stage.dispose();
+        font.dispose();
     }
 
-    private TextureAtlas atlas;
-    private Button button;
-    private Skin skin;
-
     private BitmapFont font;
-    private Table table;
-    private Stage stage;
 
     private SpriteBatch batch;
-    private Texture background;
+    private Table table;
+    private Button exitButton;
+    private Stage stage;
+
+    private final Texture background;
+    private OrthographicCamera camera;
 
     private final TapTap game;
 }

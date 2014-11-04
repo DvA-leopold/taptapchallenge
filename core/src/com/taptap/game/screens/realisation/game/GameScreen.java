@@ -12,14 +12,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.save.manager.StorageManager;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
 import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
-import com.taptap.game.screens.realisation.game.tap.icons.Icon;
-import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractIconFactory;
+import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
+import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
 
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
@@ -33,7 +34,7 @@ public class GameScreen implements Screen {
         gameButtons = new gameButtonsInitializer();
         popUpButtons = new popUpButtonsInitializer();
 
-        icons = new AbstractIconFactory(
+        icons = new AbstractItemFactory(
                 gameButtons.getOptionButton().getHeight(),
                 gameButtons.getOptionButton().getWidth()
         );
@@ -51,13 +52,11 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1,1,1,0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        camera.update();
+//        camera.update();
 
         switch (stateManager){
             case GAME_RUNNING:
                 stateManager.runState(this);
-                checkForOver(); // todo какое-то дерьмо
-
                 break;
             case GAME_PAUSED:
                 stateManager.pauseState(this);
@@ -66,7 +65,7 @@ public class GameScreen implements Screen {
                 stateManager.gameOverState(this);
                 break;
             case GAME_EXIT:
-                game.setScreen(new MainMenuScreen(game));
+                stateManager.gameExitState(this);
                 break;
         }
         stage.act();
@@ -75,25 +74,31 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        // данный метод вызывается один раз
         gameButtons.getTable().setFillParent(true);
         popUpButtons.getPopupTable().setFillParent(true);
-        //mainBatch.setProjectionMatrix(camera.combined); todo don`t know is this needed
+        //mainBatch.setProjectionMatrix(camera.combined); хз надо ли это
         //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(gameButtons.getTable());
         Gdx.input.setInputProcessor(stage);
         addButtonsListeners();
         MusicManager.play(this);
+
+        Timer timer = new Timer(); //todo по-моему это должно быть не здесь
+
+        timer.scheduleTask(saveScore, 30.f);
+//        System.out.println(saveScore.getExecuteTimeMillis());
+//        System.out.println(TimeUtils.nanoTime());
     }
 
     @Override
     public void hide() {
+        MusicManager.pause(this);
         dispose();
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // resize method don`t work
+        stage.getViewport().update(width, height, true); // работает только для кнопок
     }
 
     @Override
@@ -120,7 +125,7 @@ public class GameScreen implements Screen {
         //MusicManager.dispose();
     }
 
-    private void addButtonsListeners(){
+    private void addButtonsListeners(){ //todo перенести это в button initializer
         popUpButtons.getResumeGameButton().addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -148,9 +153,9 @@ public class GameScreen implements Screen {
         });
     }
 
-    private void renderTotalScore(){
-        if (totalScore>0){
-            int temp = totalScore;
+    private void renderNumbers(int numbForRender, float renderPosition){
+        if (numbForRender>0){
+            int temp = numbForRender;
             float range = Gdx.graphics.getWidth();
             Sprite picture = new Sprite();
             while (temp!=0){
@@ -192,24 +197,34 @@ public class GameScreen implements Screen {
                         break;
                 }
                 range -= picture.getWidth();
-                mainBatch.draw(picture, range, Gdx.graphics.getHeight()-picture.getHeight());
+                mainBatch.draw(picture, range,renderPosition);
             }
         }
     }
 
-    private enum StateManager {
+    public static StorageManager getStorage(){
+        return storage;
+    }
+
+    public enum StateManager {
         GAME_RUNNING,
         GAME_PAUSED,
         GAME_OVER,
         GAME_EXIT;
 
-        private void runState(GameScreen screen){
+        private void runState(final GameScreen screen){
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            for(Icon raindrop : screen.icons.getIconsArray()) {
-                screen.mainBatch.draw(raindrop.getTexture(), raindrop.getX(), raindrop.getY());
+            for(Icon iconsDrop : screen.icons.getIconsArray()) {
+                screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
             }
-            screen.renderTotalScore();
+            screen.renderNumbers(screen.icons.getTotalScore(), Gdx.graphics.getHeight() -
+                    screen.coinsAndNumbers.createSprite("hud0").getHeight());
+
+//            long executeTaskTime = (screen.saveScore.getExecuteTimeMillis() - TimeUtils.millis());
+//            System.out.println(screen.saveScore.getExecuteTimeMillis()+ " "+ TimeUtils.millis());
+//            screen.renderNumbers(executeTaskTime,Gdx.graphics.getHeight()/2);
+
             screen.mainBatch.end();
             Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
             if (Gdx.input.isTouched()){
@@ -222,14 +237,17 @@ public class GameScreen implements Screen {
                             touchPoint.y < temp.getY() + temp.getHeight()){
                         screen.icons.removeIcon(i);
                         screen.icons.decNumberOfFigures();
-                        screen.totalScore += temp.addScore();
+                        screen.icons.addToTotal(temp.addScore());
                         break; // todo переделать это убогое решение
                     }
                 }
             }
+            if (screen.icons.controlFiguresNumber()<0){
+                screen.stateManager = GAME_OVER;
+            }
         }
 
-        private void pauseState(GameScreen screen){
+        private void pauseState(final GameScreen screen){
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             screen.mainBatch.end();
@@ -248,7 +266,7 @@ public class GameScreen implements Screen {
             screen.mainBatch.end();
         }
 
-        private void gameOverState(GameScreen screen){
+        private void gameOverState(final GameScreen screen){
             screen.mainBatch.begin();
             screen.mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -260,11 +278,24 @@ public class GameScreen implements Screen {
                 screen.game.setScreen(new MainMenuScreen(screen.game));
             }
         }
+
+        private void gameExitState(final GameScreen screen){
+            screen.game.setScreen(new MainMenuScreen(screen.game));
+        }
     }
 
-    private AbstractIconFactory icons;
-    private long lastDropTime;
-    private int totalScore;
+    Timer.Task saveScore = new Timer.Task() {
+        @Override
+        public void run() {
+            if (storage.getAllData().size>6){
+                storage.resetSavedData();
+            }
+            System.out.println("saved");
+            storage.saveDataValue("player "+storage.getAllData().size, icons.getTotalScore());
+        }
+    };
+
+    private AbstractItemFactory icons;
     private TextureAtlas coinsAndNumbers;
 
     private gameButtonsInitializer gameButtons;
@@ -280,5 +311,6 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
     private StateManager stateManager;
+    final static StorageManager storage = new StorageManager(true);
     private final TapTap game;
 }

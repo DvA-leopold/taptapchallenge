@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.tap.icons;
+package com.taptap.game.screens.realisation.game.tap.icons.factory;
 
 import com.badlogic.gdx.graphics.Texture;
 

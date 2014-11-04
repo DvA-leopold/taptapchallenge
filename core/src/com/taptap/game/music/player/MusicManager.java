@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.taptap.game.screens.realisation.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
+import com.taptap.game.screens.realisation.records.RecordScreen;
 
 public class MusicManager {
     static {
@@ -19,8 +20,10 @@ public class MusicManager {
             mainGameMusic.setLooping(true);
             notGameLoopMusic.setLooping(true);
             if ((screen instanceof MainMenuScreen ||
-                    screen instanceof HelpScreen) &&
+                    screen instanceof HelpScreen ||
+                    screen instanceof RecordScreen) &&
                     !notGameLoopMusic.isPlaying()){
+
                 mainGameMusic.stop();
                 notGameLoopMusic.play();
             }
@@ -34,7 +37,8 @@ public class MusicManager {
     public static void pause(Screen screen){
         if (soundEnableFlag){
             if (screen instanceof MainMenuScreen ||
-                    screen instanceof HelpScreen){
+                    screen instanceof HelpScreen ||
+                    screen instanceof RecordScreen){
                 notGameLoopMusic.pause();
             }
             if (screen instanceof GameScreen){

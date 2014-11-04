@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
-import com.taptap.game.screens.realisation.game.tap.icons.Icon;
 import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 
-public class AbstractIconFactory {
-    public AbstractIconFactory(float blockHeight, float blockWidth){
-        this.tapImageHeight = 40;
+public class AbstractItemFactory {
+    public AbstractItemFactory(float blockHeight, float blockWidth){
+        this.tapImageHeight = 40; // todo change this hardcoded size
         this.tapImageWidth = 40;
         this.blockHeight = blockHeight;
         this.blockWidth = blockWidth;
@@ -20,7 +18,7 @@ public class AbstractIconFactory {
         tapIcons = new Array<Icon>(10);
     }
 
-    public void spawn(){
+    public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
             tapIcons.add(new RedIcons(
@@ -41,13 +39,13 @@ public class AbstractIconFactory {
                             tapImageWidth, tapImageHeight)
             );
         }
-        // todo add more stuff
     }
-    public int controlGameState(){
-        if(TimeUtils.nanoTime() - lastDropTime > 1000000000){
+
+    public int controlFiguresNumber() {
+        if(TimeUtils.millis() - lastDropTime > 1000){
             numberOfFigures++;
             spawn();
-            lastDropTime = TimeUtils.nanoTime();
+            lastDropTime = TimeUtils.millis();
         }
         if (getNumberOfFigures() > 10){
             removeIcon(0);
@@ -76,7 +74,7 @@ public class AbstractIconFactory {
         totalScore+=val;
     }
 
-    private Array<Icon> tapIcons;
+    private Array<Icon> tapIcons; // todo массив просто ужасен
     private int numberOfFigures;
     private int totalScore;
     private long lastDropTime;
