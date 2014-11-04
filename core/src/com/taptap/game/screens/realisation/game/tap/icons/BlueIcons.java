@@ -2,13 +2,17 @@ package com.taptap.game.screens.realisation.game.tap.icons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 
 public class BlueIcons implements Icon {
-    public BlueIcons(float x, float y, int W, int H){
+    public BlueIcons(float blockHeight, float blockWidth){
         taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_blue.png"));
-        coords = new Rectangle(x,y,W,H);
+        coords = new Rectangle(
+                MathUtils.random(blockHeight + 20, Gdx.graphics.getWidth()-taptapImage.getWidth()),
+                MathUtils.random(0, Gdx.graphics.getHeight()-blockWidth - 20),
+                taptapImage.getWidth(), taptapImage.getHeight());
     }
 
     @Override

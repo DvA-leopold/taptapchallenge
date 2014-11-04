@@ -10,8 +10,6 @@ import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 
 public class AbstractItemFactory {
     public AbstractItemFactory(float blockHeight, float blockWidth){
-        this.tapImageHeight = 40; // todo change this hardcoded size
-        this.tapImageWidth = 40;
         this.blockHeight = blockHeight;
         this.blockWidth = blockWidth;
 
@@ -21,23 +19,11 @@ public class AbstractItemFactory {
     public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new RedIcons(
-                            MathUtils.random(blockHeight+20, Gdx.graphics.getWidth()-tapImageWidth),
-                            MathUtils.random(0, Gdx.graphics.getHeight()-tapImageHeight-blockWidth-20),
-                            tapImageWidth, tapImageHeight)
-            );
+            tapIcons.add(new BlueIcons(blockHeight, blockWidth));
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new BlueIcons(
-                            MathUtils.random(blockHeight+20,Gdx.graphics.getWidth()-tapImageWidth),
-                            MathUtils.random(0, Gdx.graphics.getHeight()-tapImageHeight-blockWidth-20),
-                            tapImageWidth, tapImageHeight)
-            );
+            tapIcons.add(new BlueIcons(blockHeight,blockWidth));
         } else {
-            tapIcons.add(new YellowIcons(
-                            MathUtils.random(blockHeight+20,Gdx.graphics.getWidth()-tapImageWidth),
-                            MathUtils.random(0, Gdx.graphics.getHeight()-tapImageHeight-blockWidth-20),
-                            tapImageWidth, tapImageHeight)
-            );
+            tapIcons.add(new YellowIcons(blockHeight, blockWidth));
         }
     }
 
@@ -78,8 +64,8 @@ public class AbstractItemFactory {
     private int numberOfFigures;
     private int totalScore;
     private long lastDropTime;
-    private final int tapImageHeight;
-    private final int tapImageWidth;
+    //private final float tapImageHeight;
+    //private final float tapImageWidth;
     private final float blockHeight;
     private final float blockWidth;
 }

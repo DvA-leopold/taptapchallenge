@@ -86,7 +86,7 @@ public class GameScreen implements Screen {
 
         Timer timer = new Timer(); //todo по-моему это должно быть не здесь
 
-        timer.scheduleTask(saveScore, 30.f);
+        timer.scheduleTask(saveScore, 10.f);
 //        System.out.println(saveScore.getExecuteTimeMillis());
 //        System.out.println(TimeUtils.nanoTime());
     }
@@ -124,12 +124,6 @@ public class GameScreen implements Screen {
         gameButtons.dispose();
         popUpButtons.dispose();
         //MusicManager.dispose();
-    }
-
-    private void addButtonsListeners(){ //todo перенести это в button initializer
-
-
-
     }
 
     private void renderNumbers(int numbForRender, float renderPosition){
@@ -269,8 +263,8 @@ public class GameScreen implements Screen {
             if (storage.getAllData().size>6){
                 storage.resetSavedData();
             }
-            System.out.println("saved");
             storage.saveDataValue("player "+storage.getAllData().size, icons.getTotalScore());
+            stateManager = StateManager.GAME_EXIT;
         }
     };
 
