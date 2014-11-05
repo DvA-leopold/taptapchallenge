@@ -3,7 +3,7 @@ package com.taptap.game.music.player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.taptap.game.screens.realisation.MainMenuScreen;
+import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
 import com.taptap.game.screens.realisation.records.RecordScreen;

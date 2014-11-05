@@ -12,7 +12,6 @@ public class AbstractItemFactory {
     public AbstractItemFactory(float blockHeight, float blockWidth){
         this.blockHeight = blockHeight;
         this.blockWidth = blockWidth;
-
         tapIcons = new Array<Icon>(10);
     }
 
@@ -21,7 +20,7 @@ public class AbstractItemFactory {
         if (rand < 25) {
             tapIcons.add(new BlueIcons(blockHeight, blockWidth));
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new BlueIcons(blockHeight,blockWidth));
+            tapIcons.add(new RedIcons(blockHeight, blockWidth));
         } else {
             tapIcons.add(new YellowIcons(blockHeight, blockWidth));
         }
@@ -60,12 +59,10 @@ public class AbstractItemFactory {
         totalScore+=val;
     }
 
-    private Array<Icon> tapIcons; // todo массив просто ужасен
+    private Array<Icon> tapIcons; // todo этот массив просто ужасен
     private int numberOfFigures;
     private int totalScore;
     private long lastDropTime;
-    //private final float tapImageHeight;
-    //private final float tapImageWidth;
     private final float blockHeight;
     private final float blockWidth;
 }

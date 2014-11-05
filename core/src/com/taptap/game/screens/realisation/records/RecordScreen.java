@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
-import com.taptap.game.screens.realisation.MainMenuScreen;
+import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 public class RecordScreen implements Screen {

@@ -21,7 +21,7 @@ public class StorageManager {
             if(encoded)
                 save = json.fromJson(Save.class, Base64Coder.decodeString(file.readString()));
             else
-                save = json.fromJson(Save.class,file.readString());
+                save = json.fromJson(Save.class, file.readString());
         }
         return save;
     }
@@ -36,7 +36,9 @@ public class StorageManager {
     }
 
     public void resetSavedData() {
-        file.delete();
+        if (!file.file().delete()){
+            System.out.println("error file wasn`t deleted");
+        }
     }
 
     @SuppressWarnings("unchecked")
