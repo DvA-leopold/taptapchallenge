@@ -48,7 +48,7 @@ public class MenuButtonInitializer implements Disposable {
             super.clicked(event, x, y);
             game.setScreen(new GameScreen(game));
         }
-    });
+        });
         buttonHelp.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

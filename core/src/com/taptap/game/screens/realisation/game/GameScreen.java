@@ -72,15 +72,15 @@ public class GameScreen implements Screen {
         stage.act();
         stage.draw();
 
-        playTime+=Gdx.graphics.getDeltaTime();
-        System.out.println(playTime);
+        //playTime+=Gdx.graphics.getDeltaTime();
+        //System.out.println(playTime);
     }
 
     @Override
     public void show() {
         gameButtons.getTable().setFillParent(true);
         popUpButtons.getPopupTable().setFillParent(true);
-        //mainBatch.setProjectionMatrix(camera.combined); хз надо ли это
+        //mainBatch.setProjectionMatrix(camera.combined);
         //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(gameButtons.getTable());
         Gdx.input.setInputProcessor(stage);
@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
         gameButtons.setListeners(stage, popUpButtons.getPopupTable());
         MusicManager.play(this);
 
-        timer.scheduleTask(taskManager.saveScore(), 10.f);
+        timer.scheduleTask(taskManager.saveScore(), totalTime);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // работает только для кнопок
+        stage.getViewport().update(width, height, true); // не делается ресайз
     }
 
     @Override
@@ -129,10 +129,10 @@ public class GameScreen implements Screen {
         //MusicManager.dispose();
     }
 
-    private void renderNumbers(int numbForRender, float renderPosition){
-        if (numbForRender>0){
+    private void renderNumbers(int numbForRender, float widthAlign, float heightAlign){
+        if (numbForRender>0){ // todo возможно можно оптимизировать
             int temp = numbForRender;
-            float range = Gdx.graphics.getWidth();
+            float width = Gdx.graphics.getWidth();
             Sprite picture = new Sprite();
             while (temp!=0){
                 int val = temp % 10;
@@ -172,8 +172,10 @@ public class GameScreen implements Screen {
                         System.out.println("Error");
                         break;
                 }
-                range -= picture.getWidth();
-                mainBatch.draw(picture, range,renderPosition);
+                width -= picture.getWidth();
+                mainBatch.draw(
+                        picture, width + widthAlign,
+                        Gdx.graphics.getHeight() + heightAlign - picture.getHeight());
             }
         }
     }
@@ -192,17 +194,16 @@ public class GameScreen implements Screen {
         GAME_EXIT;
 
         private void runState(final GameScreen screen){
+            screen.totalTime -= Gdx.graphics.getDeltaTime();
+
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
                 screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
             }
-            screen.renderNumbers(screen.iconFactory.getTotalScore(), Gdx.graphics.getHeight() -
-                    screen.coinsAndNumbers.createSprite("hud0").getHeight());
+            screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
 
-//            long executeTaskTime = (screen.saveScore.getExecuteTimeMillis() - TimeUtils.millis());
-//            System.out.println(screen.saveScore.getExecuteTimeMillis()+ " "+ TimeUtils.millis());
-//            screen.renderNumbers(executeTaskTime,Gdx.graphics.getHeight()/2);
+            screen.renderNumbers((int)screen.totalTime, - Gdx.graphics.getWidth()/2 ,0);
 
             screen.mainBatch.end();
             Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
@@ -280,8 +281,9 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private TaskManager taskManager;
     //    private Sound tapSound;
-
-    private int playTime=0;
+    //-------------------- todo
+    private float totalTime = 60;
+    //------------------
     private SpriteBatch mainBatch;
     private Timer timer;
     public StateManager stateManager; // todo change to private
