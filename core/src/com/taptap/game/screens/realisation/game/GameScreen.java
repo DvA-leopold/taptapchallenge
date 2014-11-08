@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
         stateManager = StateManager.GAME_RUNNING;
         taskManager = new TaskManager(this);
         timer = new Timer();
-        popUpMenuBackground = new Texture(Gdx.files.internal("skins/game_menu/popup_menu/panel_blue.png"));
+
         gameBackground = new Texture (Gdx.files.internal("skins/game_menu/game_bg.png"));
         gameOver = new Texture (Gdx.files.internal("skins/game_menu/game_over.png"));
         coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1,1,1,0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        camera.update();
+        camera.update();
 
         switch (stateManager){
             case GAME_RUNNING:
@@ -71,9 +71,6 @@ public class GameScreen implements Screen {
         }
         stage.act();
         stage.draw();
-
-        //playTime+=Gdx.graphics.getDeltaTime();
-        //System.out.println(playTime);
     }
 
     @Override
@@ -87,6 +84,7 @@ public class GameScreen implements Screen {
         popUpButtons.setListeners(stage, gameButtons.getTable());
         gameButtons.setListeners(stage, popUpButtons.getPopupTable());
         MusicManager.play(this);
+        transparentBatch.setColor(0, 0, 0, 0.6f);
 
         timer.scheduleTask(taskManager.saveScore(), totalTime);
     }
@@ -121,7 +119,6 @@ public class GameScreen implements Screen {
         mainBatch.dispose();
         transparentBatch.dispose();
         stage.dispose();
-        popUpMenuBackground.dispose();
         gameBackground.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
@@ -202,7 +199,6 @@ public class GameScreen implements Screen {
                 screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
             }
             screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
-
             screen.renderNumbers((int)screen.totalTime, - Gdx.graphics.getWidth()/2 ,0);
 
             screen.mainBatch.end();
@@ -233,19 +229,12 @@ public class GameScreen implements Screen {
             screen.mainBatch.end();
 
             screen.transparentBatch.begin();
-            screen.transparentBatch.setColor(0, 0, 0, 0.6f);
+            screen.transparentBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             for(Icon tapIcon : screen.iconFactory.getIconsArray()) {
                 screen.transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
             }
             screen.transparentBatch.end();
 
-            screen.mainBatch.begin();
-            screen.mainBatch.draw(screen.popUpMenuBackground,
-                    Gdx.graphics.getWidth() / 2 - screen.popUpMenuBackground.getWidth() / 2,
-                    Gdx.graphics.getHeight() / 2 - screen.popUpMenuBackground.getHeight() / 2,
-                    Gdx.graphics.getWidth(),
-                    Gdx.graphics.getHeight()); //todo решить проблему с этой картинкой
-            screen.mainBatch.end();
         }
 
         private void gameOverState(final GameScreen screen){
@@ -274,19 +263,18 @@ public class GameScreen implements Screen {
     private popUpButtonsInitializer popUpButtons;
     private Stage stage;
 
-    private Texture popUpMenuBackground;
     private Texture gameBackground;
     private Texture gameOver;
     private SpriteBatch transparentBatch;
+    private SpriteBatch mainBatch;
     private OrthographicCamera camera;
     private TaskManager taskManager;
-    //    private Sound tapSound;
-    //-------------------- todo
-    private float totalTime = 60;
-    //------------------
-    private SpriteBatch mainBatch;
-    private Timer timer;
     public StateManager stateManager; // todo change to private
+
+    //    private Sound tapSound;
+    private float totalTime = 60;
+
+    private Timer timer;
     private static StorageManager storage = new StorageManager(true);
     private final TapTap game;
 }
