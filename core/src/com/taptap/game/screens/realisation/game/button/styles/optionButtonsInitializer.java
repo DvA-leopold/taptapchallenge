@@ -13,6 +13,10 @@ import com.taptap.game.screens.realisation.game.GameScreen;
 public class optionButtonsInitializer implements Disposable {
     public optionButtonsInitializer(final GameScreen game){
         this.game = game;
+
+        int buttonWidth = Gdx.graphics.getWidth()/10;
+        int buttonHeight = Gdx.graphics.getHeight()/8;
+
         atlasOptionMenu = new TextureAtlas("skins/game_menu/popUpButtons.pack");
         skinOptions = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasOptionMenu);
         optionTable = new Table(skinOptions);
@@ -21,21 +25,22 @@ public class optionButtonsInitializer implements Disposable {
         soundControl = new Button(skinOptions, "stateOption");
         back = new Button(skinOptions, "arrow");
 
-        int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
-
         final Label musicLabel = new Label("Music: ", skinOptions);
         final Label soundLabel = new Label("Sound: ", skinOptions);
-        musicControl.pad(10);
-        soundControl.pad(10);
+        //musicControl.pad(10);
+        //soundControl.pad(10);
 
-        optionTable.padBottom(600).padLeft(500);
-        optionTable.add(musicLabel).width(buttonWidth).height(buttonHeight);
-        optionTable.add(musicControl).row();
-        optionTable.add(soundLabel).width(buttonWidth).height(buttonHeight);
-        optionTable.add(soundControl).row();
-        optionTable.add(back).bottom().left();
+        //optionTable.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        optionTable.padTop(Value.percentHeight(0.35f)).padRight(Value.percentWidth(0.20f));
+        optionTable.add(musicLabel).center();
+        optionTable.add(musicControl).width(buttonWidth).height(buttonHeight);
+        optionTable.row();
+        optionTable.add(soundLabel).center();
+        optionTable.add(soundControl).width(buttonWidth).height(buttonHeight);
+        optionTable.row();
+        optionTable.add(back).bottom().left().expand();
         optionTable.debug();
+
     }
 
     public void setListeners(final Stage stage, final Table changeToTable){
@@ -63,7 +68,7 @@ public class optionButtonsInitializer implements Disposable {
         });
     }
 
-    public Table getTale(){
+    public Table getTable(){
         return optionTable;
     }
 

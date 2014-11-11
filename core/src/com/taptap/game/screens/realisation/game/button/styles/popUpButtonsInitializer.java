@@ -55,6 +55,7 @@ public class popUpButtonsInitializer implements Disposable {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 stage.clear();
+                optionTable.setFillParent(true);
                 stage.addActor(optionTable);
             }
         });

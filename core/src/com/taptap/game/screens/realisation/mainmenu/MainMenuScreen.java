@@ -26,7 +26,6 @@ public class MainMenuScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage();
-        //buttons.getTable().setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
@@ -45,7 +44,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        buttons.getTable().setFillParent(true);
+        //buttons.getTable().setFillParent(true);
         stage.addActor(buttons.getTable());
         Gdx.input.setInputProcessor(stage);
         buttons.setListeners();

@@ -5,7 +5,7 @@
 
     "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle":{
             "default": { "up": "buttonSquare_grey", "down": "buttonSquare_grey_pressed",
-            "pressedOffsetX": 1, "pressedOffsetY": -2, "font": "blackFont"
+                         "pressedOffsetX": 1, "pressedOffsetY": -2, "font": "blackFont"
             }
     }
 }

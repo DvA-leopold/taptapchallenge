@@ -3,10 +3,7 @@ package com.taptap.game.screens.realisation.mainmenu.button.styles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.taptap.game.TapTap;
@@ -36,11 +33,13 @@ public class MenuButtonInitializer implements Disposable {
         buttonRecords.pad(10);
         soundButton.pad(10);
 
-        table.add(heading).row().padTop(100).width(buttonWidth).height(buttonHeight);
-        table.add(buttonPlay).row().pad(1).width(buttonWidth).height(buttonHeight);
-        table.add(buttonRecords).row().pad(1).width(buttonWidth).height(buttonHeight);
+        table.setBounds(0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.add(heading).row().padTop(Value.percentHeight(0.80f)).width(buttonWidth).height(buttonHeight);
+        table.add(buttonPlay).row().width(buttonWidth).height(buttonHeight);
+        table.add(buttonRecords).row().width(buttonWidth).height(buttonHeight);
         table.add(buttonHelp).row().pad(5).width(buttonWidth).height(buttonHeight);
         table.add(soundButton);
+        table.debug();
     }
     public void setListeners(){
         buttonPlay.addListener(new ClickListener(){
@@ -86,6 +85,7 @@ public class MenuButtonInitializer implements Disposable {
         atlasMainMenu.dispose();
         skinMainMenu.dispose();
     }
+
     private Table table;
     private TextureAtlas atlasMainMenu;
     private Skin skinMainMenu;

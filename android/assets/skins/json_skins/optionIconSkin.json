@@ -1,5 +1,49 @@
 {
-     "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle":{
-         "gameButton": { "up": "button.up", "down": "button.down" }
-     }
- }
+  "com.badlogic.gdx.graphics.Color": {
+    "white": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "black": {
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 1
+    }
+  },
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "whiteFont": {"file": "fonts/whiteFont.fnt"},
+    "blackFont": {"file": "fonts/blackFont.fnt"}
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+    "default": {
+      "font": "blackFont",
+      "fontColor": "black"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+    "arrow": {
+      "up": "arrow_up",
+      "down": "arrow_down"
+    },
+    "stateOption": {
+      "up": "button_square_on",
+      "down": "button_square_off",
+      "checked": "button_square_off"
+    },
+    "popUpMenuButton": {
+      "up": "buttonSquare_grey",
+      "down": "buttonSquare_grey_pressed"
+    }
+  }
+ // "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+ //   "optionButtons": {
+ //    "up": "button.up",
+ //     "down": "button.down",
+ //     "checked": "button.down",
+ //     "font": "blackFont"
+ //   }
+ // }
+}

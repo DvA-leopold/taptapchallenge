@@ -78,17 +78,16 @@ public class GameScreen implements Screen {
     public void show() {
         gameButtons.getTable().setFillParent(true);
         popUpButtons.getTable().setFillParent(true);
+        optionButtons.getTable().setFillParent(true);
         //mainBatch.setProjectionMatrix(camera.combined);
         //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(gameButtons.getTable());
         Gdx.input.setInputProcessor(stage);
-        popUpButtons.setListeners(stage, gameButtons.getTable(), optionButtons.getTale());
+        popUpButtons.setListeners(stage, gameButtons.getTable(), optionButtons.getTable());
         gameButtons.setListeners(stage, popUpButtons.getTable());
         optionButtons.setListeners(stage,popUpButtons.getTable());
 
         MusicManager.play(this);
-
-        //timer.scheduleTask(taskManager.saveScore(), totalTime);
     }
 
     @Override
@@ -104,7 +103,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        //timer.stop();
         MusicManager.pause(this);
         stateManager = StateManager.GAME_PAUSED;
     }

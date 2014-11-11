@@ -11,26 +11,7 @@ public class TaskManager implements Disposable {
 
     @Override
     public void dispose() {
-        if (saveScore.isScheduled()){
-            saveScore.cancel();
-        }
     }
-
-    public Timer.Task saveScore(){
-        return saveScore;
-    }
-
-    private Timer.Task saveScore = new Timer.Task() {
-        @Override
-        public void run() {
-            if (GameScreen.getStorage().getAllData().size>3){
-                GameScreen.getStorage().resetSavedData();
-            }
-            GameScreen.getStorage().saveDataValue("player " + GameScreen.getStorage().getAllData().size,
-                    game.getTotalScore());
-            game.stateManager = GameScreen.StateManager.GAME_EXIT;
-        }
-    };
 
     private final GameScreen game;
 }
