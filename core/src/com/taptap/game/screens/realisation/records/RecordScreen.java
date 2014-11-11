@@ -22,6 +22,8 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
+import java.util.Map;
+
 public class RecordScreen implements Screen {
     public RecordScreen(final TapTap game){
         this.game = game;
@@ -42,7 +44,7 @@ public class RecordScreen implements Screen {
 
         font = new BitmapFont(Gdx.files.internal("fonts/blackFont.fnt"), false);
         Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.BLACK);
-        ObjectMap<String, Object> saves = GameScreen.getStorage().getAllData();
+        Map<String, Integer> saves = GameScreen.getStorage().getAllData();
 
         String[] scores = saves.toString().replace("}","").replace("{"," ").split(",");
         for (String score : scores){

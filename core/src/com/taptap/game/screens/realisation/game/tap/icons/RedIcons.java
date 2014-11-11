@@ -8,7 +8,6 @@ import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 
 public class RedIcons implements Icon {
     public RedIcons(float blockHeight, float blockWidth){
-        // todo change to asset manager;
         taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_red.png"));
         coords = new Rectangle(
                 MathUtils.random(blockHeight + 20, Gdx.graphics.getWidth() - taptapImage.getWidth()),

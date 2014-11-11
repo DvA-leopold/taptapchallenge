@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 public class gameButtonsInitializer {
-    public gameButtonsInitializer(GameScreen game){
+    public gameButtonsInitializer(final GameScreen game){
         this.game = game;
-        atlasGameMenu = new TextureAtlas("skins/game_menu/gameOption.pack");
+        atlasGameMenu = new TextureAtlas("skins/game_menu/popUpButtons.pack");
         skinGameMenu = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasGameMenu);
         mainTable = new Table(skinGameMenu);
-        optionButton = new Button(skinGameMenu, "gameButton");
+        optionButton = new Button(skinGameMenu, "popUpMenuButton");
         mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
                 padLeft(-Gdx.graphics.getWidth()+Gdx.graphics.getWidth()/15).
                 width(Gdx.graphics.getWidth()/15).

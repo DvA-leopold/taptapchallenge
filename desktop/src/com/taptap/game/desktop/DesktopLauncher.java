@@ -8,7 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "TapTap";
-
+		config.height = 640;
+		config.width = 800;
         new LwjglApplication(new TapTap(), config);
 	}
 }

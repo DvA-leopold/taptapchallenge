@@ -29,6 +29,7 @@ public class MenuButtonInitializer implements Disposable {
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
         buttonRecords = new TextButton("Records", skinMainMenu, "mainButtons");
         soundButton = new TextButton("Music: on", skinMainMenu,"soundTest");
+        soundButton.setChecked(!MusicManager.isMusicEnable());
 
         buttonPlay.pad(10);
         buttonHelp.pad(10);
@@ -64,18 +65,15 @@ public class MenuButtonInitializer implements Disposable {
             }
         });
         soundButton.addListener(new ClickListener() {
-            boolean help=true; // todo изменить эту штуку просто на перечеркнутый динамик
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                if (help){
-                    soundButton.setText("Music: off");
-                    help = false;
-                } else {
+                if (!MusicManager.isMusicEnable()){
                     soundButton.setText("Music: on");
-                    help=true;
+                } else {
+                    soundButton.setText("Music: off");
                 }
-                MusicManager.onOffSound();
+                MusicManager.onOffMusic(game.getScreen());
             }
         });
     }

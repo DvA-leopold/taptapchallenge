@@ -17,7 +17,7 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 
 public class HelpScreen implements Screen {
-    public HelpScreen(TapTap game) {
+    public HelpScreen(final TapTap game) {
         this.game = game;
         font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
         batch = new SpriteBatch();
