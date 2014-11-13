@@ -2,11 +2,9 @@ package com.taptap.game.screens.realisation.records;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
@@ -40,17 +37,14 @@ public class RecordScreen implements Screen {
         background = new Texture(Gdx.files.internal("skins/main_menu/background/bg_desert.png"));
 
         int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
+        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change with %
 
-        font = new BitmapFont(Gdx.files.internal("fonts/blackFont.fnt"), false);
-        Label.LabelStyle textStyle = new Label.LabelStyle(font, Color.BLACK);
-        Map<String, Integer> saves = GameScreen.getStorage().getAllData();
-
-        String[] scores = saves.toString().replace("}","").replace("{"," ").split(",");
-        for (String score : scores){
-            table.add(new Label(score, textStyle)).pad(10).row();
-        }
+        sortAndAddToTable(skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);
+    }
+
+    private void sortAndAddToTable(Skin skinRecords){
+        GameScreen.getStorage().outData(table,skinRecords);
     }
 
     @Override
@@ -110,10 +104,7 @@ public class RecordScreen implements Screen {
         batch.dispose();
         background.dispose();
         stage.dispose();
-        font.dispose();
     }
-
-    private BitmapFont font;
 
     private SpriteBatch batch;
     private Table table;

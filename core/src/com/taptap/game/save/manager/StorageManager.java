@@ -2,6 +2,9 @@ package com.taptap.game.save.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.*;
 import java.util.*;
 
@@ -16,7 +19,7 @@ public class StorageManager {
         Save save = new Save();
         if(file.exists()){
             Json json = new Json();
-            if(encoded)
+            if(!encoded)
                 save = json.fromJson(Save.class, Base64Coder.decodeString(file.readString()));
             else
                 save = json.fromJson(Save.class, file.readString());
@@ -27,7 +30,7 @@ public class StorageManager {
     private void saveToJson(){
         Json json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
-        if(encoded)
+        if(!encoded)
             file.writeString(Base64Coder.encodeString(json.prettyPrint(save)), false);
         else
             file.writeString(json.prettyPrint(save), false);
@@ -47,18 +50,38 @@ public class StorageManager {
             return null;
     }
 
-    @SuppressWarnings("unchecked")
     public void saveDataValue(String key, Integer value){
         save.data.put(key, value);
-        List list = new ArrayList(save.data.entrySet());
+        saveToJson();
+    }
+    @SuppressWarnings("unchecked")
+    public void outData(Table table, Skin skinRecords){
+        List<Map.Entry> list = new ArrayList(save.data.entrySet());
         Collections.sort(list, new Comparator<Map.Entry>() {
             @Override
             public int compare(Map.Entry o1, Map.Entry o2) {
-                return ((Integer) o1.getValue()).compareTo((Integer)o2.getValue());
+                return ((Integer) o2.getValue()).compareTo((Integer)o1.getValue());
             }
         });
+        save.data.clear();
+        try{
+            Iterator lists = list.iterator();
+            for (int i=0; i<5 && i<list.size(); i++){
+                Map.Entry me = (Map.Entry)lists.next();
+                System.out.println(me.getKey() + " " + me.getValue());
+                String score;
+                if (i==0){
+                    score = me.getKey() + " (best score) " +me.getValue();
+                }else {
+                    score = me.getKey()+ " " + me.getValue();
+                }
+                table.add(new Label(score, skinRecords)).pad(10).row();
+                save.data.put((String)me.getKey(), (Integer)me.getValue());
+            }
 
-        saveToJson();
+        } catch (NoSuchElementException e){
+            table.add(new Label("no score yet", skinRecords)).pad(10).row();
+        }
     }
 
     public Map<String, Integer> getAllData(){

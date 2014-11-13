@@ -47,6 +47,7 @@ public class GameScreen implements Screen {
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
         stage = new Stage();
+        //storage.saveDataValue("saveTest", 1000); // todo its just a test
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
 
