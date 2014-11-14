@@ -21,7 +21,6 @@ public class gameButtonsInitializer {
                 padLeft(-Gdx.graphics.getWidth()+Gdx.graphics.getWidth()/15).
                 width(Gdx.graphics.getWidth()/15).
                 height(Gdx.graphics.getHeight()/10);
-        mainTable.debug();
     }
 
     public void setListeners(final Stage stage, final Table changeToTable){

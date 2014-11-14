@@ -36,8 +36,6 @@ public class popUpButtonsInitializer implements Disposable {
         popupTable.add(resumeGameButton).row().width(buttonWidth).height(buttonHeight);
         popupTable.add(optionGameButton).row().width(buttonWidth).height(buttonHeight);
         popupTable.add(exitMainMenuButton);
-
-        popupTable.debug();
     }
 
     public void setListeners(final Stage stage, final Table resumeTable, final Table optionTable){

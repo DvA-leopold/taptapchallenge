@@ -39,7 +39,6 @@ public class optionButtonsInitializer implements Disposable {
         optionTable.add(soundControl).width(buttonWidth).height(buttonHeight);
         optionTable.row();
         optionTable.add(back).bottom().left().expand();
-        optionTable.debug();
 
     }
 

@@ -1,6 +1,5 @@
 package com.taptap.game.screens.realisation.game.tap.icons.factory;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -38,6 +37,10 @@ public class AbstractItemFactory {
             numberOfFigures--;
         }
         return totalScore;
+    }
+
+    public void addGesturesDetector() {
+        
     }
 
     public void decNumberOfFigures(){

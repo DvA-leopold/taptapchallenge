@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,8 +18,6 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
-import java.util.Map;
-
 public class RecordScreen implements Screen {
     public RecordScreen(final TapTap game){
         this.game = game;
@@ -28,7 +25,7 @@ public class RecordScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         final TextureAtlas atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        final Skin skinRecords = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
+        skinRecords = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
@@ -39,19 +36,14 @@ public class RecordScreen implements Screen {
         int buttonWidth = Gdx.graphics.getWidth()/3;
         int buttonHeight = Gdx.graphics.getHeight()/7; // todo change with %
 
-        sortAndAddToTable(skinRecords);
+        GameScreen.getStorage().displayData(table, skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);
-    }
-
-    private void sortAndAddToTable(Skin skinRecords){
-        GameScreen.getStorage().outData(table,skinRecords);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin();
         batch.draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
@@ -110,6 +102,7 @@ public class RecordScreen implements Screen {
     private Table table;
     private Button exitButton;
     private Stage stage;
+    final Skin skinRecords;
 
     private final Texture background;
     private OrthographicCamera camera;

@@ -31,11 +31,12 @@ public class HelpScreen implements Screen {
         button = new TextButton("menu", skin, "default");
 
         // baobab, сиквояview
-        Label.LabelStyle headingStyle1 = new Label.LabelStyle(font, Color.BLACK);
+        Label.LabelStyle headingStyle = new Label.LabelStyle(font, Color.BLACK);
         Label helpString1 = new Label(
                 "ПРОСТО ТЫКАЙ В ПОЯВЛЯЮЩИЕСЯ ШТУЧКИ\n "+
-                "иначе тебя покарает Влад\n",
-                headingStyle1);
+                "пока у меня не хватило фантазии \n" +
+                        "написать что-то обдуманное\n",
+                headingStyle);
 
         int buttonWidth = Gdx.graphics.getWidth()/8;
         int buttonHeight = Gdx.graphics.getHeight()/7;
@@ -56,7 +57,6 @@ public class HelpScreen implements Screen {
 
         stage.act();
         stage.draw();
-
     }
 
     @Override

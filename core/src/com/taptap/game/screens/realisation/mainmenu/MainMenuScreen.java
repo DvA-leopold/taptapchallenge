@@ -4,18 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
-import com.taptap.game.screens.realisation.help.HelpScreen;
-import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.mainmenu.button.styles.MenuButtonInitializer;
-import com.taptap.game.screens.realisation.records.RecordScreen;
 
 public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapTap game){

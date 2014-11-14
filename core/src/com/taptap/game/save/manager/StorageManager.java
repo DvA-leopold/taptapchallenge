@@ -19,7 +19,7 @@ public class StorageManager {
         Save save = new Save();
         if(file.exists()){
             Json json = new Json();
-            if(!encoded)
+            if(encoded)
                 save = json.fromJson(Save.class, Base64Coder.decodeString(file.readString()));
             else
                 save = json.fromJson(Save.class, file.readString());
@@ -30,16 +30,10 @@ public class StorageManager {
     private void saveToJson(){
         Json json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
-        if(!encoded)
+        if(encoded)
             file.writeString(Base64Coder.encodeString(json.prettyPrint(save)), false);
         else
             file.writeString(json.prettyPrint(save), false);
-    }
-
-    public void deleteFile() {
-        if (!file.delete()){
-            System.out.println("error file wasn`t deleted");
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -54,8 +48,9 @@ public class StorageManager {
         save.data.put(key, value);
         saveToJson();
     }
+
     @SuppressWarnings("unchecked")
-    public void outData(Table table, Skin skinRecords){
+    public void displayData(Table table, Skin skinRecords){
         List<Map.Entry> list = new ArrayList(save.data.entrySet());
         Collections.sort(list, new Comparator<Map.Entry>() {
             @Override
@@ -64,16 +59,16 @@ public class StorageManager {
             }
         });
         save.data.clear();
-        try{
+        try {
             Iterator lists = list.iterator();
             for (int i=0; i<5 && i<list.size(); i++){
                 Map.Entry me = (Map.Entry)lists.next();
-                System.out.println(me.getKey() + " " + me.getValue());
+                //System.out.println(me.getKey() + " " + me.getValue());
                 String score;
                 if (i==0){
-                    score = me.getKey() + " (best score) " +me.getValue();
-                }else {
-                    score = me.getKey()+ " " + me.getValue();
+                    score = me.getKey() + " (best score) " + me.getValue();
+                } else {
+                    score = me.getKey() + " " + me.getValue();
                 }
                 table.add(new Label(score, skinRecords)).pad(10).row();
                 save.data.put((String)me.getKey(), (Integer)me.getValue());

@@ -34,12 +34,11 @@ public class MenuButtonInitializer implements Disposable {
         soundButton.pad(10);
 
         table.setBounds(0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        table.add(heading).row().padTop(Value.percentHeight(0.80f)).width(buttonWidth).height(buttonHeight);
+        table.add(heading).row().padTop(100).width(buttonWidth).height(buttonHeight);
         table.add(buttonPlay).row().width(buttonWidth).height(buttonHeight);
         table.add(buttonRecords).row().width(buttonWidth).height(buttonHeight);
         table.add(buttonHelp).row().pad(5).width(buttonWidth).height(buttonHeight);
         table.add(soundButton);
-        table.debug();
     }
     public void setListeners(){
         buttonPlay.addListener(new ClickListener(){

@@ -1,6 +1,7 @@
 package com.taptap.game.screens.realisation.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.taptap.game.TapTap;
@@ -25,11 +28,10 @@ public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
         stateManager = StateManager.GAME_RUNNING;
-        taskManager = new TaskManager(this);
-        //timer = new Timer();
+        //taskManager = new TaskManager(this);
 
-        gameBackground = new Texture (Gdx.files.internal("skins/game_menu/game_bg.png"));
-        gameOver = new Texture (Gdx.files.internal("skins/game_menu/game_over.png"));
+        gameBackground = new Texture(Gdx.files.internal("skins/game_menu/game_bg.png"));
+        gameOver = new Texture(Gdx.files.internal("skins/game_menu/game_over.png"));
         coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
 
         gameButtons = new gameButtonsInitializer(this);
@@ -47,13 +49,16 @@ public class GameScreen implements Screen {
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
         stage = new Stage();
-        //storage.saveDataValue("saveTest", 1000); // todo its just a test
+
+        inputMultiplexer = new InputMultiplexer();
+        //gestureDetector = new GestureDetector();
+
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1,1,1,0.5f);
+        Gdx.gl.glClearColor(1, 1, 1, 0.5f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
@@ -83,11 +88,16 @@ public class GameScreen implements Screen {
         //mainBatch.setProjectionMatrix(camera.combined);
         //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(gameButtons.getTable());
-        Gdx.input.setInputProcessor(stage);
+
+        //Gdx.input.setInputProcessor(stage);
         popUpButtons.setListeners(stage, gameButtons.getTable(), optionButtons.getTable());
         gameButtons.setListeners(stage, popUpButtons.getTable());
         optionButtons.setListeners(stage,popUpButtons.getTable());
 
+        //inputMultiplexer.addProcessor(gestureDetector);
+        inputMultiplexer.addProcessor(stage);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
 
@@ -123,7 +133,7 @@ public class GameScreen implements Screen {
         gameBackground.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
-        taskManager.dispose();
+        //taskManager.dispose();
         optionButtons.dispose();
         //MusicManager.dispose();
     }
@@ -278,11 +288,13 @@ public class GameScreen implements Screen {
     private SpriteBatch transparentBatch;
     private SpriteBatch mainBatch;
     private OrthographicCamera camera;
-    private TaskManager taskManager;
     public StateManager stateManager; // todo change to private
+    //private TaskManager taskManager;
+    private InputMultiplexer inputMultiplexer;
+    private GestureDetector gestureDetector;
 
     //    private Sound tapSound;
-    private float totalTime = 10;
+    private float totalTime = 60;
     private float alpha = 0;
 
     //private Timer timer;
