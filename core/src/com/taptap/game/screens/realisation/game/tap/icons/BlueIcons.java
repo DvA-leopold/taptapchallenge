@@ -19,7 +19,7 @@ public class BlueIcons implements Icon {
     }
 
     @Override
-    public int addScore() {
+    public int getScore() {
         return 40;
     }
 

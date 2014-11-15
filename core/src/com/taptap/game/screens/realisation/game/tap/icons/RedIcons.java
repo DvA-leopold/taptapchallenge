@@ -19,7 +19,7 @@ public class RedIcons implements Icon {
     }
 
     @Override
-    public int addScore() {
+    public int getScore() {
         return 25;
     }
 

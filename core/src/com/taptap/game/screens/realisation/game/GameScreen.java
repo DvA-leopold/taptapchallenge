@@ -31,6 +31,8 @@ public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
         stateManager = StateManager.GAME_RUNNING;
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //taskManager = new TaskManager(this);
 
         gameBackground = new Texture(Gdx.files.internal("skins/game_menu/game_bg.png"));
@@ -43,12 +45,9 @@ public class GameScreen implements Screen {
 
         iconFactory = new AbstractItemFactory(
                 gameButtons.getOptionButton().getHeight(),
-                gameButtons.getOptionButton().getWidth()
+                gameButtons.getOptionButton().getWidth(),
+                camera
         );
-
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
         stage = new Stage();
@@ -228,7 +227,7 @@ public class GameScreen implements Screen {
                             touchPoint.y < temp.getY() + temp.getHeight()){
                         screen.iconFactory.removeIcon(i);
                         screen.iconFactory.decNumberOfFigures();
-                        screen.iconFactory.addToTotal(temp.addScore());
+                        screen.iconFactory.addToTotal(temp.getScore());
                         break; // todo переделать это убогое решение
                     }
                 }
