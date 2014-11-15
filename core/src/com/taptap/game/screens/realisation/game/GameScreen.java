@@ -98,9 +98,7 @@ public class GameScreen implements Screen {
 
         //inputMultiplexer.addProcessor(gestureDetector);
         inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new GestureDetector(BlueIcons.getListener()));
-        inputMultiplexer.addProcessor(new GestureDetector(RedIcons.getListener()));
-        inputMultiplexer.addProcessor(new GestureDetector(YellowIcons.getListener()));
+        inputMultiplexer.addProcessor(new GestureDetector(iconFactory.getListener()));
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
@@ -215,7 +213,7 @@ public class GameScreen implements Screen {
                 screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
             }
             screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
-            screen.renderNumbers((int)screen.totalTime, - Gdx.graphics.getWidth()/2 ,0);
+            screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
 
             screen.mainBatch.end();
             /*
