@@ -17,6 +17,9 @@ import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
 import com.taptap.game.screens.realisation.game.button.styles.optionButtonsInitializer;
+import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
+import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
+import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
 import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
@@ -51,7 +54,6 @@ public class GameScreen implements Screen {
         stage = new Stage();
 
         inputMultiplexer = new InputMultiplexer();
-        //gestureDetector = new GestureDetector();
 
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
@@ -92,11 +94,13 @@ public class GameScreen implements Screen {
         //Gdx.input.setInputProcessor(stage);
         popUpButtons.setListeners(stage, gameButtons.getTable(), optionButtons.getTable());
         gameButtons.setListeners(stage, popUpButtons.getTable());
-        optionButtons.setListeners(stage,popUpButtons.getTable());
+        optionButtons.setListeners(stage, popUpButtons.getTable());
 
         //inputMultiplexer.addProcessor(gestureDetector);
         inputMultiplexer.addProcessor(stage);
-
+        inputMultiplexer.addProcessor(new GestureDetector(BlueIcons.getListener()));
+        inputMultiplexer.addProcessor(new GestureDetector(RedIcons.getListener()));
+        inputMultiplexer.addProcessor(new GestureDetector(YellowIcons.getListener()));
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
@@ -214,6 +218,7 @@ public class GameScreen implements Screen {
             screen.renderNumbers((int)screen.totalTime, - Gdx.graphics.getWidth()/2 ,0);
 
             screen.mainBatch.end();
+            /*
             Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
             if (Gdx.input.isTouched()){
                 for (int i=0; i<screen.iconFactory.getIconsArray().size; ++i){
@@ -229,9 +234,9 @@ public class GameScreen implements Screen {
                         break; // todo переделать это убогое решение
                     }
                 }
-            }
+            }*/
             if (screen.iconFactory.controlFiguresNumber()<0){
-                screen.stateManager = GAME_OVER;
+                //screen.stateManager = GAME_OVER;
             }
             if (screen.totalTime <= 0){
                 GameScreen.getStorage().saveDataValue("player " + GameScreen.getStorage().getAllData().size(),
@@ -291,10 +296,9 @@ public class GameScreen implements Screen {
     public StateManager stateManager; // todo change to private
     //private TaskManager taskManager;
     private InputMultiplexer inputMultiplexer;
-    private GestureDetector gestureDetector;
 
     //    private Sound tapSound;
-    private float totalTime = 60;
+    private float totalTime = 150;
     private float alpha = 0;
 
     //private Timer timer;

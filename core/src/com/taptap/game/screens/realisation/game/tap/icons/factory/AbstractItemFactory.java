@@ -11,7 +11,7 @@ public class AbstractItemFactory {
     public AbstractItemFactory(float blockHeight, float blockWidth){
         this.blockHeight = blockHeight;
         this.blockWidth = blockWidth;
-        tapIcons = new Array<Icon>(10);
+        tapIcons = new Array<Icon>(15);
     }
 
     public void spawn() {
@@ -39,10 +39,6 @@ public class AbstractItemFactory {
         return totalScore;
     }
 
-    public void addGesturesDetector() {
-        
-    }
-
     public void decNumberOfFigures(){
         numberOfFigures--;
     }
@@ -64,8 +60,10 @@ public class AbstractItemFactory {
 
     private Array<Icon> tapIcons; // todo этот массив просто ужасен
     private int numberOfFigures;
+
     private int totalScore;
     private long lastDropTime;
+
     private final float blockHeight;
     private final float blockWidth;
 }
