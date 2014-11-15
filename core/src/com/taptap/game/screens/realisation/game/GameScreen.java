@@ -10,22 +10,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
 import com.taptap.game.screens.realisation.game.button.styles.optionButtonsInitializer;
-import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
-import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
-import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
 import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
-import com.taptap.game.task.manager.TaskManager;
 
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
@@ -215,23 +209,7 @@ public class GameScreen implements Screen {
             screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
 
             screen.mainBatch.end();
-            /*
-            Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
-            if (Gdx.input.isTouched()){
-                for (int i=0; i<screen.iconFactory.getIconsArray().size; ++i){
-                    Icon temp = screen.iconFactory.getIconsArray().get(i);
-                    screen.camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-                    if (Gdx.input.getX() > temp.getX() &&
-                            touchPoint.y > temp.getY() &&
-                            Gdx.input.getX() < temp.getX() + temp.getWidth() &&
-                            touchPoint.y < temp.getY() + temp.getHeight()){
-                        screen.iconFactory.removeIcon(i);
-                        screen.iconFactory.decNumberOfFigures();
-                        screen.iconFactory.addToTotal(temp.getScore());
-                        break; // todo переделать это убогое решение
-                    }
-                }
-            }*/
+
             if (screen.iconFactory.controlFiguresNumber()<0){
                 //screen.stateManager = GAME_OVER;
             }

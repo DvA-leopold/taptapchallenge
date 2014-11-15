@@ -16,7 +16,7 @@ public class MenuButtonInitializer implements Disposable {
     public MenuButtonInitializer(final TapTap game){
         this.game = game;
         int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change to global variables
+        int buttonHeight = Gdx.graphics.getHeight()/7;
         table = new Table(skinMainMenu);
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
         skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);

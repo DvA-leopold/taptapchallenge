@@ -102,24 +102,19 @@ public class AbstractItemFactory {
             lastDropTime = TimeUtils.millis();
         }
         if (getNumberOfFigures() > 10){
-            removeIcon(0);
+            tapIcons.removeIndex(0);
             totalScore -=50;
             numberOfFigures--;
         }
         return totalScore;
     }
+
     public GestureDetector.GestureListener getListener(){
         return gesturesListener;
     }
 
-    public void decNumberOfFigures(){
-        numberOfFigures--;
-    }
     public int getNumberOfFigures(){
         return numberOfFigures;
-    }
-    public void removeIcon(int index){
-        tapIcons.removeIndex(index);
     }
     public Array<Icon> getIconsArray(){
         return tapIcons;
@@ -127,11 +122,8 @@ public class AbstractItemFactory {
     public int getTotalScore(){
         return totalScore;
     }
-    public void addToTotal(int val){
-        totalScore+=val;
-    }
 
-    private Array<Icon> tapIcons; // todo этот массив просто ужасен
+    private Array<Icon> tapIcons;
     private GestureDetector.GestureListener gesturesListener;
     private int numberOfFigures;
 

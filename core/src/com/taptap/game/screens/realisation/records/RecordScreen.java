@@ -34,7 +34,7 @@ public class RecordScreen implements Screen {
         background = new Texture(Gdx.files.internal("skins/main_menu/background/bg_desert.png"));
 
         int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change with %
+        int buttonHeight = Gdx.graphics.getHeight()/7;
 
         GameScreen.getStorage().displayData(table, skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);

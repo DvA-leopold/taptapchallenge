@@ -4,13 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
-import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 import javax.xml.soap.Text;
@@ -19,7 +17,7 @@ public class popUpButtonsInitializer implements Disposable {
     public popUpButtonsInitializer(GameScreen game){
         this.game = game;
         int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7; // todo change to global variables
+        int buttonHeight = Gdx.graphics.getHeight()/7;
 
         atlasPopupMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
         skinPopupMenu = new Skin(Gdx.files.internal("skins/json_skins/popUpSkin.json"), atlasPopupMenu);
