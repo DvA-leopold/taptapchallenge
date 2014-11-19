@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
+import debug.statistics.FPS_MEM_DC;
 
 public class HelpScreen implements Screen {
     public HelpScreen(final TapTap game) {
@@ -57,6 +58,8 @@ public class HelpScreen implements Screen {
 
         stage.act();
         stage.draw();
+        FPS_MEM_DC.drawCalls+=2;
+        FPS_MEM_DC.fpsLog();
     }
 
     @Override

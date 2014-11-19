@@ -1,6 +1,7 @@
 package com.taptap.game.screens.realisation.game.tap.icons.factory;
 
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -11,16 +12,19 @@ import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 
+
 public class AbstractItemFactory {
-    public AbstractItemFactory(float blockHeight, float blockWidth, Camera camera){
-        this.blockHeight = blockHeight;
-        this.blockWidth = blockWidth;
+    public AbstractItemFactory(float spawnBoarderX, float spawnBoarderY, Camera camera){
+        this.spawnBoarderX = spawnBoarderX;
+        this.spawnBoarderY = spawnBoarderY;
         tapIcons = new Array<Icon>(15);
         initListener(camera);
     }
 
     public void initListener(final Camera camera) {
-        final Vector3 touchPoint = new Vector3(); //костыль с координатами(улучшенный)
+        final Vector3 touchPoint = new Vector3();
+        xyAxe = new Vector2();
+        deltaSum = new Vector2();
         gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
@@ -38,7 +42,6 @@ public class AbstractItemFactory {
                             x < temp.getX() + temp.getWidth() &&
                             touchPoint.y < temp.getY() + temp.getHeight()){
                         tapIcons.removeIndex(i);
-                        numberOfFigures--;
                         totalScore+=(temp.getScore());
                         break;
                     }
@@ -54,19 +57,48 @@ public class AbstractItemFactory {
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                System.out.println("AbstractItemFactory.fling");
+                System.out.println("AbstractItemFactory.fling "+ velocityX);
                 return false;
             }
 
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
-                System.out.println("AbstractItemFactory.pan");
+                //camera.unproject(touchPoint.set(x, y, 0));
+                deltaSum.add(deltaX, deltaY);
+                //xyAxe.set(x,y);
+
+                System.out.println("AbstractItemFactory.pan: "+ touchPoint.x + " "+ deltaX);
                 return false;
             }
 
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
-                System.out.println("AbstractItemFactory.panStop");
+                camera.unproject(touchPoint.set(x,y,0));
+                Vector2 startPoint = new Vector2(touchPoint.x-deltaSum.x, touchPoint.y-deltaSum.y);
+                Vector2 finishPoint = new Vector2(touchPoint.x, touchPoint.y);
+                //Line swipeLine = new Line(startPoint.x, startPoint.y, x, y);
+
+                for (Icon tapIcon : tapIcons){
+                    if (
+                            startPoint.x < tapIcon.getX()+tapIcon.getWidth() &&
+                            startPoint.x > tapIcon.getX() ||
+                                    startPoint.y < tapIcon.getY()+tapIcon.getHeight() &&
+                                            startPoint.y > tapIcon.getY()
+                            ){
+                        System.out.println("gotcha");
+
+                    }
+
+                    if (true){
+                        //System.out.println("start :" + startPoint.x + " " + startPoint.y + " " + finishPoint.x + " " + finishPoint.y);
+                        //System.out.println(tapIcon.getX() + " " + tapIcon.getY());
+                        //System.out.println(tapIcon.getWidth() + " " + tapIcon.getHeight());
+                    }
+                    //System.out.println(intersect3+ " ");
+                }
+                deltaSum.set(0,0);
+
+                //System.out.println("AbstractItemFactory.panStop");
                 return false;
             }
 
@@ -87,24 +119,22 @@ public class AbstractItemFactory {
     public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcons(blockHeight, blockWidth));
+            tapIcons.add(new BlueIcons(spawnBoarderX, spawnBoarderY));
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcons(blockHeight, blockWidth));
+            tapIcons.add(new RedIcons(spawnBoarderX, spawnBoarderY));
         } else {
-            tapIcons.add(new YellowIcons(blockHeight, blockWidth));
+            tapIcons.add(new YellowIcons(spawnBoarderX, spawnBoarderY));
         }
     }
 
     public int controlFiguresNumber() {
         if(TimeUtils.millis() - lastDropTime > 1000){
-            numberOfFigures++;
             spawn();
             lastDropTime = TimeUtils.millis();
         }
-        if (getNumberOfFigures() > 10){
+        if (tapIcons.size > 10){
             tapIcons.removeIndex(0);
             totalScore -=50;
-            numberOfFigures--;
         }
         return totalScore;
     }
@@ -113,9 +143,6 @@ public class AbstractItemFactory {
         return gesturesListener;
     }
 
-    public int getNumberOfFigures(){
-        return numberOfFigures;
-    }
     public Array<Icon> getIconsArray(){
         return tapIcons;
     }
@@ -123,13 +150,15 @@ public class AbstractItemFactory {
         return totalScore;
     }
 
-    private Array<Icon> tapIcons;
     private GestureDetector.GestureListener gesturesListener;
-    private int numberOfFigures;
-
+    //////////////////////////////////////////////////
+    private Vector2 xyAxe, deltaSum = new Vector2();
+    ShapeRenderer render = new ShapeRenderer();
+////////////////////////////////////////////////////////////////
+    private Array<Icon> tapIcons;
     private int totalScore;
     private long lastDropTime;
 
-    private final float blockHeight;
-    private final float blockWidth;
+    private final float spawnBoarderX;
+    private final float spawnBoarderY;
 }

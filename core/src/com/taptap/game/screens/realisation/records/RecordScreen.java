@@ -17,6 +17,7 @@ import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
+import debug.statistics.FPS_MEM_DC;
 
 public class RecordScreen implements Screen {
     public RecordScreen(final TapTap game){
@@ -50,7 +51,8 @@ public class RecordScreen implements Screen {
 
         stage.act();
         stage.draw();
-
+        FPS_MEM_DC.drawCalls+=2;
+        FPS_MEM_DC.fpsLog();
         camera.update();
     }
 

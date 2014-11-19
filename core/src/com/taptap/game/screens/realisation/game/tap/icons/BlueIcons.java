@@ -15,7 +15,8 @@ public class BlueIcons implements Icon {
         coords = new Rectangle(
                 MathUtils.random(blockHeight + 20, Gdx.graphics.getWidth()-taptapImage.getWidth()),
                 MathUtils.random(0, Gdx.graphics.getHeight()-blockWidth - 20),
-                taptapImage.getWidth(), taptapImage.getHeight());
+                taptapImage.getWidth(), taptapImage.getHeight()
+        );
     }
 
     @Override

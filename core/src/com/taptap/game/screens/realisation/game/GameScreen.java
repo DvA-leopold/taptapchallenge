@@ -3,14 +3,17 @@ package com.taptap.game.screens.realisation.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
@@ -20,6 +23,7 @@ import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitial
 import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
+import debug.statistics.FPS_MEM_DC;
 
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
@@ -47,7 +51,7 @@ public class GameScreen implements Screen {
         stage = new Stage();
 
         inputMultiplexer = new InputMultiplexer();
-
+//        logger = new FPS_MEM_DC();
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
 
@@ -71,6 +75,7 @@ public class GameScreen implements Screen {
                 stateManager.gameExitState(this);
                 break;
         }
+        FPS_MEM_DC.fpsLog();
         stage.act();
         stage.draw();
     }
@@ -91,7 +96,7 @@ public class GameScreen implements Screen {
 
         //inputMultiplexer.addProcessor(gestureDetector);
         inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new GestureDetector(iconFactory.getListener()));
+        inputMultiplexer.addProcessor(new GestureDetector(iconFactory.getListener())); // todo set fling delay and etc.
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
@@ -180,6 +185,7 @@ public class GameScreen implements Screen {
                 mainBatch.draw(
                         picture, width + widthAlign,
                         Gdx.graphics.getHeight() + heightAlign - picture.getHeight());
+                FPS_MEM_DC.drawCalls++;
             }
         }
     }
@@ -202,8 +208,10 @@ public class GameScreen implements Screen {
             screen.alpha = 0; // todo нужно переместить
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            FPS_MEM_DC.drawCalls++;
             for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
                 screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
+                FPS_MEM_DC.drawCalls++;
             }
             screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
             screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
@@ -224,13 +232,16 @@ public class GameScreen implements Screen {
             screen.alpha = (float)Math.min(screen.alpha + Gdx.graphics.getDeltaTime()/2, 0.7);
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            FPS_MEM_DC.drawCalls++;
             screen.mainBatch.end();
 
             screen.transparentBatch.begin();
             screen.transparentBatch.setColor(0.0f,0.0f,0.0f,screen.alpha);
             screen.transparentBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            FPS_MEM_DC.drawCalls++;
             for(Icon tapIcon : screen.iconFactory.getIconsArray()) {
                 screen.transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
+                FPS_MEM_DC.drawCalls++;
             }
             screen.transparentBatch.end();
 
@@ -243,6 +254,7 @@ public class GameScreen implements Screen {
             screen.mainBatch.draw(screen.gameOver,
                     Gdx.graphics.getWidth() / 2 - screen.gameOver.getWidth() / 2,
                     Gdx.graphics.getHeight() / 2 - screen.gameOver.getHeight() / 2);
+            FPS_MEM_DC.drawCalls+=2;
             screen.mainBatch.end();
             if (Gdx.input.isTouched()){
                 screen.stateManager = GAME_EXIT;
@@ -275,6 +287,7 @@ public class GameScreen implements Screen {
     //    private Sound tapSound;
     private float totalTime = 150;
     private float alpha = 0;
+    //private FPS_MEM_DC logger;
 
     //private Timer timer;
     private static StorageManager storage = new StorageManager(true);
