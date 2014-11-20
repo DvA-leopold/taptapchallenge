@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 public class optionButtonsInitializer implements Disposable {
@@ -18,7 +19,10 @@ public class optionButtonsInitializer implements Disposable {
         int buttonHeight = Gdx.graphics.getHeight()/8;
 
         atlasOptionMenu = new TextureAtlas("skins/game_menu/popUpButtons.pack");
-        skinOptions = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasOptionMenu);
+        skinOptions = new Skin(
+                Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
+                atlasOptionMenu
+        );
         optionTable = new Table(skinOptions);
         musicControl = new Button(skinOptions, "stateOption");
         musicControl.setChecked(!MusicManager.isMusicEnable());

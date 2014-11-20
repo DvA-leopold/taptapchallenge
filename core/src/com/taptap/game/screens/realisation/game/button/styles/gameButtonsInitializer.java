@@ -10,11 +10,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
+
 public class gameButtonsInitializer {
     public gameButtonsInitializer(final GameScreen game){
         this.game = game;
         atlasGameMenu = new TextureAtlas("skins/game_menu/popUpButtons.pack");
-        skinGameMenu = new Skin(Gdx.files.internal("skins/json_skins/optionIconSkin.json"), atlasGameMenu);
+        skinGameMenu = new Skin(
+                Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
+                atlasGameMenu
+        );
+        //skinGameMenu.getFont()
         mainTable = new Table(skinGameMenu);
         optionButton = new Button(skinGameMenu, "popUpMenuButton");
         mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
@@ -34,6 +39,7 @@ public class gameButtonsInitializer {
             }
         });
     }
+
     public Button getOptionButton(){
         return optionButton;
     }

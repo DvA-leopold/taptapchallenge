@@ -3,6 +3,7 @@ package com.taptap.game.screens.realisation.game.tap.icons.factory;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -34,7 +35,7 @@ public class AbstractItemFactory {
 
             @Override
             public boolean tap(float x, float y, int count, int button) {
-                camera.unproject(touchPoint.set(x, y, 0));
+              /*  camera.unproject(touchPoint.set(x, y, 0));
                 for (int i=0; i<tapIcons.size; ++i){
                     Icon temp = tapIcons.get(i);
                     if (x > temp.getX() &&
@@ -45,7 +46,7 @@ public class AbstractItemFactory {
                         totalScore+=(temp.getScore());
                         break;
                     }
-                }
+                }*/
                 return false;
             }
 
@@ -63,39 +64,51 @@ public class AbstractItemFactory {
 
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
-                //camera.unproject(touchPoint.set(x, y, 0));
-                deltaSum.add(deltaX, deltaY);
+                camera.unproject(touchPoint.set(x, y, 0));
+                Array<Vector2> array = new Array<Vector2>(4);
+                for (int i=0; i<tapIcons.size; ++i){ //todo сделать рефакторинг кода, тут пиздец
+                    array.add(new Vector2(tapIcons.get(i).getRect().x, tapIcons.get(i).getRect().y));
+                    array.add(new Vector2(tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
+                            tapIcons.get(i).getRect().y));
+                    array.add(new Vector2(tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
+                            tapIcons.get(i).getRect().y+tapIcons.get(i).getHeight()));
+                    array.add(new Vector2(tapIcons.get(i).getRect().x,
+                            tapIcons.get(i).getRect().y+tapIcons.get(i).getHeight()));
+
+                    if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))){
+                        tempCounter[i]++;
+                        //tapIcons.removeIndex(i);
+                        break;
+                    }
+                    array.clear();
+                }
+
+                //deltaSum.add(deltaX, deltaY);
                 //xyAxe.set(x,y);
 
-                System.out.println("AbstractItemFactory.pan: "+ touchPoint.x + " "+ deltaX);
+                //System.out.println("AbstractItemFactory.pan: "+ touchPoint.x + " "+ deltaX);
                 return false;
             }
 
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
-                camera.unproject(touchPoint.set(x,y,0));
-                Vector2 startPoint = new Vector2(touchPoint.x-deltaSum.x, touchPoint.y-deltaSum.y);
-                Vector2 finishPoint = new Vector2(touchPoint.x, touchPoint.y);
+                //camera.unproject(touchPoint.set(x,y,0));
                 //Line swipeLine = new Line(startPoint.x, startPoint.y, x, y);
-
-                for (Icon tapIcon : tapIcons){
-                    if (
-                            startPoint.x < tapIcon.getX()+tapIcon.getWidth() &&
-                            startPoint.x > tapIcon.getX() ||
-                                    startPoint.y < tapIcon.getY()+tapIcon.getHeight() &&
-                                            startPoint.y > tapIcon.getY()
-                            ){
-                        System.out.println("gotcha");
-
+                for (int i=0;i<tempCounter.length;++i){//todo сделать рефакторинг кода, тут тоже пиздец
+                    if (tempCounter[i]>3){
+                        tapIcons.removeIndex(i);
+                        break;
                     }
+                }
+                for (int i=0;i<tempCounter.length;++i){
+                    tempCounter[i]=0;
+                }
+               // for (Icon tapIcon : tapIcons){
 
-                    if (true){
                         //System.out.println("start :" + startPoint.x + " " + startPoint.y + " " + finishPoint.x + " " + finishPoint.y);
                         //System.out.println(tapIcon.getX() + " " + tapIcon.getY());
                         //System.out.println(tapIcon.getWidth() + " " + tapIcon.getHeight());
-                    }
-                    //System.out.println(intersect3+ " ");
-                }
+               // }
                 deltaSum.set(0,0);
 
                 //System.out.println("AbstractItemFactory.panStop");
@@ -154,6 +167,7 @@ public class AbstractItemFactory {
     //////////////////////////////////////////////////
     private Vector2 xyAxe, deltaSum = new Vector2();
     ShapeRenderer render = new ShapeRenderer();
+    int[] tempCounter = new int[10];
 ////////////////////////////////////////////////////////////////
     private Array<Icon> tapIcons;
     private int totalScore;

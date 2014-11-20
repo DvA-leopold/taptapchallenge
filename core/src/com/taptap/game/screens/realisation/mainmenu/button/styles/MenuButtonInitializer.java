@@ -15,11 +15,12 @@ import com.taptap.game.screens.realisation.records.RecordScreen;
 public class MenuButtonInitializer implements Disposable {
     public MenuButtonInitializer(final TapTap game){
         this.game = game;
-        int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
+        int buttonWidth = Gdx.graphics.getWidth()/2;
+        int buttonHeight = Gdx.graphics.getHeight()/6;
         table = new Table(skinMainMenu);
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
         skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
+        skinMainMenu.getFont("blackFont").setScale(2, 2);
 
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json

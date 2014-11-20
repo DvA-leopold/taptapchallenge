@@ -3,19 +3,16 @@ package com.taptap.game.screens.realisation.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.save.manager.StorageManager;
 import com.taptap.game.screens.realisation.game.button.styles.optionButtonsInitializer;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
@@ -28,18 +25,23 @@ import debug.statistics.FPS_MEM_DC;
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
+        double startTime = System.currentTimeMillis();
         stateManager = StateManager.GAME_RUNNING;
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         //taskManager = new TaskManager(this);
 
-        gameBackground = new Texture(Gdx.files.internal("skins/game_menu/game_bg.png"));
-        gameOver = new Texture(Gdx.files.internal("skins/game_menu/game_over.png"));
-        coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
+        //gameBackground = new Texture(Gdx.files.internal("skins/game_menu/game_bg.png"));
+        //gameOver = new Texture(Gdx.files.internal("skins/game_menu/game_over.png"));
+        //coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
+        gameBackground = new Sprite(ResourceManager.getInstance().storage.get(ResourceManager.gameBackground));
+        gameOver = new Sprite(ResourceManager.getInstance().storage.get(ResourceManager.gameOver));
 
         gameButtons = new gameButtonsInitializer(this);
         popUpButtons = new popUpButtonsInitializer(this);
         optionButtons = new optionButtonsInitializer(this);
+
+        System.out.println("TIME: " + (System.currentTimeMillis() - startTime));
 
         iconFactory = new AbstractItemFactory(
                 gameButtons.getOptionButton().getHeight(),
@@ -51,7 +53,7 @@ public class GameScreen implements Screen {
         stage = new Stage();
 
         inputMultiplexer = new InputMultiplexer();
-//        logger = new FPS_MEM_DC();
+
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
 
@@ -121,7 +123,6 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
         MusicManager.play(this);
-        //timer.start();
         stateManager = StateManager.GAME_RUNNING;
     }
 
@@ -130,7 +131,7 @@ public class GameScreen implements Screen {
         mainBatch.dispose();
         transparentBatch.dispose();
         stage.dispose();
-        gameBackground.dispose();
+        //gameBackground.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
         //taskManager.dispose();
@@ -148,34 +149,55 @@ public class GameScreen implements Screen {
                 temp/=10;
                 switch (val){
                     case 0:
-                        picture = coinsAndNumbers.createSprite("hud0");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud0");
                         break;
                     case 1:
-                        picture = coinsAndNumbers.createSprite("hud1");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud1");
                         break;
                     case 2:
-                        picture = coinsAndNumbers.createSprite("hud2");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud2");
                         break;
                     case 3:
-                        picture = coinsAndNumbers.createSprite("hud3");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud3");
                         break;
                     case 4:
-                        picture = coinsAndNumbers.createSprite("hud4");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud4");
                         break;
                     case 5:
-                        picture = coinsAndNumbers.createSprite("hud5");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud5");
                         break;
                     case 6:
-                        picture = coinsAndNumbers.createSprite("hud6");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud6");
                         break;
                     case 7:
-                        picture = coinsAndNumbers.createSprite("hud7");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud7");
                         break;
                     case 8:
-                        picture = coinsAndNumbers.createSprite("hud8");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud8");
                         break;
                     case 9:
-                        picture = coinsAndNumbers.createSprite("hud9");
+                        picture = ResourceManager.getInstance().storage.
+                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                                createSprite("hud9");
+                        //picture = coinsAndNumbers.createSprite("hud9");
                         break;
                     default:
                         System.out.println("Error");
@@ -267,7 +289,7 @@ public class GameScreen implements Screen {
     }
 
     private AbstractItemFactory iconFactory;
-    private TextureAtlas coinsAndNumbers;
+    //private TextureAtlas coinsAndNumbers;
 
     private gameButtonsInitializer gameButtons;
     private popUpButtonsInitializer popUpButtons;
@@ -275,8 +297,8 @@ public class GameScreen implements Screen {
 
     private Stage stage;
 
-    private Texture gameBackground;
-    private Texture gameOver;
+    private Sprite gameBackground;
+    private Sprite gameOver;
     private SpriteBatch transparentBatch;
     private SpriteBatch mainBatch;
     private OrthographicCamera camera;
@@ -287,9 +309,7 @@ public class GameScreen implements Screen {
     //    private Sound tapSound;
     private float totalTime = 150;
     private float alpha = 0;
-    //private FPS_MEM_DC logger;
 
-    //private Timer timer;
     private static StorageManager storage = new StorageManager(true);
     private final TapTap game;
 }

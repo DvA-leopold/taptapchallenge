@@ -31,7 +31,6 @@ public class HelpScreen implements Screen {
 
         button = new TextButton("menu", skin, "default");
 
-        // baobab, сиквояview
         Label.LabelStyle headingStyle = new Label.LabelStyle(font, Color.BLACK);
         Label helpString1 = new Label(
                 "ПРОСТО ТЫКАЙ В ПОЯВЛЯЮЩИЕСЯ ШТУЧКИ\n "+

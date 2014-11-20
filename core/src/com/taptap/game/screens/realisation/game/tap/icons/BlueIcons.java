@@ -54,6 +54,11 @@ public class BlueIcons implements Icon {
         return coords.getWidth();
     }
 
+    @Override
+    public Rectangle getRect() {
+        return coords;
+    }
+
     private Rectangle coords;
 
     private static Texture taptapImage;

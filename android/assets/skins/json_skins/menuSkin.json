@@ -5,8 +5,8 @@
     },
 
     "com.badlogic.gdx.graphics.g2d.BitmapFont":{
-        "whiteFont": { "file": "fonts/whiteFont.fnt" },
-        "blackFont": { "file": "fonts/blackFont.fnt" }
+        "whiteFont": { "file": "fonts/whiteFont.fnt"},
+        "blackFont": { "file": "fonts/blackFont.fnt"}
     },
 
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle":{ // $ is an inner class

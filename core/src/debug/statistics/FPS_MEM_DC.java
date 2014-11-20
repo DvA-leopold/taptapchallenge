@@ -16,11 +16,10 @@ public class FPS_MEM_DC {
     public static void fpsLog(){
         logBatch.begin();
         font.draw(logBatch,
-                "fps: "+ Gdx.graphics.getFramesPerSecond() +
+                "fps: "+ Gdx.graphics.getFramesPerSecond() + // fps = 1/delta(delta из функции рендера в )
                 " dc: " + drawCalls,
                  Gdx.graphics.getWidth()-230, font.getLineHeight());
         logBatch.end();
-        //Gdx.app.log("FPSLogger", "fps: " + Gdx.graphics.getFramesPerSecond());
         startTime = TimeUtils.nanoTime();
         drawCalls=1;
     }

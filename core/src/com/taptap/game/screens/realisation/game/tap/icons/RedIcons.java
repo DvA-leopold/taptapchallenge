@@ -53,6 +53,11 @@ public class RedIcons implements Icon {
         return coords.getHeight();
     }
 
+    @Override
+    public Rectangle getRect() {
+        return coords;
+    }
+
     private Rectangle coords;
 
     private static Texture taptapImage;
