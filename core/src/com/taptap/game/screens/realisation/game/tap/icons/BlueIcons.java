@@ -11,10 +11,10 @@ public class BlueIcons implements Icon {
         taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_blue.png"));
     }
 
-    public BlueIcons(float blockHeight, float blockWidth){
+    public BlueIcons(float spawnBoarderX,float spawnBoarderY){
         coords = new Rectangle(
-                MathUtils.random(blockHeight + 20, Gdx.graphics.getWidth()-taptapImage.getWidth()),
-                MathUtils.random(0, Gdx.graphics.getHeight()-blockWidth - 20),
+                MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth()-taptapImage.getWidth()),
+                MathUtils.random(0, Gdx.graphics.getHeight()-spawnBoarderY - 20),
                 taptapImage.getWidth(), taptapImage.getHeight()
         );
     }

@@ -22,7 +22,8 @@ public class gameButtonsInitializer {
         //skinGameMenu.getFont()
         mainTable = new Table(skinGameMenu);
         optionButton = new Button(skinGameMenu, "popUpMenuButton");
-        mainTable.add(optionButton).padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
+        mainTable.add(optionButton).
+                padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
                 padLeft(-Gdx.graphics.getWidth()+Gdx.graphics.getWidth()/15).
                 width(Gdx.graphics.getWidth()/15).
                 height(Gdx.graphics.getHeight()/10);

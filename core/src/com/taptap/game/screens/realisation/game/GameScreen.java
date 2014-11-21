@@ -98,7 +98,7 @@ public class GameScreen implements Screen {
 
         //inputMultiplexer.addProcessor(gestureDetector);
         inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new GestureDetector(iconFactory.getListener())); // todo set fling delay and etc.
+        inputMultiplexer.addProcessor(new GestureDetector(iconFactory.getListener())); //можно изменить задержку измерения и т.п
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
@@ -131,12 +131,9 @@ public class GameScreen implements Screen {
         mainBatch.dispose();
         transparentBatch.dispose();
         stage.dispose();
-        //gameBackground.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
-        //taskManager.dispose();
         optionButtons.dispose();
-        //MusicManager.dispose();
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign){

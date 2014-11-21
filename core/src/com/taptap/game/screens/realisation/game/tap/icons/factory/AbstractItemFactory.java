@@ -13,7 +13,6 @@ import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 
-
 public class AbstractItemFactory {
     public AbstractItemFactory(float spawnBoarderX, float spawnBoarderY, Camera camera){
         this.spawnBoarderX = spawnBoarderX;
@@ -24,8 +23,6 @@ public class AbstractItemFactory {
 
     public void initListener(final Camera camera) {
         final Vector3 touchPoint = new Vector3();
-        xyAxe = new Vector2();
-        deltaSum = new Vector2();
         gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
@@ -67,35 +64,33 @@ public class AbstractItemFactory {
                 camera.unproject(touchPoint.set(x, y, 0));
                 Array<Vector2> array = new Array<Vector2>(4);
                 for (int i=0; i<tapIcons.size; ++i){ //todo сделать рефакторинг кода, тут пиздец
-                    array.add(new Vector2(tapIcons.get(i).getRect().x, tapIcons.get(i).getRect().y));
-                    array.add(new Vector2(tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
+                    array.add(new Vector2(
+                            tapIcons.get(i).getRect().x,
                             tapIcons.get(i).getRect().y));
-                    array.add(new Vector2(tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
+                    array.add(new Vector2(
+                            tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
+                            tapIcons.get(i).getRect().y));
+                    array.add(new Vector2(
+                            tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
                             tapIcons.get(i).getRect().y+tapIcons.get(i).getHeight()));
-                    array.add(new Vector2(tapIcons.get(i).getRect().x,
+                    array.add(new Vector2(
+                            tapIcons.get(i).getRect().x,
                             tapIcons.get(i).getRect().y+tapIcons.get(i).getHeight()));
 
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))){
                         tempCounter[i]++;
-                        //tapIcons.removeIndex(i);
                         break;
                     }
                     array.clear();
                 }
-
-                //deltaSum.add(deltaX, deltaY);
-                //xyAxe.set(x,y);
-
-                //System.out.println("AbstractItemFactory.pan: "+ touchPoint.x + " "+ deltaX);
                 return false;
             }
 
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
                 //camera.unproject(touchPoint.set(x,y,0));
-                //Line swipeLine = new Line(startPoint.x, startPoint.y, x, y);
                 for (int i=0;i<tempCounter.length;++i){//todo сделать рефакторинг кода, тут тоже пиздец
-                    if (tempCounter[i]>3){
+                    if (tempCounter[i]>1){
                         tapIcons.removeIndex(i);
                         break;
                     }
@@ -103,15 +98,6 @@ public class AbstractItemFactory {
                 for (int i=0;i<tempCounter.length;++i){
                     tempCounter[i]=0;
                 }
-               // for (Icon tapIcon : tapIcons){
-
-                        //System.out.println("start :" + startPoint.x + " " + startPoint.y + " " + finishPoint.x + " " + finishPoint.y);
-                        //System.out.println(tapIcon.getX() + " " + tapIcon.getY());
-                        //System.out.println(tapIcon.getWidth() + " " + tapIcon.getHeight());
-               // }
-                deltaSum.set(0,0);
-
-                //System.out.println("AbstractItemFactory.panStop");
                 return false;
             }
 
@@ -165,10 +151,8 @@ public class AbstractItemFactory {
 
     private GestureDetector.GestureListener gesturesListener;
     //////////////////////////////////////////////////
-    private Vector2 xyAxe, deltaSum = new Vector2();
-    ShapeRenderer render = new ShapeRenderer();
     int[] tempCounter = new int[10];
-////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
     private Array<Icon> tapIcons;
     private int totalScore;
     private long lastDropTime;

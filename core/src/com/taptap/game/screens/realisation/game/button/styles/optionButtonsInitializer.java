@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.taptap.game.music.player.MusicManager;
-import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 public class optionButtonsInitializer implements Disposable {
@@ -31,8 +30,6 @@ public class optionButtonsInitializer implements Disposable {
 
         final Label musicLabel = new Label("Music: ", skinOptions);
         final Label soundLabel = new Label("Sound: ", skinOptions);
-        //musicControl.pad(10);
-        //soundControl.pad(10);
 
         //optionTable.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         optionTable.padTop(Value.percentHeight(0.35f)).padRight(Value.percentWidth(0.20f));
@@ -42,7 +39,7 @@ public class optionButtonsInitializer implements Disposable {
         optionTable.add(soundLabel).center();
         optionTable.add(soundControl).width(buttonWidth).height(buttonHeight);
         optionTable.row();
-        optionTable.add(back).bottom().left().expand();
+        optionTable.add(back).width(buttonWidth*2).height(buttonHeight*2).bottom().left().expand();
 
     }
 
