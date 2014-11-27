@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 public class popUpButtonsInitializer implements Disposable {
@@ -17,7 +18,7 @@ public class popUpButtonsInitializer implements Disposable {
         int buttonWidth = Gdx.graphics.getWidth()/3;
         int buttonHeight = Gdx.graphics.getHeight()/7;
 
-        atlasPopupMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
+        atlasPopupMenu = ResourceManager.getInstance().get(ResourceManager.atlasPopupMenu);
         skinPopupMenu = new Skin(
                 Gdx.files.internal("skins/json_skins/popUpSkin.json"),
                 atlasPopupMenu);
@@ -70,8 +71,8 @@ public class popUpButtonsInitializer implements Disposable {
 
     @Override
     public void dispose(){
-        atlasPopupMenu.dispose();
-        skinPopupMenu.dispose();
+        //skinPopupMenu.dispose();
+        //atlasPopupMenu.dispose();
     }
 
     private TextureAtlas atlasPopupMenu;

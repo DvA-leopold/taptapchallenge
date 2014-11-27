@@ -8,14 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
 
 public class gameButtonsInitializer {
     public gameButtonsInitializer(final GameScreen game){
         this.game = game;
-        atlasGameMenu = new TextureAtlas("skins/game_menu/popUpButtons.pack");
-        skinGameMenu = new Skin(
+        TextureAtlas atlasGameMenu = ResourceManager.getInstance().get(ResourceManager.buttonAtlas);
+        Skin skinGameMenu = new Skin(
                 Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
                 atlasGameMenu
         );
@@ -49,12 +50,12 @@ public class gameButtonsInitializer {
         return mainTable;
     }
     public void dispose(){
-        atlasGameMenu.dispose();
-        skinGameMenu.dispose();
+        //skinGameMenu.dispose();
+        //atlasGameMenu.dispose();
     }
 
-    private TextureAtlas atlasGameMenu;
-    private Skin skinGameMenu;
+    //private TextureAtlas atlasGameMenu;
+    //private Skin skinGameMenu;
     private Table mainTable;
     private Button optionButton;
 

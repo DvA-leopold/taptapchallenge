@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.mainmenu.button.styles.MenuButtonInitializer;
 import debug.statistics.FPS_MEM_DC;
 
@@ -14,8 +15,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final TapTap game){
         buttons = new MenuButtonInitializer(game);
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("skins/main_menu/background/bg_desert.png"));
-
+        background = ResourceManager.getInstance().get(ResourceManager.menuBackground);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage();
@@ -71,7 +71,7 @@ public class MainMenuScreen implements Screen {
         stage.dispose();
         buttons.dispose();
         batch.dispose();
-        background.dispose();
+        //background.dispose();
     }
 
     private Stage stage;

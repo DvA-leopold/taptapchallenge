@@ -12,30 +12,25 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
-import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.save.manager.StorageManager;
-import com.taptap.game.screens.realisation.game.button.styles.optionButtonsInitializer;
-import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.optionButtonsInitializer;
 import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
-import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
+import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
+import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
+import com.taptap.game.resource.manager.ResourceManager;
 import debug.statistics.FPS_MEM_DC;
 
 public class GameScreen implements Screen {
     public GameScreen(final TapTap game){
         this.game = game;
         double startTime = System.currentTimeMillis();
-        stateManager = StateManager.GAME_RUNNING;
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //taskManager = new TaskManager(this);
 
-        //gameBackground = new Texture(Gdx.files.internal("skins/game_menu/game_bg.png"));
-        //gameOver = new Texture(Gdx.files.internal("skins/game_menu/game_over.png"));
-        //coinsAndNumbers = new TextureAtlas(Gdx.files.internal("skins/game_menu/coins_and_numb/coins_and_hud.pack"));
-        gameBackground = new Sprite(ResourceManager.getInstance().storage.get(ResourceManager.gameBackground));
-        gameOver = new Sprite(ResourceManager.getInstance().storage.get(ResourceManager.gameOver));
+        gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
+        gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
         gameButtons = new gameButtonsInitializer(this);
         popUpButtons = new popUpButtonsInitializer(this);
@@ -54,6 +49,7 @@ public class GameScreen implements Screen {
 
         inputMultiplexer = new InputMultiplexer();
 
+        stateManager = StateManager.GAME_RUNNING;
         //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
 
@@ -91,7 +87,6 @@ public class GameScreen implements Screen {
         //transparentBatch.setProjectionMatrix(camera.combined);
         stage.addActor(gameButtons.getTable());
 
-        //Gdx.input.setInputProcessor(stage);
         popUpButtons.setListeners(stage, gameButtons.getTable(), optionButtons.getTable());
         gameButtons.setListeners(stage, popUpButtons.getTable());
         optionButtons.setListeners(stage, popUpButtons.getTable());
@@ -137,7 +132,7 @@ public class GameScreen implements Screen {
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign){
-        if (numbForRender>0){ // todo возможно можно оптимизировать
+        if (numbForRender>=0){ // todo возможно можно оптимизировать
             int temp = numbForRender;
             float width = Gdx.graphics.getWidth();
             Sprite picture = new Sprite();
@@ -146,52 +141,52 @@ public class GameScreen implements Screen {
                 temp/=10;
                 switch (val){
                     case 0:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud0");
                         break;
                     case 1:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud1");
                         break;
                     case 2:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud2");
                         break;
                     case 3:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud3");
                         break;
                     case 4:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud4");
                         break;
                     case 5:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud5");
                         break;
                     case 6:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud6");
                         break;
                     case 7:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud7");
                         break;
                     case 8:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud8");
                         break;
                     case 9:
-                        picture = ResourceManager.getInstance().storage.
+                        picture = ResourceManager.getInstance().
                                 get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
                                 createSprite("hud9");
                         //picture = coinsAndNumbers.createSprite("hud9");
@@ -211,9 +206,6 @@ public class GameScreen implements Screen {
 
     public static StorageManager getStorage(){
         return storage;
-    }
-    public int getTotalScore(){
-        return iconFactory.getTotalScore();
     }
 
     public enum StateManager {
@@ -242,7 +234,7 @@ public class GameScreen implements Screen {
             }
             if (screen.totalTime <= 0){
                 GameScreen.getStorage().saveDataValue("player " + GameScreen.getStorage().getAllData().size(),
-                        screen.getTotalScore());
+                        screen.iconFactory.getTotalScore());
                 screen.stateManager = GameScreen.StateManager.GAME_EXIT;
             }
         }
@@ -286,7 +278,6 @@ public class GameScreen implements Screen {
     }
 
     private AbstractItemFactory iconFactory;
-    //private TextureAtlas coinsAndNumbers;
 
     private gameButtonsInitializer gameButtons;
     private popUpButtonsInitializer popUpButtons;

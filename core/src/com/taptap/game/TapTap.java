@@ -9,8 +9,8 @@ public class TapTap extends Game {
 
     @Override
     public void create() {
-        ResourceManager.getInstance().queueLoading();
-        ResourceManager.getInstance().updateLoadingQueue();
+        ResourceManager.queueLoading();
+        ResourceManager.updateLoadingQueue();
         setScreen(new MainMenuScreen(this));
     }
 
