@@ -44,7 +44,7 @@ task afterEclipseImport(description: "Post processing after project generation",
     printer.print(classpath)
   }
 }
-
+// здесь таски для работы с версиями
 ext.versionFile = file('version.properties')
 
 task loadVersion {
@@ -64,16 +64,16 @@ ProjectVersion readVersion() {
         versionProps.load(stream)
     }
 
-    new ProjectVersion(versionProps.major.toInteger(), versionProps.minor.toInteger(), versionProps.release.toBoolean())
+    new ProjectVersion(versionProps.major.toInteger(), versionProps.minor.toInteger(), versionProps.patch.toInteger())
 }
-
+/*
 task makeReleaseVersion(group: 'versioning', description: 'Makes project a release version.') << {
     version.release = true
     ant.propertyfile(file: versionFile) {
         entry(key: 'release', type: 'string', operation: '=', value: 'true')
     }
 }
-
+*/
 task incrementMajorVersion(group: 'versioning', description: 'Increments project major version.') << {
     String currentVersion = version.toString()
     ++version.major
@@ -82,6 +82,8 @@ task incrementMajorVersion(group: 'versioning', description: 'Increments project
 
     ant.propertyfile(file: versionFile) {
         entry(key: 'major', type: 'int', operation: '+', value: 1)
+        entry(key: 'minor', type: 'int', operation: '=', value: 0)
+        entry(key: 'patch', type: 'int', operation: '=', value: 0)
     }
 }
 
@@ -93,27 +95,35 @@ task incrementMinorVersion(group: 'versioning', description: 'Increments project
 
     ant.propertyfile(file: versionFile) {
         entry(key: 'minor', type: 'int', operation: '+', value: 1)
+        entry(key: 'patch', type: 'int', operation: '=', value: 0)
+    }
+}
+
+task incrementPatchVersion(group: 'versioning', description: 'Increment project patch version.') << {
+    String currentVersion = version.toString()
+    ++version.patch
+    String newVersion = version.toString()
+    logger.info "Increment patch project version: $currentVersion -> $newVersion"
+
+    ant.propertyfile(file: versionFile){
+        entry(key: 'patch', type: 'int', operation: '+', value: 1)
     }
 }
 
 class ProjectVersion {
     Integer major
     Integer minor
-    Boolean release
+    Integer patch
 
-    ProjectVersion(Integer major, Integer minor) {
+    ProjectVersion(Integer major, Integer minor, Integer patch) {
         this.major = major
         this.minor = minor
-        this.release = Boolean.FALSE
-    }
-
-    ProjectVersion(Integer major, Integer minor, Boolean release) {
-        this(major, minor)
-        this.release = release
+        this.patch = patch
     }
 
     @Override
     String toString() {
-        "$major.$minor${release ? '' : '-SNAPSHOT'}"
+        //"$major.$minor${patch ? '' : '-SNAPSHOT'}"
+        "$major.$minor.$patch"
     }
 }
