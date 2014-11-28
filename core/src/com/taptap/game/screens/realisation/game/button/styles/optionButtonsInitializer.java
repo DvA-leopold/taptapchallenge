@@ -29,6 +29,7 @@ public class optionButtonsInitializer implements Disposable {
         soundControl = new Button(skinOptions, "stateOption");
         back = new Button(skinOptions, "arrow");
 
+        skinOptions.getFont("whiteFont").setScale(2, 2);
         final Label musicLabel = new Label("Music: ", skinOptions);
         final Label soundLabel = new Label("Sound: ", skinOptions);
 
@@ -40,7 +41,7 @@ public class optionButtonsInitializer implements Disposable {
         optionTable.add(soundLabel).center();
         optionTable.add(soundControl).width(buttonWidth).height(buttonHeight);
         optionTable.row();
-        optionTable.add(back).width(buttonWidth*2).height(buttonHeight*2).bottom().left().expand();
+        optionTable.add(back).width(buttonWidth).height(buttonHeight).bottom().left().expand();
 
     }
 

@@ -1,7 +1,6 @@
 package com.taptap.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 

@@ -2,6 +2,7 @@ package com.taptap.game.resource.manager;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -17,6 +18,7 @@ public class ResourceManager {
     public static void queueLoading(){
         menuScreenLoad();
         gameScreenLoad();
+        musicLoad();
     }
 
     public static void updateLoadingQueue(){
@@ -54,7 +56,6 @@ public class ResourceManager {
 
     public static final String TextureAtlasNumber = "skins/game_menu/coins_and_numb/coins_and_hud.pack";
 
-
     private static void gameScreenLoad(){
         getInstance().load(gameBackground);
         getInstance().load(gameOver);
@@ -62,6 +63,17 @@ public class ResourceManager {
         getInstance().load(buttonAtlas);
         getInstance().load(atlasOptionMenu);
         getInstance().load(atlasPopupMenu);
+    }
+
+    // music and sounds
+    public static final AssetDescriptor<Music> mainGameMusic =
+            new AssetDescriptor<Music>("music/Black Vortex.mp3", Music.class);
+    public static final AssetDescriptor<Music> notGameLoopMusic =
+            new AssetDescriptor<Music>("music/The Path of the Goblin King.mp3", Music.class);
+
+    private static void musicLoad(){
+        getInstance().load(mainGameMusic);
+        getInstance().load(notGameLoopMusic);
     }
 
     public final AssetManager storage;

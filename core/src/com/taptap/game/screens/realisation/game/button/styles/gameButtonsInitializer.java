@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
-
 public class gameButtonsInitializer {
     public gameButtonsInitializer(final GameScreen game){
         this.game = game;

@@ -1,8 +1,8 @@
 package com.taptap.game.music.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
@@ -11,8 +11,8 @@ import com.taptap.game.screens.realisation.records.RecordScreen;
 public class MusicManager {
     static {
         //.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mainGameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/Black Vortex.mp3"));
-        notGameLoopMusic = Gdx.audio.newMusic(Gdx.files.internal("music/The Path of the Goblin King.mp3"));
+        mainGameMusic = ResourceManager.getInstance().get(ResourceManager.mainGameMusic);
+        notGameLoopMusic = ResourceManager.getInstance().get(ResourceManager.notGameLoopMusic);
         musicEnableFlag = true;
     }
 
