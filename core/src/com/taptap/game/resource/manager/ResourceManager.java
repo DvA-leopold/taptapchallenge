@@ -19,9 +19,10 @@ public class ResourceManager {
         gameScreenLoad();
     }
 
-    public static float updateLoadingQueue(){
-        ResourceManager.getInstance().update();
-        return getInstance().getProgress();
+    public static void updateLoadingQueue(){
+        while (getInstance().getProgress()<1){
+            ResourceManager.getInstance().update();
+        }
     }
 
     public void dispose(){

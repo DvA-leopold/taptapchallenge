@@ -141,17 +141,12 @@ ProjectVersion readVersion() {
 
     new ProjectVersion(versionProps.major.toInteger(), versionProps.minor.toInteger(), versionProps.patch.toInteger())
 }
-/*
-task makeReleaseVersion(group: 'versioning', description: 'Makes project a release version.') << {
-    version.release = true
-    ant.propertyfile(file: versionFile) {
-        entry(key: 'release', type: 'string', operation: '=', value: 'true')
-    }
-}
-*/
+
 task incrementMajorVersion(group: 'versioning', description: 'Increments project major version.') << {
     String currentVersion = version.toString()
     ++version.major
+    version.minor=0
+    version.patch=0
     String newVersion = version.toString()
     logger.info "Incrementing major project version: $currentVersion -> $newVersion"
 

@@ -12,11 +12,15 @@ public class StorageManagerTest {
     @Before
     public void setUp() throws Exception {
         System.out.println(Gdx.files.getLocalStoragePath());
+        System.out.printf("test running");
+
         //testStorage = new StorageManager(true, "saved_records.json");
     }
 
     @Test
     public void testSaveDataValue() throws Exception {
+        assertFalse(true);
+        assertFalse(false);
         //testStorage.saveDataValue("some ", 5);
         //testStorage.saveDataValue("some1", 88);
         //testStorage.saveDataValue("some3", 55);
