@@ -1,5 +1,6 @@
 package com.taptap.game.screens.realisation.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -8,14 +9,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
-import com.taptap.game.screens.realisation.game.button.styles.gameButtonsInitializer;
-import com.taptap.game.screens.realisation.game.button.styles.optionButtonsInitializer;
-import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.Buttons;
+import com.taptap.game.screens.realisation.game.button.styles.GameButtonsInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.PopUpButtonsInitializer;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
@@ -23,34 +21,26 @@ import com.taptap.game.resource.manager.ResourceManager;
 import debug.statistics.FPS_MEM_DC;
 
 public class GameScreen implements Screen {
-    public GameScreen(final TapTap game){
-        this.game = game;
-        double startTime = System.currentTimeMillis();
+    public GameScreen(){
+        double startTime = System.currentTimeMillis(); // todo debug
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
-        gameButtons = new gameButtonsInitializer(this);
-        popUpButtons = new popUpButtonsInitializer(this);
-        optionButtons = new optionButtonsInitializer(this);
+        gameButtons = new GameButtonsInitializer();
+        popUpButtons = new PopUpButtonsInitializer();
 
-        System.out.println("TIME: " + (System.currentTimeMillis() - startTime));
+        System.out.println("TIME: " + (System.currentTimeMillis() - startTime)); // todo debug
 
-        iconFactory = new AbstractItemFactory(
-                gameButtons.getOptionButton().getHeight(),
-                gameButtons.getOptionButton().getWidth(),
-                camera
-        );
+        iconFactory = new AbstractItemFactory(camera);
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
-        stage = new Stage();
 
         inputMultiplexer = new InputMultiplexer();
 
         stateManager = StateManager.GAME_RUNNING;
-        //tapSound = Gdx.audio.newSound(Gdx.files.internal("tap.wav"));
     }
 
     @Override
@@ -70,30 +60,19 @@ public class GameScreen implements Screen {
                 stateManager.gameOverState(this);
                 break;
             case GAME_EXIT:
-                stateManager.gameExitState(this);
+                stateManager.gameExitState();
                 break;
         }
         FPS_MEM_DC.fpsLog();
-        stage.act();
-        stage.draw();
     }
 
     @Override
     public void show() {
-        gameButtons.getTable().setFillParent(true);
-        popUpButtons.getTable().setFillParent(true);
-        optionButtons.getTable().setFillParent(true);
         //mainBatch.setProjectionMatrix(camera.combined);
         //transparentBatch.setProjectionMatrix(camera.combined);
-        stage.addActor(gameButtons.getTable());
+        popUpButtons.setListeners(this);
+        gameButtons.setListeners(this);
 
-        popUpButtons.setListeners(stage, gameButtons.getTable(), optionButtons.getTable());
-        gameButtons.setListeners(stage, popUpButtons.getTable());
-        optionButtons.setListeners(stage, popUpButtons.getTable());
-
-        //inputMultiplexer.addProcessor(gestureDetector);
-        inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new GestureDetector(iconFactory.getListener())); //можно изменить задержку измерения и т.п
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
@@ -106,7 +85,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -125,10 +103,8 @@ public class GameScreen implements Screen {
     public void dispose() {
         mainBatch.dispose();
         transparentBatch.dispose();
-        stage.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
-        optionButtons.dispose();
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign){
@@ -208,15 +184,31 @@ public class GameScreen implements Screen {
         return storage;
     }
 
-    public enum StateManager {
-        GAME_RUNNING,
-        GAME_PAUSED,
-        GAME_OVER,
-        GAME_EXIT;
+    private enum StateManager {
+        GAME_RUNNING(true),
+        GAME_PAUSED(true),
+        GAME_OVER(true),
+        GAME_EXIT(true);
+
+        private boolean firstTimeInit;
+
+        private StateManager(boolean firstTimeInit){
+            this.firstTimeInit = firstTimeInit;
+        }
+
+        private void gameStartDelay(int delayInSeconds){
+
+        }
 
         private void runState(final GameScreen screen){
+            if (GAME_RUNNING.firstTimeInit){
+                GAME_RUNNING.firstTimeInit = false;
+                screen.alpha = 0;
+                GAME_PAUSED.firstTimeInit = true;
+                screen.inputMultiplexer.addProcessor(screen.gameButtons.getStage());
+                screen.inputMultiplexer.addProcessor(screen.iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
+            }
             screen.totalTime -= Gdx.graphics.getDeltaTime();
-            screen.alpha = 0; // todo нужно переместить
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             FPS_MEM_DC.drawCalls++;
@@ -229,17 +221,26 @@ public class GameScreen implements Screen {
 
             screen.mainBatch.end();
 
-            if (screen.iconFactory.controlFiguresNumber()<0){
+            if (screen.iconFactory.controlFiguresNumber()<0) {
                 //screen.stateManager = GAME_OVER;
             }
-            if (screen.totalTime <= 0){
-                GameScreen.getStorage().saveDataValue("player " + GameScreen.getStorage().getAllData().size(),
-                        screen.iconFactory.getTotalScore());
+            if (screen.totalTime <= 0) {
+                GameScreen.getStorage().saveDataValue(
+                        "player " + GameScreen.getStorage().getAllData().size(),
+                        screen.iconFactory.getTotalScore()
+                );
                 screen.stateManager = GameScreen.StateManager.GAME_EXIT;
             }
+            screen.gameButtons.render();
         }
 
         private void pauseState(final GameScreen screen){
+            if (GAME_PAUSED.firstTimeInit){
+                GAME_PAUSED.firstTimeInit = false;
+                screen.inputMultiplexer.addProcessor(screen.popUpButtons.getStage());
+                screen.inputMultiplexer.removeProcessor(screen.iconFactory.getGestureDetector());
+                GAME_RUNNING.firstTimeInit = true;
+            }
             screen.alpha = (float)Math.min(screen.alpha + Gdx.graphics.getDeltaTime()/2, 0.7);
             screen.mainBatch.begin();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -255,7 +256,7 @@ public class GameScreen implements Screen {
                 FPS_MEM_DC.drawCalls++;
             }
             screen.transparentBatch.end();
-
+            screen.popUpButtons.render();
         }
 
         private void gameOverState(final GameScreen screen){
@@ -272,32 +273,27 @@ public class GameScreen implements Screen {
             }
         }
 
-        private void gameExitState(final GameScreen screen){
-            screen.game.setScreen(new MainMenuScreen(screen.game));
+        private void gameExitState(){
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
         }
     }
 
     private AbstractItemFactory iconFactory;
+    private final Buttons
+            gameButtons,
+            popUpButtons;
 
-    private gameButtonsInitializer gameButtons;
-    private popUpButtonsInitializer popUpButtons;
-    private optionButtonsInitializer optionButtons;
-
-    private Stage stage;
-
-    private Sprite gameBackground;
-    private Sprite gameOver;
-    private SpriteBatch transparentBatch;
-    private SpriteBatch mainBatch;
+    private final Sprite gameBackground;
+    private final Sprite gameOver;
+    private final SpriteBatch transparentBatch;
+    private final SpriteBatch mainBatch;
     private OrthographicCamera camera;
     public StateManager stateManager; // todo change to private
-    //private TaskManager taskManager;
-    private InputMultiplexer inputMultiplexer;
+    public final InputMultiplexer inputMultiplexer;
 
     //    private Sound tapSound;
     private float totalTime = 150;
     private float alpha = 0;
 
     private static StorageManager storage = new StorageManager(true);
-    private final TapTap game;
 }

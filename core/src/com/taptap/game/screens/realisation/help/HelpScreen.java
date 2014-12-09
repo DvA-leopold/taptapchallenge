@@ -14,37 +14,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.screens.realisation.game.button.styles.Buttons;
+import com.taptap.game.screens.realisation.game.button.styles.HelpButtonInitializer;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import debug.statistics.FPS_MEM_DC;
 
 public class HelpScreen implements Screen {
-    public HelpScreen(final TapTap game) {
-        this.game = game;
-        font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
+    public HelpScreen() {
         batch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("skins/help_menu/bg_grasslands.png"));
-
-        atlas = new TextureAtlas("skins/help_menu/buttons/helpButton.pack");
-        skin = new Skin(Gdx.files.internal("skins/json_skins/helpSkin.json"), atlas);
-        table = new Table(skin);
-        stage = new Stage();
-
-        button = new TextButton("menu", skin, "default");
-
+        buttons = new HelpButtonInitializer();
+/*
+        font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
         Label.LabelStyle headingStyle = new Label.LabelStyle(font, Color.BLACK);
         Label helpString1 = new Label(
                 "ПРОСТО ТЫКАЙ В ПОЯВЛЯЮЩИЕСЯ ШТУЧКИ\n "+
                 "пока у меня не хватило фантазии \n" +
                         "написать что-то обдуманное\n",
                 headingStyle);
+*/
 
-        int buttonWidth = Gdx.graphics.getWidth()/8;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
-
-        table.add(helpString1).center().padLeft(Gdx.graphics.getWidth());
-        table.add(button).padRight(Gdx.graphics.getWidth()-buttonWidth).
-                padTop(Gdx.graphics.getHeight()-buttonHeight).
-                height(buttonHeight).width(buttonWidth).reset();
     }
 
     @Override
@@ -54,33 +43,21 @@ public class HelpScreen implements Screen {
         batch.begin();
         batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         batch.end();
+        buttons.render();
 
-        stage.act();
-        stage.draw();
         FPS_MEM_DC.drawCalls+=2;
         FPS_MEM_DC.fpsLog();
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        buttons.resize(width, height);
     }
 
     @Override
     public void show() {
-        table.setFillParent(true);
-        stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+        buttons.setListeners(null);
         MusicManager.play(this);
-
-        button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.setScreen(new MainMenuScreen(game));
-            }
-        });
-
     }
 
     @Override
@@ -101,25 +78,15 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
-        atlas.dispose();
-        skin.dispose();
-        font.dispose();
-        stage.dispose();
+        //font.dispose();
+
         batch.dispose();
         background.dispose();
         //MusicManager.dispose();
     }
 
-    private TextureAtlas atlas;
-    private TextButton button;
-    private Skin skin;
-
-    private BitmapFont font;
-    private Table table;
-    private Stage stage;
-
+    private Buttons buttons;
+    //private BitmapFont font;
     private SpriteBatch batch;
     private Texture background;
-
-    private final TapTap game;
 }

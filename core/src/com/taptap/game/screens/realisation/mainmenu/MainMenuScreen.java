@@ -4,21 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.mainmenu.button.styles.MenuButtonInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.MenuButtonInitializer;
 import debug.statistics.FPS_MEM_DC;
 
 public class MainMenuScreen implements Screen {
-    public MainMenuScreen(final TapTap game){
-        buttons = new MenuButtonInitializer(game);
+    public MainMenuScreen() {
+        buttons = new MenuButtonInitializer();
         batch = new SpriteBatch();
         background = ResourceManager.getInstance().get(ResourceManager.menuBackground);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage = new Stage();
     }
 
     @Override
@@ -29,19 +26,17 @@ public class MainMenuScreen implements Screen {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-        stage.act();
-        stage.draw();
         FPS_MEM_DC.drawCalls+=2;
         FPS_MEM_DC.fpsLog();
         camera.update();
+        buttons.render();
     }
 
     @Override
     public void show() {
         //buttons.getTable().setFillParent(true);
-        stage.addActor(buttons.getTable());
-        Gdx.input.setInputProcessor(stage);
-        buttons.setListeners();
+
+        buttons.setListeners(null);
         MusicManager.play(this);
     }
 
@@ -53,7 +48,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // работает только для кнопок
+        buttons.resize(width, height);
     }
 
     @Override
@@ -68,13 +63,11 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
         buttons.dispose();
         batch.dispose();
         //background.dispose();
     }
 
-    private Stage stage;
     private MenuButtonInitializer buttons;
 
     private SpriteBatch batch;

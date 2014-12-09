@@ -1,5 +1,7 @@
 package com.taptap.game.music.player;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.taptap.game.resource.manager.ResourceManager;
@@ -47,7 +49,8 @@ public class MusicManager {
         }
     }
 
-    public static void onOffMusic(Screen screen){
+    public static void onOffMusic(){
+        Screen screen = ((Game) Gdx.app.getApplicationListener()).getScreen();
         musicEnableFlag = !musicEnableFlag;
         if (musicEnableFlag){
             musicOn(screen);

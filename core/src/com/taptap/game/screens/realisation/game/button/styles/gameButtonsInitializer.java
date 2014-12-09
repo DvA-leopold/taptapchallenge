@@ -1,7 +1,6 @@
 package com.taptap.game.screens.realisation.game.button.styles;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -11,52 +10,58 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
-public class gameButtonsInitializer {
-    public gameButtonsInitializer(final GameScreen game){
-        this.game = game;
-        TextureAtlas atlasGameMenu = ResourceManager.getInstance().get(ResourceManager.buttonAtlas);
+public class GameButtonsInitializer implements Buttons {
+    public GameButtonsInitializer() {
+        stage = new Stage();
         Skin skinGameMenu = new Skin(
                 Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
-                atlasGameMenu
+                ResourceManager.getInstance().get(ResourceManager.buttonAtlas)
         );
+        Table table = new Table(skinGameMenu);
         //skinGameMenu.getFont()
-        mainTable = new Table(skinGameMenu);
         optionButton = new Button(skinGameMenu, "popUpMenuButton");
-        mainTable.add(optionButton).
+        table.setFillParent(true);
+        table.add(optionButton).
                 padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
                 padLeft(-Gdx.graphics.getWidth()+Gdx.graphics.getWidth()/15).
                 width(Gdx.graphics.getWidth()/15).
                 height(Gdx.graphics.getHeight()/10);
+
+        stage.addActor(table);
     }
 
-    public void setListeners(final Stage stage, final Table changeToTable){
+    @Override
+    public void setListeners(final GameScreen gameScreen) {
         optionButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                game.stateManager = GameScreen.StateManager.GAME_PAUSED;
-                stage.clear();
-                stage.addActor(changeToTable);
+                gameScreen.stateManager = GameScreen.StateManager.GAME_PAUSED;
+                //stage.clear();
+                //stage.addActor(changeToTable);
             }
         });
     }
 
-    public Button getOptionButton(){
-        return optionButton;
+    @Override
+    public void resize(int width, int height) {
+
     }
 
-    public Table getTable(){
-        return mainTable;
+    @Override
+    public void render() {
+        stage.act();
+        stage.draw();
     }
-    public void dispose(){
+
+    public void dispose() {
+        stage.dispose();
         //skinGameMenu.dispose();
         //atlasGameMenu.dispose();
     }
+    public Stage getStage(){
+        return stage;
+    }
 
-    //private TextureAtlas atlasGameMenu;
-    //private Skin skinGameMenu;
-    private Table mainTable;
-    private Button optionButton;
-
-    private final GameScreen game;
+    private final Stage stage;
+    private final Button optionButton;
 }

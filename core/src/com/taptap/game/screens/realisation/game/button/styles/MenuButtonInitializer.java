@@ -1,8 +1,10 @@
-package com.taptap.game.screens.realisation.mainmenu.button.styles;
+package com.taptap.game.screens.realisation.game.button.styles;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
@@ -12,11 +14,11 @@ import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
 import com.taptap.game.screens.realisation.records.RecordScreen;
 
-public class MenuButtonInitializer implements Disposable {
-    public MenuButtonInitializer(final TapTap game){
-        this.game = game;
+public class MenuButtonInitializer implements Buttons {
+    public MenuButtonInitializer(){
         int buttonWidth = Gdx.graphics.getWidth()/2;
         int buttonHeight = Gdx.graphics.getHeight()/6;
+        stage = new Stage();
         table = new Table(skinMainMenu);
         atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
         skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
@@ -45,26 +47,37 @@ public class MenuButtonInitializer implements Disposable {
         table.row();
         table.add(soundButton).width(buttonWidth).height(buttonHeight);
     }
-    public void setListeners(){
+
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void render() {
+        stage.act();
+        stage.draw();
+    }
+
+    public void setListeners(final GameScreen gameScreen){
         buttonPlay.addListener(new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
             super.clicked(event, x, y);
-            game.setScreen(new GameScreen(game));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
         }
         });
         buttonHelp.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new HelpScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HelpScreen());
             }
         });
         buttonRecords.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new RecordScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new RecordScreen());
             }
         });
         soundButton.addListener(new ClickListener() {
@@ -76,20 +89,27 @@ public class MenuButtonInitializer implements Disposable {
                 } else {
                     soundButton.setText("Music: off");
                 }
-                MusicManager.onOffMusic(game.getScreen());
+                MusicManager.onOffMusic();
             }
         });
+
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
     }
-    public Table getTable(){
-        return table;
+
+    @Override
+    public Stage getStage() {
+        return null;
     }
 
     @Override
     public void dispose() {
         atlasMainMenu.dispose();
         skinMainMenu.dispose();
+        stage.dispose();
     }
 
+    private Stage stage;
     private Table table;
     private TextureAtlas atlasMainMenu;
     private Skin skinMainMenu;
@@ -98,5 +118,4 @@ public class MenuButtonInitializer implements Disposable {
             buttonHelp,
             soundButton,
             buttonRecords;
-    private final TapTap game;
 }

@@ -1,5 +1,6 @@
 package com.taptap.game.screens.realisation.records;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,13 +21,12 @@ import com.taptap.game.screens.realisation.game.GameScreen;
 import debug.statistics.FPS_MEM_DC;
 
 public class RecordScreen implements Screen {
-    public RecordScreen(final TapTap game){
-        this.game = game;
+    public RecordScreen(){
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         final TextureAtlas atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        skinRecords = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
+        Skin skinRecords = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
@@ -72,7 +72,7 @@ public class RecordScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                game.setScreen(new MainMenuScreen(game));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
             }
         });
     }
@@ -100,14 +100,12 @@ public class RecordScreen implements Screen {
         stage.dispose();
     }
 
-    private SpriteBatch batch;
-    private Table table;
-    private Button exitButton;
-    private Stage stage;
-    final Skin skinRecords;
+    private final Stage stage;
+    private final Table table;
+    private final Button exitButton;
 
+    private final SpriteBatch batch;
     private final Texture background;
-    private OrthographicCamera camera;
 
-    private final TapTap game;
+    private OrthographicCamera camera;
 }

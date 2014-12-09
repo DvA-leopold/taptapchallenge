@@ -1,7 +1,6 @@
 package com.taptap.game.screens.realisation.game.tap.icons.factory;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
@@ -14,9 +13,7 @@ import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
 import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
 
 public class AbstractItemFactory {
-    public AbstractItemFactory(float spawnBoarderX, float spawnBoarderY, Camera camera){
-        this.spawnBoarderX = spawnBoarderX;
-        this.spawnBoarderY = spawnBoarderY;
+    public AbstractItemFactory(Camera camera){
         tapIcons = new Array<Icon>(15);
         initListener(camera);
     }
@@ -63,7 +60,7 @@ public class AbstractItemFactory {
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 camera.unproject(touchPoint.set(x, y, 0));
                 Array<Vector2> array = new Array<Vector2>(4);
-                for (int i=0; i<tapIcons.size; ++i){ //todo сделать рефакторинг кода, тут пиздец
+                for (int i=0; i<tapIcons.size; ++i){
                     array.add(new Vector2(
                             tapIcons.get(i).getRect().x,
                             tapIcons.get(i).getRect().y));
@@ -89,7 +86,7 @@ public class AbstractItemFactory {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
                 //camera.unproject(touchPoint.set(x,y,0));
-                for (int i=0;i<tempCounter.length;++i){//todo сделать рефакторинг кода, тут тоже пиздец
+                for (int i=0;i<tempCounter.length;++i){
                     if (tempCounter[i]>1){
                         tapIcons.removeIndex(i);
                         break;
@@ -113,16 +110,17 @@ public class AbstractItemFactory {
                 return false;
             }
         };
+        gestureDetector = new GestureDetector(gesturesListener);
     }
 
     public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcons(spawnBoarderX, spawnBoarderY));
+            tapIcons.add(new BlueIcons(200, 300)); // todo исправить значения
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcons(spawnBoarderX, spawnBoarderY));
+            tapIcons.add(new RedIcons(200, 300));
         } else {
-            tapIcons.add(new YellowIcons(spawnBoarderX, spawnBoarderY));
+            tapIcons.add(new YellowIcons(200, 300));
         }
     }
 
@@ -138,8 +136,8 @@ public class AbstractItemFactory {
         return totalScore;
     }
 
-    public GestureDetector.GestureListener getListener(){
-        return gesturesListener;
+    public GestureDetector getGestureDetector(){
+        return gestureDetector;
     }
 
     public Array<Icon> getIconsArray(){
@@ -150,13 +148,11 @@ public class AbstractItemFactory {
     }
 
     private GestureDetector.GestureListener gesturesListener;
+    private GestureDetector gestureDetector;
     //////////////////////////////////////////////////
     int[] tempCounter = new int[10];
     //////////////////////////////////////////////////
     private Array<Icon> tapIcons;
     private int totalScore;
     private long lastDropTime;
-
-    private final float spawnBoarderX;
-    private final float spawnBoarderY;
 }

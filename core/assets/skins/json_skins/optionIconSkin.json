@@ -37,13 +37,10 @@
       "up": "buttonSquare_grey",
       "down": "buttonSquare_grey_pressed"
     }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
+    "default": {
+      "titleFont": "whiteFont"
+    }
   }
- // "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
- //   "optionButtons": {
- //    "up": "button.up",
- //     "down": "button.down",
- //     "checked": "button.down",
- //     "font": "blackFont"
- //   }
- // }
 }

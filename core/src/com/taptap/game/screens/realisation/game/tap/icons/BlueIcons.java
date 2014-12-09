@@ -59,7 +59,7 @@ public class BlueIcons implements Icon {
         return coords;
     }
 
-    private Rectangle coords;
 
+    private Rectangle coords;
     private static Texture taptapImage;
 }

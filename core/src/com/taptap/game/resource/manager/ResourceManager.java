@@ -44,7 +44,7 @@ public class ResourceManager {
 
     // GameScreen
     public static final AssetDescriptor<Texture> gameBackground =
-            new AssetDescriptor<Texture>("skins/game_menu/game_bg.png", Texture.class); // todo  возмжно статик не нужен
+            new AssetDescriptor<Texture>("skins/game_menu/game_bg.png", Texture.class);
     public static final AssetDescriptor<Texture> gameOver =
             new AssetDescriptor<Texture>("skins/game_menu/game_over.png", Texture.class);
     public static final AssetDescriptor<TextureAtlas> buttonAtlas =
