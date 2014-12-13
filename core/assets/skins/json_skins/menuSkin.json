@@ -26,16 +26,16 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
     "mainButtons": {
-      "up": "button.up",
-      "down": "button.down",
+      "up": "button_long_up",
+      "down": "button_long_down",
       "pressedOffsetX": 1,
       "pressedOffsetY": -2,
       "font": "blackFont"
     },
     "soundTest": {
-      "up": "button.up",
-      "down": "button.down",
-      "checked": "button.down",
+      "up": "button_music_up",
+      "down": "button_music_down",
+      "checked": "button_music_down",
       "pressedOffsetX": 1,
       "pressedOffsetY": -2,
       "font": "blackFont"
@@ -43,11 +43,11 @@
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
     "default": {
-      "up": "button.up",
-      "down": "button.down",
+      "up": "button_long_up",
+      "down": "button_long_down",
       "pressedOffsetX": 1,
       "pressedOffsetY": -2
     },
-    "sound": {"up": "button.up"}
+    "sound": {"up": "button_long_up"}
   }
 }

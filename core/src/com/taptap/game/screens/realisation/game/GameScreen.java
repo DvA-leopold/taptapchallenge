@@ -14,7 +14,7 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
 import com.taptap.game.screens.realisation.game.button.styles.Buttons;
 import com.taptap.game.screens.realisation.game.button.styles.GameButtonsInitializer;
-import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.PopUpButtonInitializer;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
         gameButtons = new GameButtonsInitializer();
-        popUpButtons = new popUpButtonsInitializer();
+        popUpButtons = new PopUpButtonInitializer();
 
         iconFactory = new AbstractItemFactory(camera);
         mainBatch = new SpriteBatch();
@@ -110,7 +110,7 @@ public class GameScreen implements Screen {
         int temp = numbForRender;// todo можно оптимизировать
         float width = Gdx.graphics.getWidth();
         Sprite picture;
-        while (true) {
+        while (temp>=0) {
             int val = temp % 10;
             temp /= 10;
             switch (val) {
@@ -166,6 +166,7 @@ public class GameScreen implements Screen {
                     //picture = coinsAndNumbers.createSprite("hud9");
                     break;
                 default:
+                    Gdx.app.error("Error", " no such number");
                     return;
             }
             width -= picture.getWidth();
@@ -173,8 +174,8 @@ public class GameScreen implements Screen {
                     picture, width + widthAlign,
                     Gdx.graphics.getHeight() + heightAlign - picture.getHeight()
             );
-            if (val<=0){
-                break;
+            if (temp<=0){
+                return;
             }
             FPS_MEM_DC.drawCalls++;
         }
@@ -237,7 +238,7 @@ public class GameScreen implements Screen {
                 screen.mainBatch.end();
 
                 if (screen.iconFactory.controlFiguresNumber()<0) {
-                    //screen.stateManager = GAME_OVER;
+                    screen.stateManager = GAME_OVER;
                 }
                 if (screen.totalTime <= 0) {
                     GameScreen.getStorage().saveDataValue(

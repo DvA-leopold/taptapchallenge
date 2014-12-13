@@ -7,8 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Disposable;
-import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
@@ -28,7 +26,7 @@ public class MenuButtonInitializer implements Buttons {
         buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
         buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
         buttonRecords = new TextButton("Records", skinMainMenu, "mainButtons");
-        soundButton = new TextButton("Music: on", skinMainMenu,"soundTest");
+        soundButton = new TextButton("Music:", skinMainMenu,"soundTest");
         soundButton.setChecked(!MusicManager.isMusicEnable());
 
         buttonPlay.pad(10);
@@ -58,37 +56,28 @@ public class MenuButtonInitializer implements Buttons {
         stage.draw();
     }
 
-    public void setListeners(final GameScreen gameScreen){
+    public void setListeners(final GameScreen gameScreen) {
         buttonPlay.addListener(new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            super.clicked(event, x, y);
             ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
         }
         });
         buttonHelp.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new HelpScreen());
             }
         });
         buttonRecords.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new RecordScreen());
             }
         });
         soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                if (!MusicManager.isMusicEnable()){
-                    soundButton.setText("Music: on");
-                } else {
-                    soundButton.setText("Music: off");
-                }
                 MusicManager.onOffMusic();
             }
         });

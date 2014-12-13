@@ -93,6 +93,7 @@ public class AbstractItemFactory {
                 //camera.unproject(touchPoint.set(x,y,0));
                 for (int i=tapIcons.size-1; i>=0; --i){
                     if (tempCounter[i]>=1){
+                        totalScore+=tapIcons.get(i).getScore();
                         tapIcons.removeIndex(i);
                         break;
                     }
