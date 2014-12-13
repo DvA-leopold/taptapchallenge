@@ -9,8 +9,8 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
-public class popUpButtonsInitializer implements Buttons {
-    public popUpButtonsInitializer() {
+public class PopUpButtonInitializer implements Buttons {
+    public PopUpButtonInitializer() {
         menuStageInit();
         optionStageInit();
     }
