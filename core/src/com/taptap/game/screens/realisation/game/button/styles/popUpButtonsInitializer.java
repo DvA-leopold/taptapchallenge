@@ -9,13 +9,13 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 
-public class PopUpButtonsInitializer implements Buttons {
-    public PopUpButtonsInitializer() {
+public class popUpButtonsInitializer implements Buttons {
+    public popUpButtonsInitializer() {
         menuStageInit();
         optionStageInit();
     }
 
-    public void menuStageInit(){
+    public void menuStageInit() {
         int buttonWidth = Gdx.graphics.getWidth() / 3;
         int buttonHeight = Gdx.graphics.getHeight() / 7;
         pauseMenuStage = new Stage();
@@ -24,7 +24,6 @@ public class PopUpButtonsInitializer implements Buttons {
                 ResourceManager.getInstance().get(ResourceManager.atlasPopupMenu)
         );
         skinPopupMenu.getFont("blackFont").setScale(2, 2);
-        //Table popupTable = new Table(skinPopupMenu);
         resumeGameButton = new TextButton("return", skinPopupMenu, "popUpButtons");
         optionGameButton = new TextButton("options", skinPopupMenu, "popUpButtons");
         exitMainMenuButton = new TextButton("exit", skinPopupMenu, "popUpButtons");
@@ -33,7 +32,7 @@ public class PopUpButtonsInitializer implements Buttons {
         optionGameButton.pad(10);
         exitMainMenuButton.pad(10);
 
-        Window pauseWindow = new Window("pause", skinPopupMenu);
+        Window pauseWindow = new Window("", skinPopupMenu);
         pauseWindow.setFillParent(true);
         pauseWindow.add(resumeGameButton).width(buttonWidth).height(buttonHeight);
         pauseWindow.row();
@@ -44,7 +43,7 @@ public class PopUpButtonsInitializer implements Buttons {
         pauseMenuStage.addActor(pauseWindow);
     }
 
-    public void optionStageInit(){
+    public void optionStageInit() {
         int buttonWidth = Gdx.graphics.getWidth()/10;
         int buttonHeight = Gdx.graphics.getHeight()/8;
         optionMenuStage = new Stage();
@@ -54,9 +53,9 @@ public class PopUpButtonsInitializer implements Buttons {
                 ResourceManager.getInstance().get(ResourceManager.atlasOptionMenu)
         );
         //Table optionWindow = new Table(skinOptions);
-        musicControl = new Button(skinOptions, "stateOption");
+        musicControl = new CheckBox(null, skinOptions, "stateOption");
         musicControl.setChecked(!MusicManager.isMusicEnable());
-        soundControl = new Button(skinOptions, "stateOption");
+        soundControl = new CheckBox(null, skinOptions, "stateOption");
         back = new Button(skinOptions, "arrow");
 
         skinOptions.getFont("whiteFont").setScale(2, 2);
@@ -138,7 +137,6 @@ public class PopUpButtonsInitializer implements Buttons {
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
@@ -168,9 +166,10 @@ public class PopUpButtonsInitializer implements Buttons {
             optionGameButton,
             exitMainMenuButton;
 
-    private Button // todo change to checkbox
+    private CheckBox // todo change to checkbox
             musicControl,
-            soundControl,
-            back;
+            soundControl;
+
+    private Button back;
 
 }

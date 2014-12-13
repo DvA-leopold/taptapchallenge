@@ -14,7 +14,7 @@ import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
 import com.taptap.game.screens.realisation.game.button.styles.Buttons;
 import com.taptap.game.screens.realisation.game.button.styles.GameButtonsInitializer;
-import com.taptap.game.screens.realisation.game.button.styles.PopUpButtonsInitializer;
+import com.taptap.game.screens.realisation.game.button.styles.popUpButtonsInitializer;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
 import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
         gameButtons = new GameButtonsInitializer();
-        popUpButtons = new PopUpButtonsInitializer();
+        popUpButtons = new popUpButtonsInitializer();
 
         iconFactory = new AbstractItemFactory(camera);
         mainBatch = new SpriteBatch();
