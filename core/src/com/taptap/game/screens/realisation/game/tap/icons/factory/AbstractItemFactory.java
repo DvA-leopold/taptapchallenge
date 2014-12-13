@@ -1,5 +1,6 @@
 package com.taptap.game.screens.realisation.game.tap.icons.factory;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Intersector;
@@ -63,16 +64,20 @@ public class AbstractItemFactory {
                 for (int i=0; i<tapIcons.size; ++i){ // todo ужасное решение, попробовать сделать лучше
                     array.add(new Vector2(
                             tapIcons.get(i).getRect().x,
-                            tapIcons.get(i).getRect().y));
+                            tapIcons.get(i).getRect().y)
+                    );
                     array.add(new Vector2(
-                            tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
-                            tapIcons.get(i).getRect().y));
+                            tapIcons.get(i).getRect().x+getItemsSize(),// tapIcons.get(i).getWidth()
+                            tapIcons.get(i).getRect().y)
+                    );
                     array.add(new Vector2(
-                            tapIcons.get(i).getRect().x+tapIcons.get(i).getWidth(),
-                            tapIcons.get(i).getRect().y+tapIcons.get(i).getHeight()));
+                            tapIcons.get(i).getRect().x+getItemsSize(), //tapIcons.get(i).getWidth()
+                            tapIcons.get(i).getRect().y+getItemsSize()) //tapIcons.get(i).getHeight()
+                    );
                     array.add(new Vector2(
                             tapIcons.get(i).getRect().x,
-                            tapIcons.get(i).getRect().y+tapIcons.get(i).getHeight()));
+                            tapIcons.get(i).getRect().y+getItemsSize()) //tapIcons.get(i).getHeight()
+                    );
 
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))){
                         tempCounter[i]++;
@@ -86,8 +91,8 @@ public class AbstractItemFactory {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
                 //camera.unproject(touchPoint.set(x,y,0));
-                for (int i=0;i<tempCounter.length;++i){
-                    if (tempCounter[i]>1){
+                for (int i=tapIcons.size; i>=0; --i){
+                    if (tempCounter[i]>=1){
                         tapIcons.removeIndex(i);
                         break;
                     }
@@ -116,11 +121,11 @@ public class AbstractItemFactory {
     public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcons(200, 300)); // todo исправить значения
+            tapIcons.add(new BlueIcons(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f)); // todo исправить значения
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcons(200, 300));
+            tapIcons.add(new RedIcons(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f));
         } else {
-            tapIcons.add(new YellowIcons(200, 300));
+            tapIcons.add(new YellowIcons(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f));
         }
     }
 
@@ -138,6 +143,10 @@ public class AbstractItemFactory {
 
     public GestureDetector getGestureDetector(){
         return gestureDetector;
+    }
+
+    public float getItemsSize() {
+        return Gdx.graphics.getHeight()/5;
     }
 
     public Array<Icon> getIconsArray(){

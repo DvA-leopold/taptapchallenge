@@ -28,14 +28,17 @@
       "up": "arrow_up",
       "down": "arrow_down"
     },
-    "stateOption": {
-      "up": "button_square_on",
-      "down": "button_square_off",
-      "checked": "button_square_off"
-    },
     "popUpMenuButton": {
       "up": "buttonSquare_grey",
       "down": "buttonSquare_grey_pressed"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+    "stateOption": {
+      "up": "button_square_on",
+      "down": "button_square_off",
+      "checked": "button_square_off",
+      "font":"whiteFont"
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {

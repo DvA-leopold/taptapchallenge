@@ -229,7 +229,9 @@ public class GameScreen implements Screen {
                 screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 FPS_MEM_DC.drawCalls++;
                 for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
-                    screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
+                    screen.mainBatch.draw(iconsDrop.getTexture(),
+                            iconsDrop.getX(), iconsDrop.getY(),
+                            screen.iconFactory.getItemsSize(),screen.iconFactory.getItemsSize());
                     FPS_MEM_DC.drawCalls++;
                 }
                 screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
