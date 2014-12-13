@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,6 +27,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt")); //todo поменять шрифты
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
@@ -107,76 +109,77 @@ public class GameScreen implements Screen {
         popUpButtons.dispose();
     }
 
-    private void renderNumbers(int numbForRender, float widthAlign, float heightAlign){
-        if (numbForRender>=0){ // todo возможно можно оптимизировать
-            int temp = numbForRender;
-            float width = Gdx.graphics.getWidth();
-            Sprite picture = new Sprite();
-            while (temp!=0){
-                int val = temp % 10;
-                temp/=10;
-                switch (val){
-                    case 0:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud0");
-                        break;
-                    case 1:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud1");
-                        break;
-                    case 2:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud2");
-                        break;
-                    case 3:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud3");
-                        break;
-                    case 4:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud4");
-                        break;
-                    case 5:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud5");
-                        break;
-                    case 6:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud6");
-                        break;
-                    case 7:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud7");
-                        break;
-                    case 8:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud8");
-                        break;
-                    case 9:
-                        picture = ResourceManager.getInstance().
-                                get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                                createSprite("hud9");
-                        //picture = coinsAndNumbers.createSprite("hud9");
-                        break;
-                    default:
-                        System.out.println("Error");
-                        break;
-                }
-                width -= picture.getWidth();
-                mainBatch.draw(
-                        picture, width + widthAlign,
-                        Gdx.graphics.getHeight() + heightAlign - picture.getHeight());
-                FPS_MEM_DC.drawCalls++;
+    private void renderNumbers(int numbForRender, float widthAlign, float heightAlign) {
+        int temp = numbForRender;// todo можно оптимизировать
+        float width = Gdx.graphics.getWidth();
+        Sprite picture;
+        while (true) {
+            int val = temp % 10;
+            temp /= 10;
+            switch (val) {
+                case 0:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud0");
+                    break;
+                case 1:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud1");
+                    break;
+                case 2:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud2");
+                    break;
+                case 3:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud3");
+                    break;
+                case 4:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud4");
+                    break;
+                case 5:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud5");
+                    break;
+                case 6:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud6");
+                    break;
+                case 7:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud7");
+                    break;
+                case 8:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud8");
+                    break;
+                case 9:
+                    picture = ResourceManager.getInstance().
+                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                            createSprite("hud9");
+                    //picture = coinsAndNumbers.createSprite("hud9");
+                    break;
+                default:
+                    return;
             }
+            width -= picture.getWidth();
+            mainBatch.draw(
+                    picture, width + widthAlign,
+                    Gdx.graphics.getHeight() + heightAlign - picture.getHeight()
+            );
+            if (val<=0){
+                break;
+            }
+            FPS_MEM_DC.drawCalls++;
         }
     }
 
@@ -184,7 +187,7 @@ public class GameScreen implements Screen {
         return storage;
     }
 
-    private enum StateManager {
+    public enum StateManager {
         GAME_RUNNING(true),
         GAME_PAUSED(true),
         GAME_OVER(true),
@@ -195,11 +198,15 @@ public class GameScreen implements Screen {
         private StateManager(boolean firstTimeInit){
             this.firstTimeInit = firstTimeInit;
         }
-
-        private void gameStartDelay(int delayInSeconds){
-
+/*
+        private boolean gameStartDelayFinished(float delayInSeconds, final GameScreen screen) {
+            screen.mainBatch.begin();
+            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            screen.renderNumbers((int)delayInSeconds, -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2);
+            screen.mainBatch.end();
+            return delayInSeconds > -1;
         }
-
+*/
         private void runState(final GameScreen screen){
             if (GAME_RUNNING.firstTimeInit){
                 GAME_RUNNING.firstTimeInit = false;
@@ -208,30 +215,41 @@ public class GameScreen implements Screen {
                 screen.inputMultiplexer.addProcessor(screen.gameButtons.getStage());
                 screen.inputMultiplexer.addProcessor(screen.iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
             }
-            screen.totalTime -= Gdx.graphics.getDeltaTime();
-            screen.mainBatch.begin();
-            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            FPS_MEM_DC.drawCalls++;
-            for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
-                screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
+            if (!screen.readyToStart){
+                screen.mainBatch.begin();
+                screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                screen.font.draw(screen.mainBatch, "press anywhere to start", 5, Gdx.graphics.getHeight()/2);
+                screen.mainBatch.end();
+                if (Gdx.input.isTouched()){
+                    screen.readyToStart = true;
+                }
+            } else {
+                screen.totalTime -= Gdx.graphics.getDeltaTime();
+                screen.mainBatch.begin();
+                screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 FPS_MEM_DC.drawCalls++;
-            }
-            screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
-            screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
+                for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
+                    screen.mainBatch.draw(iconsDrop.getTexture(), iconsDrop.getX(), iconsDrop.getY());
+                    FPS_MEM_DC.drawCalls++;
+                }
+                screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
+                screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
 
-            screen.mainBatch.end();
+                screen.mainBatch.end();
 
-            if (screen.iconFactory.controlFiguresNumber()<0) {
-                //screen.stateManager = GAME_OVER;
+                if (screen.iconFactory.controlFiguresNumber()<0) {
+                    //screen.stateManager = GAME_OVER;
+                }
+                if (screen.totalTime <= 0) {
+                    GameScreen.getStorage().saveDataValue(
+                            "player " + GameScreen.getStorage().getAllData().size(),
+                            screen.iconFactory.getTotalScore()
+                    );
+                    screen.stateManager = GameScreen.StateManager.GAME_EXIT;
+                }
+                screen.gameButtons.render();
             }
-            if (screen.totalTime <= 0) {
-                GameScreen.getStorage().saveDataValue(
-                        "player " + GameScreen.getStorage().getAllData().size(),
-                        screen.iconFactory.getTotalScore()
-                );
-                screen.stateManager = GameScreen.StateManager.GAME_EXIT;
-            }
-            screen.gameButtons.render();
+
         }
 
         private void pauseState(final GameScreen screen){
@@ -293,7 +311,9 @@ public class GameScreen implements Screen {
 
     //    private Sound tapSound;
     private float totalTime = 150;
+    boolean readyToStart = false;
     private float alpha = 0;
+    private BitmapFont font;
 
     private static StorageManager storage = new StorageManager(true);
 }

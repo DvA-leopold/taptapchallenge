@@ -20,7 +20,7 @@ public class AbstractItemFactory {
 
     public void initListener(final Camera camera) {
         final Vector3 touchPoint = new Vector3();
-        gesturesListener = new GestureDetector.GestureListener() {
+        GestureDetector.GestureListener gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
                 System.out.println("AbstractItemFactory.touchDown");
@@ -60,7 +60,7 @@ public class AbstractItemFactory {
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 camera.unproject(touchPoint.set(x, y, 0));
                 Array<Vector2> array = new Array<Vector2>(4);
-                for (int i=0; i<tapIcons.size; ++i){
+                for (int i=0; i<tapIcons.size; ++i){ // todo ужасное решение, попробовать сделать лучше
                     array.add(new Vector2(
                             tapIcons.get(i).getRect().x,
                             tapIcons.get(i).getRect().y));
@@ -147,7 +147,6 @@ public class AbstractItemFactory {
         return totalScore;
     }
 
-    private GestureDetector.GestureListener gesturesListener;
     private GestureDetector gestureDetector;
     //////////////////////////////////////////////////
     int[] tempCounter = new int[10];
