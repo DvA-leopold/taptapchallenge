@@ -91,7 +91,7 @@ public class AbstractItemFactory {
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
                 //camera.unproject(touchPoint.set(x,y,0));
-                for (int i=tapIcons.size; i>=0; --i){
+                for (int i=tapIcons.size-1; i>=0; --i){
                     if (tempCounter[i]>=1){
                         tapIcons.removeIndex(i);
                         break;
