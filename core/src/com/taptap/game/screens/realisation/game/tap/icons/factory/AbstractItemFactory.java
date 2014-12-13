@@ -121,11 +121,20 @@ public class AbstractItemFactory {
     public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcons(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f)); // todo исправить значения
+            tapIcons.add(new BlueIcons(
+                    Gdx.graphics.getWidth() * boarderIndentP,
+                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+            ); // todo исправить значения
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcons(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f));
+            tapIcons.add(new RedIcons(
+                    Gdx.graphics.getWidth() * boarderIndentP,
+                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+            );
         } else {
-            tapIcons.add(new YellowIcons(Gdx.graphics.getWidth() * 0.1f, Gdx.graphics.getHeight() * 0.1f));
+            tapIcons.add(new YellowIcons(
+                    Gdx.graphics.getWidth() * boarderIndentP,
+                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+            );
         }
     }
 
@@ -161,6 +170,7 @@ public class AbstractItemFactory {
     int[] tempCounter = new int[10];
     //////////////////////////////////////////////////
     private Array<Icon> tapIcons;
+    private float boarderIndentP = 0.05f;
     private int totalScore;
     private long lastDropTime;
 }

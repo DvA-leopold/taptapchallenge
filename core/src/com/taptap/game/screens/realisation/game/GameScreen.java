@@ -23,7 +23,6 @@ import debug.statistics.FPS_MEM_DC;
 
 public class GameScreen implements Screen {
     public GameScreen(){
-        double startTime = System.currentTimeMillis(); // todo debug
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -33,8 +32,6 @@ public class GameScreen implements Screen {
 
         gameButtons = new GameButtonsInitializer();
         popUpButtons = new PopUpButtonsInitializer();
-
-        System.out.println("TIME: " + (System.currentTimeMillis() - startTime)); // todo debug
 
         iconFactory = new AbstractItemFactory(camera);
         mainBatch = new SpriteBatch();
