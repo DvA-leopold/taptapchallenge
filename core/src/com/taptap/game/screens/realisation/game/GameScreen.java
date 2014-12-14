@@ -26,7 +26,7 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt")); //todo поменять шрифты
+        font = ResourceManager.getInstance().get(ResourceManager.fonts); //todo поменять шрифты
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 

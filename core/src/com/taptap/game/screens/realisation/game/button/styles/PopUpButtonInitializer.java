@@ -150,7 +150,6 @@ public class PopUpButtonInitializer implements Buttons {
         }
     }
 
-
     @Override
     public void dispose() {
         pauseMenuStage.dispose();

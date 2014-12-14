@@ -2,12 +2,12 @@ package com.taptap.game.screens.realisation.game.button.styles;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import com.taptap.game.screens.realisation.help.HelpScreen;
 import com.taptap.game.screens.realisation.records.RecordScreen;
@@ -18,8 +18,9 @@ public class MenuButtonInitializer implements Buttons {
         int buttonHeight = Gdx.graphics.getHeight()/6;
         stage = new Stage();
         table = new Table(skinMainMenu);
-        atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        skinMainMenu = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
+        skinMainMenu = new Skin(
+                Gdx.files.internal("skins/json_skins/menuSkin.json"),
+                ResourceManager.getInstance().get(ResourceManager.atlasMainMenu));
         skinMainMenu.getFont("blackFont").setScale(2, 2);
 
         Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
@@ -44,6 +45,8 @@ public class MenuButtonInitializer implements Buttons {
         table.add(buttonHelp).pad(5).width(buttonWidth).height(buttonHeight);
         table.row();
         table.add(soundButton).width(buttonWidth).height(buttonHeight);
+
+        stage.addActor(table);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class MenuButtonInitializer implements Buttons {
         stage.draw();
     }
 
-    public void setListeners(final GameScreen gameScreen) {
+    public void setListeners(final GameScreen game) {
         buttonPlay.addListener(new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
@@ -82,7 +85,6 @@ public class MenuButtonInitializer implements Buttons {
             }
         });
 
-        stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -93,15 +95,13 @@ public class MenuButtonInitializer implements Buttons {
 
     @Override
     public void dispose() {
-        atlasMainMenu.dispose();
-        skinMainMenu.dispose();
+        //skinMainMenu.dispose();
         stage.dispose();
     }
 
     private Stage stage;
-    private Table table;
-    private TextureAtlas atlasMainMenu;
     private Skin skinMainMenu;
+    private Table table;
     private final TextButton
             buttonPlay,
             buttonHelp,

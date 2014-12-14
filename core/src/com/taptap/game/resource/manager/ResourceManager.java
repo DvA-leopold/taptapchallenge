@@ -4,10 +4,11 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class ResourceManager {
-    private ResourceManager(){
+    private ResourceManager() {
         storage = new AssetManager();
     }
 
@@ -16,8 +17,10 @@ public class ResourceManager {
     }
 
     public static void queueLoading(){
+        recordScreenLoad();
         menuScreenLoad();
         gameScreenLoad();
+        helpScreenLoad();
         musicLoad();
     }
 
@@ -34,12 +37,38 @@ public class ResourceManager {
     private static class SingletonHolder {
         private static final ResourceManager SINGLETON_INSTANCE = new ResourceManager();
     }
+
     // MainMenuScreen
     public static final AssetDescriptor<Texture> menuBackground =
             new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
+    public static final AssetDescriptor<TextureAtlas> atlasMainMenu =
+            new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
 
-    private static void menuScreenLoad(){
+    private static void menuScreenLoad() {
         getInstance().load(menuBackground);
+        getInstance().load(atlasMainMenu);
+    }
+
+    //RecordScreen
+    public static final AssetDescriptor<TextureAtlas> atlasRecordMenu =
+            new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
+    public static final AssetDescriptor<Texture> recordBackground =
+            new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
+
+    private static void recordScreenLoad(){
+        getInstance().load(atlasRecordMenu);
+        getInstance().load(recordBackground);
+    }
+
+    // HelpScreen
+    public static final AssetDescriptor<Texture> helpBackground =
+            new AssetDescriptor<Texture>("skins/help_menu/bg_grasslands.png", Texture.class);
+    public static final AssetDescriptor<TextureAtlas> atlasHelpMenu =
+            new AssetDescriptor<TextureAtlas>("skins/help_menu/buttons/helpButton.pack", TextureAtlas.class);
+
+    private static void helpScreenLoad(){
+        getInstance().load(helpBackground);
+        getInstance().load(atlasHelpMenu);
     }
 
     // GameScreen
@@ -53,6 +82,8 @@ public class ResourceManager {
             new AssetDescriptor<TextureAtlas>("skins/game_menu/popUpButtons.pack", TextureAtlas.class);
     public static final AssetDescriptor<TextureAtlas> atlasPopupMenu =
             new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
+    public static final AssetDescriptor<BitmapFont> fonts =
+            new AssetDescriptor<BitmapFont>("fonts/whiteFont.fnt", BitmapFont.class);
 
     public static final String TextureAtlasNumber = "skins/game_menu/coins_and_numb/coins_and_hud.pack";
 
@@ -63,6 +94,7 @@ public class ResourceManager {
         getInstance().load(buttonAtlas);
         getInstance().load(atlasOptionMenu);
         getInstance().load(atlasPopupMenu);
+        getInstance().load(fonts);
     }
 
     // music and sounds

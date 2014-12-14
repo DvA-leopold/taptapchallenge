@@ -30,7 +30,6 @@ public class GameButtonsInitializer implements Buttons {
         stage.addActor(table);
     }
 
-    @Override
     public void setListeners(final GameScreen gameScreen) {
         optionButton.addListener(new ClickListener() {
             @Override

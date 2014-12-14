@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.game.button.styles.Buttons;
 import com.taptap.game.screens.realisation.game.button.styles.HelpButtonInitializer;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
@@ -22,7 +23,7 @@ import debug.statistics.FPS_MEM_DC;
 public class HelpScreen implements Screen {
     public HelpScreen() {
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("skins/help_menu/bg_grasslands.png"));
+        background = ResourceManager.getInstance().get(ResourceManager.helpBackground);
         buttons = new HelpButtonInitializer();
 /*
         font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
@@ -78,15 +79,11 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
-        //font.dispose();
-
         batch.dispose();
-        background.dispose();
-        //MusicManager.dispose();
+        //background.dispose();
     }
 
     private Buttons buttons;
-    //private BitmapFont font;
     private SpriteBatch batch;
     private Texture background;
 }

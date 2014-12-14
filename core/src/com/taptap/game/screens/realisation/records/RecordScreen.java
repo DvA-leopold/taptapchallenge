@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.music.player.MusicManager;
+import com.taptap.game.resource.manager.ResourceManager;
 import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
 import com.taptap.game.screens.realisation.game.GameScreen;
 import debug.statistics.FPS_MEM_DC;
@@ -24,14 +25,15 @@ public class RecordScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        final TextureAtlas atlasMainMenu = new TextureAtlas("skins/main_menu/buttons/buttons.pack");
-        Skin skinRecords = new Skin(Gdx.files.internal("skins/json_skins/menuSkin.json"), atlasMainMenu);
+        Skin skinRecords = new Skin(
+                Gdx.files.internal("skins/json_skins/menuSkin.json"),
+                ResourceManager.getInstance().get(ResourceManager.atlasRecordMenu));
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
         stage = new Stage();
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("skins/main_menu/background/bg_desert.png"));
+        background = ResourceManager.getInstance().get(ResourceManager.recordBackground);
 
         int buttonWidth = Gdx.graphics.getWidth()/3;
         int buttonHeight = Gdx.graphics.getHeight()/7;
@@ -95,7 +97,7 @@ public class RecordScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        background.dispose();
+        //background.dispose();
         stage.dispose();
     }
 
