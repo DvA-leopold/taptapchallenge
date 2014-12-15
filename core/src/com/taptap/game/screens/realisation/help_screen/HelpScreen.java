@@ -1,23 +1,14 @@
-package com.taptap.game.screens.realisation.help;
+package com.taptap.game.screens.realisation.help_screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.taptap.game.TapTap;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.game.button.styles.Buttons;
-import com.taptap.game.screens.realisation.game.button.styles.HelpButtonInitializer;
-import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
+import com.taptap.game.screens.realisation.game_screen.button.styles.Buttons;
+import com.taptap.game.screens.realisation.game_screen.button.styles.HelpButtonInitializer;
 import debug.statistics.FPS_MEM_DC;
 
 public class HelpScreen implements Screen {

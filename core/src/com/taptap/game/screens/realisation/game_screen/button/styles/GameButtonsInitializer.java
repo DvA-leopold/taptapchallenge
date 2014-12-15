@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.button.styles;
+package com.taptap.game.screens.realisation.game_screen.button.styles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.game.GameScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
 
 public class GameButtonsInitializer implements Buttons {
     public GameButtonsInitializer() {

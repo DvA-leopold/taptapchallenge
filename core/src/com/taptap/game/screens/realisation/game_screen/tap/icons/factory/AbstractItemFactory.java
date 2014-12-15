@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.tap.icons.factory;
+package com.taptap.game.screens.realisation.game_screen.tap.icons.factory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.taptap.game.screens.realisation.game.tap.icons.BlueIcons;
-import com.taptap.game.screens.realisation.game.tap.icons.RedIcons;
-import com.taptap.game.screens.realisation.game.tap.icons.YellowIcons;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.BlueIcons;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.RedIcons;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.YellowIcons;
 
 public class AbstractItemFactory {
     public AbstractItemFactory(Camera camera){

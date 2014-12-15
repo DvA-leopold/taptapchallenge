@@ -5,10 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
-import com.taptap.game.screens.realisation.game.GameScreen;
-import com.taptap.game.screens.realisation.help.HelpScreen;
-import com.taptap.game.screens.realisation.records.RecordScreen;
+import com.taptap.game.screens.realisation.mainmenu_screen.MainMenuScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
+import com.taptap.game.screens.realisation.help_screen.HelpScreen;
+import com.taptap.game.screens.realisation.records_screen.RecordScreen;
 
 public class MusicManager {
     static {

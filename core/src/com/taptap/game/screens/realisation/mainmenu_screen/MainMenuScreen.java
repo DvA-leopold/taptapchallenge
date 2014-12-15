@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.mainmenu;
+package com.taptap.game.screens.realisation.mainmenu_screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.game.button.styles.MenuButtonInitializer;
+import com.taptap.game.screens.realisation.game_screen.button.styles.MenuButtonInitializer;
 import debug.statistics.FPS_MEM_DC;
 
 public class MainMenuScreen implements Screen {
@@ -34,8 +34,6 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        //buttons.getTable().setFillParent(true);
-
         buttons.setListeners(null);
         MusicManager.play(this);
     }

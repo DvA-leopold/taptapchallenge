@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.tap.icons.factory;
+package com.taptap.game.screens.realisation.game_screen.tap.icons.factory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;

@@ -1,17 +1,17 @@
-package com.taptap.game.screens.realisation.game.tap.icons;
+package com.taptap.game.screens.realisation.game_screen.tap.icons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.factory.Icon;
 
-public class YellowIcons implements Icon {
+public class RedIcons implements Icon {
     static {
-        taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_yellow.png"));
+        taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_red.png"));
     }
 
-    public YellowIcons(float spawnBoarderX,float spawnBoarderY){
+    public RedIcons(float spawnBoarderX,float spawnBoarderY){
         coords = new Rectangle(
                 MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth() - taptapImage.getWidth()),
                 MathUtils.random(0, Gdx.graphics.getHeight()-taptapImage.getHeight()-spawnBoarderY-20),
@@ -20,12 +20,12 @@ public class YellowIcons implements Icon {
 
     @Override
     public int getScore() {
-        return 20;
+        return 25;
     }
 
     @Override
-    public void setCoords(int x, int y, int z, int w) {
-
+    public void setCoords(int x, int y, int w, int h) {
+        coords.set(x,y,w,h);
     }
 
     @Override

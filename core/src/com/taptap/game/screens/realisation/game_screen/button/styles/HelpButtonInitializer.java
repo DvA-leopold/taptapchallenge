@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.button.styles;
+package com.taptap.game.screens.realisation.game_screen.button.styles;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,14 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.game.GameScreen;
-import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
+import com.taptap.game.screens.realisation.mainmenu_screen.MainMenuScreen;
 
 public class HelpButtonInitializer implements Buttons {
     public HelpButtonInitializer(){
         int buttonWidth = Gdx.graphics.getWidth()/8;
         int buttonHeight = Gdx.graphics.getHeight()/7;
-        //atlas = new TextureAtlas("skins/help_menu/buttons/helpButton.pack");
         Skin skin = new Skin(
                 Gdx.files.internal("skins/json_skins/helpSkin.json"),
                 ResourceManager.getInstance().get(ResourceManager.atlasHelpMenu)
@@ -26,7 +25,6 @@ public class HelpButtonInitializer implements Buttons {
 
         button = new TextButton("menu", skin, "default");
 
-        //table.add(helpString1).center().padLeft(Gdx.graphics.getWidth());
         table.setFillParent(true);
         table.add(button).
                 padRight(Gdx.graphics.getWidth()-buttonWidth).

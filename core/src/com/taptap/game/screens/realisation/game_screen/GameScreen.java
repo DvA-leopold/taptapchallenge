@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game;
+package com.taptap.game.screens.realisation.game_screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,12 +12,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.save.manager.StorageManager;
-import com.taptap.game.screens.realisation.game.button.styles.Buttons;
-import com.taptap.game.screens.realisation.game.button.styles.GameButtonsInitializer;
-import com.taptap.game.screens.realisation.game.button.styles.PopUpButtonInitializer;
-import com.taptap.game.screens.realisation.game.tap.icons.factory.AbstractItemFactory;
-import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
-import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
+import com.taptap.game.screens.realisation.game_screen.button.styles.Buttons;
+import com.taptap.game.screens.realisation.game_screen.button.styles.GameButtonsInitializer;
+import com.taptap.game.screens.realisation.game_screen.button.styles.PopUpButtonInitializer;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.factory.AbstractItemFactory;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.factory.Icon;
+import com.taptap.game.screens.realisation.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.resource.manager.ResourceManager;
 import debug.statistics.FPS_MEM_DC;
 

@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.records;
+package com.taptap.game.screens.realisation.records_screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -16,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.mainmenu.MainMenuScreen;
-import com.taptap.game.screens.realisation.game.GameScreen;
+import com.taptap.game.screens.realisation.mainmenu_screen.MainMenuScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
 import debug.statistics.FPS_MEM_DC;
 
 public class RecordScreen implements Screen {
@@ -97,7 +96,6 @@ public class RecordScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        //background.dispose();
         stage.dispose();
     }
 

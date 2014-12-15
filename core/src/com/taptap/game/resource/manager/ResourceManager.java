@@ -12,11 +12,11 @@ public class ResourceManager {
         storage = new AssetManager();
     }
 
-    public static AssetManager getInstance(){
+    public static AssetManager getInstance() {
         return SingletonHolder.SINGLETON_INSTANCE.storage;
     }
 
-    public static void queueLoading(){
+    public static void queueLoading() {
         recordScreenLoad();
         menuScreenLoad();
         gameScreenLoad();
@@ -24,10 +24,9 @@ public class ResourceManager {
         musicLoad();
     }
 
-    public static void updateLoadingQueue(){
-        while (getInstance().getProgress()<1){
-            ResourceManager.getInstance().update();
-        }
+    public static float updateLoadingQueue(){
+        ResourceManager.getInstance().update();
+        return getInstance().getProgress();
     }
 
     public void dispose(){

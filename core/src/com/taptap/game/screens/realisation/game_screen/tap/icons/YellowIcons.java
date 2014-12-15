@@ -1,32 +1,31 @@
-package com.taptap.game.screens.realisation.game.tap.icons;
+package com.taptap.game.screens.realisation.game_screen.tap.icons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.taptap.game.screens.realisation.game.tap.icons.factory.Icon;
+import com.taptap.game.screens.realisation.game_screen.tap.icons.factory.Icon;
 
-public class BlueIcons implements Icon {
+public class YellowIcons implements Icon {
     static {
-        taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_blue.png"));
+        taptapImage = new Texture(Gdx.files.internal("skins/game_menu/tap_icons/hud_gem_yellow.png"));
     }
 
-    public BlueIcons(float spawnBoarderX, float spawnBoarderY){
+    public YellowIcons(float spawnBoarderX,float spawnBoarderY){
         coords = new Rectangle(
-                MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth()-taptapImage.getWidth()),
-                MathUtils.random(0, Gdx.graphics.getHeight()-spawnBoarderY - 20),
-                taptapImage.getWidth(), taptapImage.getHeight()
-        );
+                MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth() - taptapImage.getWidth()),
+                MathUtils.random(0, Gdx.graphics.getHeight()-taptapImage.getHeight()-spawnBoarderY-20),
+                taptapImage.getWidth(), taptapImage.getHeight());
     }
 
     @Override
     public int getScore() {
-        return 40;
+        return 20;
     }
 
     @Override
     public void setCoords(int x, int y, int z, int w) {
-        coords.set(x,y,z,w);
+
     }
 
     @Override
@@ -51,7 +50,7 @@ public class BlueIcons implements Icon {
 
     @Override
     public float getHeight() {
-        return coords.getWidth();
+        return coords.getHeight();
     }
 
     @Override
@@ -59,7 +58,7 @@ public class BlueIcons implements Icon {
         return coords;
     }
 
-
     private Rectangle coords;
+
     private static Texture taptapImage;
 }

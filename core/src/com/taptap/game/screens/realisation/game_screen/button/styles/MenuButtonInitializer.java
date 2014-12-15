@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.button.styles;
+package com.taptap.game.screens.realisation.game_screen.button.styles;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.game.GameScreen;
-import com.taptap.game.screens.realisation.help.HelpScreen;
-import com.taptap.game.screens.realisation.records.RecordScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
+import com.taptap.game.screens.realisation.help_screen.HelpScreen;
+import com.taptap.game.screens.realisation.records_screen.RecordScreen;
 
 public class MenuButtonInitializer implements Buttons {
     public MenuButtonInitializer(){

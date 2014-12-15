@@ -1,4 +1,4 @@
-package com.taptap.game.screens.realisation.game.button.styles;
+package com.taptap.game.screens.realisation.game_screen.button.styles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.taptap.game.music.player.MusicManager;
 import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.game.GameScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
 
 public class PopUpButtonInitializer implements Buttons {
     public PopUpButtonInitializer() {

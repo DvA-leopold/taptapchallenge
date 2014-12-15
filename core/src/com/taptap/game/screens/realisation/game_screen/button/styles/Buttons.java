@@ -1,7 +1,7 @@
-package com.taptap.game.screens.realisation.game.button.styles;
+package com.taptap.game.screens.realisation.game_screen.button.styles;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.taptap.game.screens.realisation.game.GameScreen;
+import com.taptap.game.screens.realisation.game_screen.GameScreen;
 
 public interface Buttons {
     public void resize(int width, int height);
