@@ -22,7 +22,7 @@ import com.taptap.game.resource.manager.ResourceManager;
 import debug.statistics.FPS_MEM_DC;
 
 public class GameScreen implements Screen {
-    public GameScreen(){
+    public GameScreen() {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
