@@ -1,8 +1,8 @@
 package com.taptap.game;
 
 import com.badlogic.gdx.Game;
-import com.taptap.game.resource.manager.ResourceManager;
-import com.taptap.game.screens.realisation.LoadScreen;
+import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.view.screens.LoadScreen;
 
 public class TapTap extends Game {
 
