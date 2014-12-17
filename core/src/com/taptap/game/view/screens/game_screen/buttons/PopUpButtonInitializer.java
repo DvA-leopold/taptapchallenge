@@ -113,7 +113,7 @@ public class PopUpButtonInitializer implements Buttons {
         resumeGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameScreen.stateManager = GameScreen.StateManager.GAME_RUNNING;
+                gameScreen.changeState(GameScreen.States.GAME_RUNNING);
                 gameScreen.inputMultiplexer.removeProcessor(pauseMenuStage);
             }
         });
@@ -128,7 +128,7 @@ public class PopUpButtonInitializer implements Buttons {
         exitMainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameScreen.stateManager = GameScreen.StateManager.GAME_EXIT;
+                gameScreen.changeState(GameScreen.States.GAME_EXIT);
             }
         });
     }

@@ -37,10 +37,10 @@ public class GameScreen implements Screen {
         popUpButtons = new PopUpButtonInitializer(mainBatch);
 
         iconFactory = new AbstractItemFactory(camera);
-
         inputMultiplexer = new InputMultiplexer();
 
-        stateManager = StateManager.GAME_RUNNING;
+        stateManager = new StateManager();
+        states = States.GAME_RUNNING;
     }
 
     @Override
@@ -49,15 +49,15 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-        switch (stateManager){
+        switch (states){
             case GAME_RUNNING:
-                stateManager.runState(this);
+                stateManager.runState();
                 break;
             case GAME_PAUSED:
-                stateManager.pauseState(this);
+                stateManager.pauseState();
                 break;
             case GAME_OVER:
-                stateManager.gameOverState(this);
+                stateManager.gameOverState();
                 break;
             case GAME_EXIT:
                 stateManager.gameExitState();
@@ -90,13 +90,13 @@ public class GameScreen implements Screen {
     @Override
     public void pause() {
         MusicManager.pause(this);
-        stateManager = StateManager.GAME_PAUSED;
+        states = States.GAME_PAUSED;
     }
 
     @Override
     public void resume() {
         MusicManager.play(this);
-        stateManager = StateManager.GAME_RUNNING;
+        //states = StateManager.GAME_RUNNING;
     }
 
     @Override
@@ -185,7 +185,7 @@ public class GameScreen implements Screen {
         return storage;
     }
 
-    public enum StateManager {
+    public enum States {
         GAME_RUNNING(true),
         GAME_PAUSED(true),
         GAME_OVER(true),
@@ -193,101 +193,106 @@ public class GameScreen implements Screen {
 
         private boolean firstTimeInit;
 
-        private StateManager(boolean firstTimeInit){
+        private States (boolean firstTimeInit){
             this.firstTimeInit = firstTimeInit;
         }
+    }
 
-        private void runState(final GameScreen screen){
-            if (GAME_RUNNING.firstTimeInit){
-                GAME_RUNNING.firstTimeInit = false;
-                screen.alpha = 0;
-                GAME_PAUSED.firstTimeInit = true;
-                screen.inputMultiplexer.addProcessor(screen.gameButtons.getStage());
-                screen.inputMultiplexer.addProcessor(screen.iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
+    public void changeState(States state){
+        this.states = state;
+    }
+
+    public class StateManager {
+        private void runState() {
+            if (States.GAME_RUNNING.firstTimeInit) {
+                States.GAME_RUNNING.firstTimeInit = false;
+                alpha = 0;
+                States.GAME_PAUSED.firstTimeInit = true;
+                inputMultiplexer.addProcessor(gameButtons.getStage());
+                inputMultiplexer.addProcessor(iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
             }
-            if (!screen.readyToStart){
-                screen.mainBatch.begin();
-                screen.mainBatch.disableBlending();
-                screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                screen.mainBatch.enableBlending();
-                screen.font.draw(screen.mainBatch, "press anywhere to start", 5, Gdx.graphics.getHeight()/2);
-                screen.mainBatch.end();
-                if (Gdx.input.isTouched()){
-                    screen.readyToStart = true;
+            if (!readyToStart) {
+                mainBatch.begin();
+                mainBatch.disableBlending();
+                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                mainBatch.enableBlending();
+                font.draw(mainBatch, "press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
+                mainBatch.end();
+                if (Gdx.input.isTouched()) {
+                    readyToStart = true;
                 }
             } else {
-                screen.totalTime -= Gdx.graphics.getDeltaTime();
-                screen.mainBatch.begin();
-                screen.mainBatch.disableBlending();
-                screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                screen.mainBatch.enableBlending();
-                for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
-                    screen.mainBatch.draw(iconsDrop.getTexture(),
+                totalTime -= Gdx.graphics.getDeltaTime();
+                mainBatch.begin();
+                mainBatch.disableBlending();
+                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                mainBatch.enableBlending();
+                for (Icon iconsDrop : iconFactory.getIconsArray()) {
+                    mainBatch.draw(iconsDrop.getTexture(),
                             iconsDrop.getX(), iconsDrop.getY(),
-                            screen.iconFactory.getItemsSize(),screen.iconFactory.getItemsSize());
+                            iconFactory.getItemsSize(),
+                            iconFactory.getItemsSize());
                 }
-                screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
-                screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
+                renderNumbers(iconFactory.getTotalScore(), 0, 0);
+                renderNumbers((int)totalTime, -Gdx.graphics.getWidth() / 2, 0);
 
-                screen.mainBatch.end();
-
-                if (screen.iconFactory.controlFiguresNumber()<0) {
-                    screen.stateManager = GAME_OVER;
+                mainBatch.end();
+                if (iconFactory.controlFiguresNumber() < 0) {
+                    states = States.GAME_OVER;
                 }
-                if (screen.totalTime <= 0) {
+                if (totalTime <= 0) {
                     GameScreen.getStorage().saveDataValue(
                             "player " + GameScreen.getStorage().getAllData().size(),
-                            screen.iconFactory.getTotalScore()
+                            iconFactory.getTotalScore()
                     );
-                    screen.stateManager = GameScreen.StateManager.GAME_EXIT;
+                    states = States.GAME_EXIT;
                 }
-                screen.gameButtons.render();
-                System.out.println(screen.mainBatch.renderCalls);
+                gameButtons.render();
+                //System.out.println(mainBatch.renderCalls);
             }
 
         }
-
-        private void pauseState(final GameScreen screen){
-            if (GAME_PAUSED.firstTimeInit){
-                GAME_PAUSED.firstTimeInit = false;
-                screen.inputMultiplexer.addProcessor(screen.popUpButtons.getStage());
-                screen.inputMultiplexer.removeProcessor(screen.iconFactory.getGestureDetector());
-                GAME_RUNNING.firstTimeInit = true;
+        private void pauseState() {
+            if (States.GAME_PAUSED.firstTimeInit) {
+                States.GAME_PAUSED.firstTimeInit = false;
+                inputMultiplexer.addProcessor(popUpButtons.getStage());
+                inputMultiplexer.removeProcessor(iconFactory.getGestureDetector());
+                States.GAME_RUNNING.firstTimeInit = true;
             }
-            screen.alpha = (float)Math.min(screen.alpha + Gdx.graphics.getDeltaTime()/2, 0.7);
-            screen.mainBatch.begin();
-            screen.mainBatch.disableBlending();
-            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            screen.mainBatch.enableBlending();
-            screen.mainBatch.end();
+            alpha = (float) Math.min(alpha + Gdx.graphics.getDeltaTime() / 2, 0.7);
+            mainBatch.begin();
+            mainBatch.disableBlending();
+            mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            mainBatch.enableBlending();
+            mainBatch.end();
             // todo оптимизировать, здесь куча лишней прорисовки
-            screen.transparentBatch.begin();
-            screen.transparentBatch.setColor(0.0f, 0.0f, 0.0f, screen.alpha);
-            screen.transparentBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            for(Icon tapIcon : screen.iconFactory.getIconsArray()) {
-                screen.transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
+            transparentBatch.begin();
+            transparentBatch.setColor(0.0f, 0.0f, 0.0f, alpha);
+            transparentBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            for (Icon tapIcon : iconFactory.getIconsArray()) {
+                transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
             }
-            screen.transparentBatch.end();
-            screen.popUpButtons.render();
+            transparentBatch.end();
+            popUpButtons.render();
         }
 
-        private void gameOverState(final GameScreen screen){
-            screen.mainBatch.begin();
-            screen.mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
-            screen.mainBatch.disableBlending();
-            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            screen.mainBatch.enableBlending();
-            screen.mainBatch.draw(screen.gameOver,
-                    Gdx.graphics.getWidth() / 2 - screen.gameOver.getWidth() / 2,
-                    Gdx.graphics.getHeight() / 2 - screen.gameOver.getHeight() / 2);
-            screen.mainBatch.end();
-            if (Gdx.input.isTouched()){
-                screen.stateManager = GAME_EXIT;
+        private void gameOverState() {
+            mainBatch.begin();
+            mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
+            mainBatch.disableBlending();
+            mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            mainBatch.enableBlending();
+            mainBatch.draw(gameOver,
+                    Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
+                    Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
+            mainBatch.end();
+            if (Gdx.input.isTouched()) {
+                states = States.GAME_EXIT;
             }
-            System.out.println(screen.mainBatch.renderCalls);
+            //System.out.println(mainBatch.renderCalls);
         }
 
-        private void gameExitState(){
+        private void gameExitState() {
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
         }
     }
@@ -302,7 +307,8 @@ public class GameScreen implements Screen {
     private final SpriteBatch transparentBatch;
     private final SpriteBatch mainBatch;
     private OrthographicCamera camera;
-    public StateManager stateManager; // todo change to private
+    private StateManager stateManager;
+    private States states;
     public final InputMultiplexer inputMultiplexer;
 
     //    private Sound tapSound;

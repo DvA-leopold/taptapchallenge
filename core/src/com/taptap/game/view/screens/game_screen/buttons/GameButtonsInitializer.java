@@ -37,9 +37,7 @@ public class GameButtonsInitializer implements Buttons {
         optionButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameScreen.stateManager = GameScreen.StateManager.GAME_PAUSED;
-                //stage.clear();
-                //stage.addActor(changeToTable);
+                gameScreen.changeState(GameScreen.States.GAME_PAUSED);
             }
         });
     }
@@ -52,8 +50,6 @@ public class GameButtonsInitializer implements Buttons {
 
     public void dispose() {
         stage.dispose();
-        //skinGameMenu.dispose();
-        //atlasGameMenu.dispose();
     }
     public Stage getStage(){
         return stage;
