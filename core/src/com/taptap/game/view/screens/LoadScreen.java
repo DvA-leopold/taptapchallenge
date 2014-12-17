@@ -34,6 +34,8 @@ public class LoadScreen implements Screen {
 
     @Override
     public void show() {
+        batch = new SpriteBatch();
+        batch.disableBlending();
         barHorizontalMid = new Texture ("skins/load_menu/bar_yellow_mid.png");
         ResourceManager.queueLoading();
     }
@@ -61,5 +63,5 @@ public class LoadScreen implements Screen {
 
     //private float position = 100;
     private Texture barHorizontalMid;
-    private SpriteBatch batch = new SpriteBatch();
+    private SpriteBatch batch;
 }

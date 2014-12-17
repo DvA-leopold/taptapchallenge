@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
@@ -21,21 +22,22 @@ import debug.statistics.FPS_MEM_DC;
 
 public class RecordScreen implements Screen {
     public RecordScreen(){
+        int buttonWidth = Gdx.graphics.getWidth()/3;
+        int buttonHeight = Gdx.graphics.getHeight()/7;
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Skin skinRecords = new Skin(
                 Gdx.files.internal("skins/json_skins/menuSkin.json"),
-                ResourceManager.getInstance().get(ResourceManager.atlasRecordMenu));
+                ResourceManager.getInstance().get(ResourceManager.atlasRecordMenu)
+        );
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
-        stage = new Stage();
         batch = new SpriteBatch();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         background = ResourceManager.getInstance().get(ResourceManager.recordBackground);
-
-        int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
 
         GameScreen.getStorage().displayData(table, skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);
@@ -46,19 +48,19 @@ public class RecordScreen implements Screen {
         Gdx.gl.glClearColor(0, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        batch.disableBlending();
         batch.draw(background, 0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.enableBlending();
         batch.end();
 
         stage.act();
         stage.draw();
-        FPS_MEM_DC.drawCalls+=2;
         FPS_MEM_DC.fpsLog();
         camera.update();
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
     }
 
     @Override

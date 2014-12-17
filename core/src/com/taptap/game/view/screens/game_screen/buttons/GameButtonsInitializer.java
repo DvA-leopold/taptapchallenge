@@ -1,18 +1,21 @@
-package com.taptap.game.view.screens.game_screen.button.styles;
+package com.taptap.game.view.screens.game_screen.buttons;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.game_screen.GameScreen;
+import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class GameButtonsInitializer implements Buttons {
-    public GameButtonsInitializer() {
-        stage = new Stage();
+    public GameButtonsInitializer(Batch batch) {
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         Skin skinGameMenu = new Skin(
                 Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
                 ResourceManager.getInstance().get(ResourceManager.buttonAtlas)
@@ -39,11 +42,6 @@ public class GameButtonsInitializer implements Buttons {
                 //stage.addActor(changeToTable);
             }
         });
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
     }
 
     @Override

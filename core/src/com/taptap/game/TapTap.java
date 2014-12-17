@@ -8,8 +8,6 @@ public class TapTap extends Game {
 
     @Override
     public void create() {
-
-
         setScreen(new LoadScreen());
     }
 

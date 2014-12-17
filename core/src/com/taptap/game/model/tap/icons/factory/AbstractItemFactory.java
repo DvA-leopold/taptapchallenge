@@ -21,7 +21,7 @@ public class AbstractItemFactory {
         initListener(camera);
     }
 
-    public void initListener(final Camera camera) {
+    public void initListener(final Camera camera) { //TODO ГОСПОДЬ ПОКАРАЕКТ ТЕБЯ ЗА ЭТОТ КОД
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
         final Vector2 point1 = new Vector2();
@@ -169,7 +169,7 @@ public class AbstractItemFactory {
             tapIcons.add(new BlueIcons(
                     Gdx.graphics.getWidth() * boarderIndentP,
                     Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
-            ); // todo исправить значения
+            );
         } else if (rand > 25 && rand < 60) {
             tapIcons.add(new RedIcons(
                     Gdx.graphics.getWidth() * boarderIndentP,

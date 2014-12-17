@@ -1,22 +1,25 @@
-package com.taptap.game.view.screens.game_screen.button.styles;
+package com.taptap.game.view.screens.mainmenu_screen.buttons;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
 import com.taptap.game.view.screens.records_screen.RecordScreen;
+import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class MenuButtonInitializer implements Buttons {
-    public MenuButtonInitializer(){
+    public MenuButtonInitializer(Batch batch){
         int buttonWidth = Gdx.graphics.getWidth()/2;
         int buttonHeight = Gdx.graphics.getHeight()/6;
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         table = new Table(skinMainMenu);
         skinMainMenu = new Skin(
                 Gdx.files.internal("skins/json_skins/menuSkin.json"),
@@ -47,10 +50,6 @@ public class MenuButtonInitializer implements Buttons {
         table.add(soundButton).width(buttonWidth).height(buttonHeight);
 
         stage.addActor(table);
-    }
-
-    @Override
-    public void resize(int width, int height) {
     }
 
     @Override

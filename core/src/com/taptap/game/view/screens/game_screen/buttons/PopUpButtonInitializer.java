@@ -1,24 +1,27 @@
-package com.taptap.game.view.screens.game_screen.button.styles;
+package com.taptap.game.view.screens.game_screen.buttons;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.game_screen.GameScreen;
+import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class PopUpButtonInitializer implements Buttons {
-    public PopUpButtonInitializer() {
-        menuStageInit();
-        optionStageInit();
+    public PopUpButtonInitializer(Batch batch) {
+        menuStageInit(batch);
+        optionStageInit(batch);
     }
 
-    public void menuStageInit() {
+    public void menuStageInit(Batch batch) {
         int buttonWidth = Gdx.graphics.getWidth() / 3;
         int buttonHeight = Gdx.graphics.getHeight() / 7;
-        pauseMenuStage = new Stage();
+        pauseMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         Skin skinPopupMenu = new Skin(
                 Gdx.files.internal("skins/json_skins/popUpSkin.json"),
                 ResourceManager.getInstance().get(ResourceManager.atlasPopupMenu)
@@ -43,10 +46,10 @@ public class PopUpButtonInitializer implements Buttons {
         pauseMenuStage.addActor(pauseWindow);
     }
 
-    public void optionStageInit() {
+    public void optionStageInit(Batch batch) {
         int buttonWidth = Gdx.graphics.getWidth()/10;
         int buttonHeight = Gdx.graphics.getHeight()/8;
-        optionMenuStage = new Stage();
+        optionMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
 
         Skin skinOptions = new Skin(
                 Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
@@ -136,10 +139,6 @@ public class PopUpButtonInitializer implements Buttons {
     }
 
     @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
     public void render() {
         if (!windowOptionFlag){
             pauseMenuStage.act(); // это можно убрать если у нас не будет ресайза
@@ -165,7 +164,7 @@ public class PopUpButtonInitializer implements Buttons {
             optionGameButton,
             exitMainMenuButton;
 
-    private CheckBox // todo change to checkbox
+    private CheckBox
             musicControl,
             soundControl;
 

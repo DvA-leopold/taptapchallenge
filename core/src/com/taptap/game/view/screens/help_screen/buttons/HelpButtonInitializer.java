@@ -1,27 +1,33 @@
-package com.taptap.game.view.screens.game_screen.button.styles;
+package com.taptap.game.view.screens.help_screen.buttons;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
+import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class HelpButtonInitializer implements Buttons {
-    public HelpButtonInitializer(){
+    public HelpButtonInitializer(Batch batch){
         int buttonWidth = Gdx.graphics.getWidth()/8;
         int buttonHeight = Gdx.graphics.getHeight()/7;
+        // TODO решить проблему различных разрешений экрана ViewPort
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         Skin skin = new Skin(
                 Gdx.files.internal("skins/json_skins/helpSkin.json"),
                 ResourceManager.getInstance().get(ResourceManager.atlasHelpMenu)
         );
         Table table = new Table(skin);
-        stage = new Stage();
 
         button = new TextButton("menu", skin, "default");
 
@@ -31,10 +37,6 @@ public class HelpButtonInitializer implements Buttons {
                 padTop(Gdx.graphics.getHeight()-buttonHeight).
                 height(buttonHeight).width(buttonWidth).reset();
         stage.addActor(table);
-    }
-
-    @Override
-    public void resize(int width, int height) {
     }
 
     @Override

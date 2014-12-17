@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.save.manager.StorageManager;
-import com.taptap.game.view.screens.game_screen.button.styles.Buttons;
-import com.taptap.game.view.screens.game_screen.button.styles.GameButtonsInitializer;
-import com.taptap.game.view.screens.game_screen.button.styles.PopUpButtonInitializer;
+import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
+import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
+import com.taptap.game.view.buttons.interfaces.Buttons;
 import com.taptap.game.model.tap.icons.factory.AbstractItemFactory;
 import com.taptap.game.model.tap.icons.factory.Icon;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
@@ -30,12 +30,13 @@ public class GameScreen implements Screen {
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
-        gameButtons = new GameButtonsInitializer();
-        popUpButtons = new PopUpButtonInitializer();
-
-        iconFactory = new AbstractItemFactory(camera);
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
+
+        gameButtons = new GameButtonsInitializer(mainBatch);
+        popUpButtons = new PopUpButtonInitializer(mainBatch);
+
+        iconFactory = new AbstractItemFactory(camera);
 
         inputMultiplexer = new InputMultiplexer();
 
@@ -177,7 +178,6 @@ public class GameScreen implements Screen {
             if (temp<=0){
                 return;
             }
-            FPS_MEM_DC.drawCalls++;
         }
     }
 
@@ -196,15 +196,7 @@ public class GameScreen implements Screen {
         private StateManager(boolean firstTimeInit){
             this.firstTimeInit = firstTimeInit;
         }
-/*
-        private boolean gameStartDelayFinished(float delayInSeconds, final GameScreen screen) {
-            screen.mainBatch.begin();
-            screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            screen.renderNumbers((int)delayInSeconds, -Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2);
-            screen.mainBatch.end();
-            return delayInSeconds > -1;
-        }
-*/
+
         private void runState(final GameScreen screen){
             if (GAME_RUNNING.firstTimeInit){
                 GAME_RUNNING.firstTimeInit = false;
@@ -215,7 +207,9 @@ public class GameScreen implements Screen {
             }
             if (!screen.readyToStart){
                 screen.mainBatch.begin();
+                screen.mainBatch.disableBlending();
                 screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                screen.mainBatch.enableBlending();
                 screen.font.draw(screen.mainBatch, "press anywhere to start", 5, Gdx.graphics.getHeight()/2);
                 screen.mainBatch.end();
                 if (Gdx.input.isTouched()){
@@ -224,13 +218,13 @@ public class GameScreen implements Screen {
             } else {
                 screen.totalTime -= Gdx.graphics.getDeltaTime();
                 screen.mainBatch.begin();
+                screen.mainBatch.disableBlending();
                 screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                FPS_MEM_DC.drawCalls++;
+                screen.mainBatch.enableBlending();
                 for(Icon iconsDrop : screen.iconFactory.getIconsArray()) {
                     screen.mainBatch.draw(iconsDrop.getTexture(),
                             iconsDrop.getX(), iconsDrop.getY(),
                             screen.iconFactory.getItemsSize(),screen.iconFactory.getItemsSize());
-                    FPS_MEM_DC.drawCalls++;
                 }
                 screen.renderNumbers(screen.iconFactory.getTotalScore(), 0, 0);
                 screen.renderNumbers((int)screen.totalTime, -Gdx.graphics.getWidth()/2 ,0);
@@ -248,6 +242,7 @@ public class GameScreen implements Screen {
                     screen.stateManager = GameScreen.StateManager.GAME_EXIT;
                 }
                 screen.gameButtons.render();
+                System.out.println(screen.mainBatch.renderCalls);
             }
 
         }
@@ -261,17 +256,16 @@ public class GameScreen implements Screen {
             }
             screen.alpha = (float)Math.min(screen.alpha + Gdx.graphics.getDeltaTime()/2, 0.7);
             screen.mainBatch.begin();
+            screen.mainBatch.disableBlending();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            FPS_MEM_DC.drawCalls++;
+            screen.mainBatch.enableBlending();
             screen.mainBatch.end();
-
+            // todo оптимизировать, здесь куча лишней прорисовки
             screen.transparentBatch.begin();
-            screen.transparentBatch.setColor(0.0f,0.0f,0.0f,screen.alpha);
+            screen.transparentBatch.setColor(0.0f, 0.0f, 0.0f, screen.alpha);
             screen.transparentBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            FPS_MEM_DC.drawCalls++;
             for(Icon tapIcon : screen.iconFactory.getIconsArray()) {
                 screen.transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
-                FPS_MEM_DC.drawCalls++;
             }
             screen.transparentBatch.end();
             screen.popUpButtons.render();
@@ -280,15 +274,17 @@ public class GameScreen implements Screen {
         private void gameOverState(final GameScreen screen){
             screen.mainBatch.begin();
             screen.mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
+            screen.mainBatch.disableBlending();
             screen.mainBatch.draw(screen.gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            screen.mainBatch.enableBlending();
             screen.mainBatch.draw(screen.gameOver,
                     Gdx.graphics.getWidth() / 2 - screen.gameOver.getWidth() / 2,
                     Gdx.graphics.getHeight() / 2 - screen.gameOver.getHeight() / 2);
-            FPS_MEM_DC.drawCalls+=2;
             screen.mainBatch.end();
             if (Gdx.input.isTouched()){
                 screen.stateManager = GAME_EXIT;
             }
+            System.out.println(screen.mainBatch.renderCalls);
         }
 
         private void gameExitState(){
