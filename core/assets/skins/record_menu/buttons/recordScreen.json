@@ -1,0 +1,52 @@
+{
+  "com.badlogic.gdx.graphics.Color": {
+    "white": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "black": {
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 1
+    }
+  },
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "whiteFont": {"file": "fonts/whiteFont.fnt"},
+    "blackFont": {"file": "fonts/blackFont.fnt"}
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+    "default": {
+      "font": "blackFont",
+      "fontColor": "black"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "mainButtons": {
+      "up": "button_long_up",
+      "down": "button_long_down",
+      "pressedOffsetX": 1,
+      "pressedOffsetY": -2,
+      "font": "blackFont"
+    },
+    "soundTest": {
+      "up": "button_music_up",
+      "down": "button_music_down",
+      "checked": "button_music_down",
+      "pressedOffsetX": 1,
+      "pressedOffsetY": -2,
+      "font": "blackFont"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+    "default": {
+      "up": "button_long_up",
+      "down": "button_long_down",
+      "pressedOffsetX": 1,
+      "pressedOffsetY": -2
+    },
+    "sound": {"up": "button_long_up"}
+  }
+}

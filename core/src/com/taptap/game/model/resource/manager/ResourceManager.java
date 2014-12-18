@@ -52,13 +52,15 @@ public class ResourceManager {
     }
 
     //RecordScreen
-    public static final AssetDescriptor<TextureAtlas> atlasRecordMenu =
-            new AssetDescriptor<TextureAtlas>("skins/record_menu/buttons/buttons.pack", TextureAtlas.class);
+    //public static final AssetDescriptor<TextureAtlas> atlasRecordMenu =
+    //        new AssetDescriptor<TextureAtlas>("skins/record_menu/buttons/buttons.pack", TextureAtlas.class);
+    public static final AssetDescriptor<Skin> recordSkin =
+            new AssetDescriptor<Skin>("skins/record_menu/buttons/recordScreen.json", Skin.class);
     public static final AssetDescriptor<Texture> recordBackground =
             new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
 
     private static void recordScreenLoad(){
-        getInstance().load(atlasRecordMenu);
+        getInstance().load(recordSkin);
         getInstance().load(recordBackground);
     }
 

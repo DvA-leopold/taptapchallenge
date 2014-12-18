@@ -28,10 +28,7 @@ public class RecordScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        Skin skinRecords = new Skin(
-                Gdx.files.internal("skins/json_skins/menuSkin.json"),
-                ResourceManager.getInstance().get(ResourceManager.atlasRecordMenu)
-        );
+        Skin skinRecords = ResourceManager.getInstance().get(ResourceManager.recordSkin);
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
