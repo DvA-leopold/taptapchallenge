@@ -21,7 +21,7 @@ public class AbstractItemFactory {
         initListener(camera);
     }
 
-    public void initListener(final Camera camera) { //TODO ГОСПОДЬ ПОКАРАЕКТ ТЕБЯ ЗА ЭТОТ КОД
+    public void initListener(final Camera camera) { //TODO ГОСПОДЬ ПОКАРАЕТ ТЕБЯ ЗА ЭТОТ КОД
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
         final Vector2 point1 = new Vector2();
@@ -59,7 +59,7 @@ public class AbstractItemFactory {
                     );
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
                             tapIcons.get(i) instanceof YellowIcons &&
-                            count >=2 ) {
+                            count ==2 ) {
                         totalScore += (tapIcons.get(i).getScore());
                         tapIcons.removeIndex(i);
                         break;

@@ -60,6 +60,5 @@ public class YellowIcons implements Icon {
     }
 
     private Rectangle coords;
-
     private static Texture taptapImage;
 }
