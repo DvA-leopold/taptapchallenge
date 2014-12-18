@@ -16,12 +16,9 @@ import com.taptap.game.view.buttons.interfaces.Buttons;
 public class GameButtonsInitializer implements Buttons {
     public GameButtonsInitializer(Batch batch) {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
-        Skin skinGameMenu = new Skin(
-                Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
-                ResourceManager.getInstance().get(ResourceManager.buttonAtlas)
-        );
+        Skin skinGameMenu = ResourceManager.getInstance().get(ResourceManager.optionSkin);
         Table table = new Table(skinGameMenu);
-        //skinGameMenu.getFont()
+
         optionButton = new Button(skinGameMenu, "popUpMenuButton");
         table.setFillParent(true);
         table.add(optionButton).

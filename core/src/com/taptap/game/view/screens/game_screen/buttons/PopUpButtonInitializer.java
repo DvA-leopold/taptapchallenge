@@ -21,21 +21,20 @@ public class PopUpButtonInitializer implements Buttons {
     public void menuStageInit(Batch batch) {
         int buttonWidth = Gdx.graphics.getWidth() / 3;
         int buttonHeight = Gdx.graphics.getHeight() / 7;
-        pauseMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
-        Skin skinPopupMenu = new Skin(
-                Gdx.files.internal("skins/json_skins/popUpSkin.json"),
-                ResourceManager.getInstance().get(ResourceManager.atlasPopupMenu)
-        );
-        skinPopupMenu.getFont("blackFont").setScale(2, 2);
-        resumeGameButton = new TextButton("return", skinPopupMenu, "popUpButtons");
-        optionGameButton = new TextButton("options", skinPopupMenu, "popUpButtons");
-        exitMainMenuButton = new TextButton("exit", skinPopupMenu, "popUpButtons");
+
+        pauseMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
+        Skin skinMainMenu = ResourceManager.getInstance().get(ResourceManager.popUpSkin);
+
+        skinMainMenu.getFont("blackFont").setScale(2, 2);
+        resumeGameButton = new TextButton("return", skinMainMenu, "popUpButtons");
+        optionGameButton = new TextButton("options", skinMainMenu, "popUpButtons");
+        exitMainMenuButton = new TextButton("exit", skinMainMenu, "popUpButtons");
 
         resumeGameButton.pad(10);
         optionGameButton.pad(10);
         exitMainMenuButton.pad(10);
 
-        Window pauseWindow = new Window("", skinPopupMenu);
+        Window pauseWindow = new Window("", skinMainMenu);
         pauseWindow.setFillParent(true);
         pauseWindow.add(resumeGameButton).width(buttonWidth).height(buttonHeight);
         pauseWindow.row();
@@ -51,10 +50,8 @@ public class PopUpButtonInitializer implements Buttons {
         int buttonHeight = Gdx.graphics.getHeight()/8;
         optionMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
 
-        Skin skinOptions = new Skin(
-                Gdx.files.internal("skins/json_skins/optionIconSkin.json"),
-                ResourceManager.getInstance().get(ResourceManager.atlasOptionMenu)
-        );
+        Skin skinOptions = ResourceManager.getInstance().get(ResourceManager.optionSkin);
+
         //Table optionWindow = new Table(skinOptions);
         musicControl = new CheckBox(null, skinOptions, "stateOption");
         musicControl.setChecked(!MusicManager.isMusicEnable());
@@ -154,7 +151,7 @@ public class PopUpButtonInitializer implements Buttons {
         pauseMenuStage.dispose();
         optionMenuStage.dispose();
         //skinPopupMenu.dispose();
-        //atlasPopupMenu.dispose();
+        //popUpSkin.dispose();
     }
 
     private boolean windowOptionFlag = false;

@@ -28,9 +28,9 @@ public class MainMenuScreen implements Screen {
         batch.enableBlending();
         batch.end();
 
-        FPS_MEM_DC.fpsLog();
         camera.update();
         buttons.render();
+        FPS_MEM_DC.fpsLog();
     }
 
     @Override

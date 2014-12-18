@@ -19,18 +19,16 @@ public class MenuButtonInitializer implements Buttons {
     public MenuButtonInitializer(Batch batch){
         int buttonWidth = Gdx.graphics.getWidth()/2;
         int buttonHeight = Gdx.graphics.getHeight()/6;
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
-        table = new Table(skinMainMenu);
-        skinMainMenu = new Skin(
-                Gdx.files.internal("skins/json_skins/menuSkin.json"),
-                ResourceManager.getInstance().get(ResourceManager.atlasMainMenu));
-        skinMainMenu.getFont("blackFont").setScale(2, 2);
 
-        Label heading = new Label("TAP TAP Game", skinMainMenu, "default");
-        buttonPlay = new TextButton("Play", skinMainMenu, "mainButtons");// from textButtonStyle .json
-        buttonHelp = new TextButton("Help", skinMainMenu, "mainButtons");
-        buttonRecords = new TextButton("Records", skinMainMenu, "mainButtons");
-        soundButton = new TextButton("Music:", skinMainMenu,"soundTest");
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+        Skin skin = ResourceManager.getInstance().get(ResourceManager.mainMenuSkin);
+        skin.getFont("blackFont").setScale(2, 2);// todo поменять шрифты
+
+        Label heading = new Label("TAP TAP Game", skin, "default");
+        buttonPlay = new TextButton("Play", skin, "mainButtons");
+        buttonHelp = new TextButton("Help", skin, "mainButtons");
+        buttonRecords = new TextButton("Records", skin, "mainButtons");
+        soundButton = new TextButton("Music:", skin,"soundTest");
         soundButton.setChecked(!MusicManager.isMusicEnable());
 
         buttonPlay.pad(10);
@@ -38,7 +36,8 @@ public class MenuButtonInitializer implements Buttons {
         buttonRecords.pad(10);
         soundButton.pad(10);
 
-        table.setBounds(0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Table table = new Table(skin);
+        table.setFillParent(true);
         table.add(heading).padTop(100).width(buttonWidth).height(buttonHeight);
         table.row();
         table.add(buttonPlay).width(buttonWidth).height(buttonHeight);
@@ -94,13 +93,11 @@ public class MenuButtonInitializer implements Buttons {
 
     @Override
     public void dispose() {
-        //skinMainMenu.dispose();
+        //skin.dispose();
         stage.dispose();
     }
 
     private Stage stage;
-    private Skin skinMainMenu;
-    private Table table;
     private final TextButton
             buttonPlay,
             buttonHelp,

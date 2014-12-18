@@ -55,8 +55,8 @@ public class RecordScreen implements Screen {
 
         stage.act();
         stage.draw();
-        FPS_MEM_DC.fpsLog();
         camera.update();
+        FPS_MEM_DC.fpsLog();
     }
 
     @Override

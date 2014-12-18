@@ -62,7 +62,7 @@ public class HelpScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        //background.dispose();
+        buttons.dispose();
     }
 
     private Buttons buttons;

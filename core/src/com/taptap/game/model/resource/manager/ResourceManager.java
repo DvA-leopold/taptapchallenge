@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class ResourceManager {
     private ResourceManager() {
@@ -40,17 +41,19 @@ public class ResourceManager {
     // MainMenuScreen
     public static final AssetDescriptor<Texture> menuBackground =
             new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
-    public static final AssetDescriptor<TextureAtlas> atlasMainMenu =
-            new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
+    //public static final AssetDescriptor<TextureAtlas> atlasMainMenu =
+    //        new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
+    public static final AssetDescriptor<Skin> mainMenuSkin =
+            new AssetDescriptor<Skin>("skins/main_menu/buttons/menuSkin.json", Skin.class);
 
     private static void menuScreenLoad() {
         getInstance().load(menuBackground);
-        getInstance().load(atlasMainMenu);
+        getInstance().load(mainMenuSkin);
     }
 
     //RecordScreen
     public static final AssetDescriptor<TextureAtlas> atlasRecordMenu =
-            new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
+            new AssetDescriptor<TextureAtlas>("skins/record_menu/buttons/buttons.pack", TextureAtlas.class);
     public static final AssetDescriptor<Texture> recordBackground =
             new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
 
@@ -62,12 +65,15 @@ public class ResourceManager {
     // HelpScreen
     public static final AssetDescriptor<Texture> helpBackground =
             new AssetDescriptor<Texture>("skins/help_menu/bg_grasslands.png", Texture.class);
-    public static final AssetDescriptor<TextureAtlas> atlasHelpMenu =
-            new AssetDescriptor<TextureAtlas>("skins/help_menu/buttons/helpButton.pack", TextureAtlas.class);
+    public static final AssetDescriptor<Skin> helpSkin =
+            new AssetDescriptor<Skin>("skins/help_menu/buttons/helpSkin.json", Skin.class);
+    //public static final AssetDescriptor<TextureAtlas> atlasHelpMenu =
+    //        new AssetDescriptor<TextureAtlas>("skins/help_menu/buttons/helpButton.pack", TextureAtlas.class);
 
     private static void helpScreenLoad(){
         getInstance().load(helpBackground);
-        getInstance().load(atlasHelpMenu);
+        getInstance().load(helpSkin);
+        //getInstance().load(atlasHelpMenu);
     }
 
     // GameScreen
@@ -75,12 +81,10 @@ public class ResourceManager {
             new AssetDescriptor<Texture>("skins/game_menu/game_bg.png", Texture.class);
     public static final AssetDescriptor<Texture> gameOver =
             new AssetDescriptor<Texture>("skins/game_menu/game_over.png", Texture.class);
-    public static final AssetDescriptor<TextureAtlas> buttonAtlas =
-            new AssetDescriptor<TextureAtlas>("skins/game_menu/popUpButtons.pack", TextureAtlas.class);
-    public static final AssetDescriptor<TextureAtlas> atlasOptionMenu =
-            new AssetDescriptor<TextureAtlas>("skins/game_menu/popUpButtons.pack", TextureAtlas.class);
-    public static final AssetDescriptor<TextureAtlas> atlasPopupMenu =
-            new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
+    public static final AssetDescriptor<Skin> popUpSkin =
+            new AssetDescriptor<Skin>("skins/game_menu/buttons/pop_up/popUpSkin.json", Skin.class);
+    public static final AssetDescriptor<Skin> optionSkin =
+            new AssetDescriptor<Skin>("skins/game_menu/buttons/option_menu/optionIconSkin.json", Skin.class);
     public static final AssetDescriptor<BitmapFont> fonts =
             new AssetDescriptor<BitmapFont>("fonts/whiteFont.fnt", BitmapFont.class);
     public static final AssetDescriptor<Texture> iconRed =
@@ -96,9 +100,9 @@ public class ResourceManager {
         getInstance().load(gameBackground);
         getInstance().load(gameOver);
         getInstance().load(TextureAtlasNumber, TextureAtlas.class);
-        getInstance().load(buttonAtlas);
-        getInstance().load(atlasOptionMenu);
-        getInstance().load(atlasPopupMenu);
+        //getInstance().load(buttonAtlas);
+        getInstance().load(optionSkin);
+        getInstance().load(popUpSkin);
         getInstance().load(fonts);
         getInstance().load(iconRed);
         getInstance().load(iconBlue);
