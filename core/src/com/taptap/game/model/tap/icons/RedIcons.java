@@ -13,20 +13,16 @@ public class RedIcons implements Icon {
     }
 
     public RedIcons(float spawnBoarderX,float spawnBoarderY){
-        coords = new Rectangle(
+        cords = new Rectangle(
                 MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth() - taptapImage.getWidth()),
                 MathUtils.random(0, Gdx.graphics.getHeight()-taptapImage.getHeight()-spawnBoarderY-20),
-                taptapImage.getWidth(), taptapImage.getHeight());
+                taptapImage.getWidth(), taptapImage.getHeight()
+        );
     }
 
     @Override
     public int getScore() {
         return 25;
-    }
-
-    @Override
-    public void setCoords(int x, int y, int w, int h) {
-        coords.set(x,y,w,h);
     }
 
     @Override
@@ -36,29 +32,29 @@ public class RedIcons implements Icon {
 
     @Override
     public float getX() {
-        return coords.getX();
+        return cords.getX();
     }
 
     @Override
     public float getY() {
-        return coords.getY();
+        return cords.getY();
     }
 
     @Override
     public float getWidth() {
-        return coords.getWidth();
+        return cords.getWidth();
     }
 
     @Override
     public float getHeight() {
-        return coords.getHeight();
+        return cords.getHeight();
     }
 
     @Override
     public Rectangle getRect() {
-        return coords;
+        return cords;
     }
 
-    private Rectangle coords;
+    private Rectangle cords;
     private static Texture taptapImage;
 }

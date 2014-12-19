@@ -24,16 +24,16 @@ public class AbstractItemFactory {
     public void initListener(final Camera camera) { //TODO ГОСПОДЬ ПОКАРАЕТ ТЕБЯ ЗА ЭТОТ КОД
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
-        final Vector2 point1 = new Vector2();
-        final Vector2 point2 = new Vector2();
-        final Vector2 point3 = new Vector2();
-        final Vector2 point4 = new Vector2();
+        final Vector2[] mass = new Vector2[4];
+        for (int i=0; i<mass.length;++i){
+            mass[i] = new Vector2();
+        }
         final Vector<Boolean> panFlag = new Vector<Boolean>(1);
         panFlag.add(true);
         GestureDetector.GestureListener gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
-                System.out.println("AbstractItemFactory.touchDown");
+                //System.out.println("AbstractItemFactory.touchDown");
                 return false;
             }
 
@@ -41,25 +41,10 @@ public class AbstractItemFactory {
             public boolean tap(float x, float y, int count, int button) {
                 camera.unproject(touchPoint.set(x, y, 0));
                 for (int i = 0; i < tapIcons.size; ++i) {
-                    array.add(point1.set(
-                                    tapIcons.get(i).getRect().x,
-                                    tapIcons.get(i).getRect().y)
-                    );
-                    array.add(point2.set(
-                                    tapIcons.get(i).getRect().x + getItemsSize(),
-                                    tapIcons.get(i).getRect().y)
-                    );
-                    array.add(point3.set(
-                                    tapIcons.get(i).getRect().x + getItemsSize(),
-                                    tapIcons.get(i).getRect().y + getItemsSize())
-                    );
-                    array.add(point4.set(
-                                    tapIcons.get(i).getRect().x,
-                                    tapIcons.get(i).getRect().y + getItemsSize())
-                    );
+                    fillArrayWithCords(array, mass, i);
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
                             tapIcons.get(i) instanceof YellowIcons &&
-                            count ==2 ) {
+                            count == 2 ) {
                         totalScore += (tapIcons.get(i).getScore());
                         tapIcons.removeIndex(i);
                         break;
@@ -73,22 +58,7 @@ public class AbstractItemFactory {
             public boolean longPress(float x, float y) {
                 camera.unproject(touchPoint.set(x, y, 0));
                 for (int i = 0; i < tapIcons.size; ++i) {
-                    array.add(point1.set(
-                                    tapIcons.get(i).getRect().x,
-                                    tapIcons.get(i).getRect().y)
-                    );
-                    array.add(point2.set(
-                                    tapIcons.get(i).getRect().x + getItemsSize(),
-                                    tapIcons.get(i).getRect().y)
-                    );
-                    array.add(point3.set(
-                                    tapIcons.get(i).getRect().x + getItemsSize(),
-                                    tapIcons.get(i).getRect().y + getItemsSize())
-                    );
-                    array.add(point4.set(
-                                    tapIcons.get(i).getRect().x,
-                                    tapIcons.get(i).getRect().y + getItemsSize())
-                    );
+                    fillArrayWithCords(array, mass, i);
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
                             tapIcons.get(i) instanceof RedIcons) {
                         totalScore += (tapIcons.get(i).getScore());
@@ -112,23 +82,7 @@ public class AbstractItemFactory {
                 if (panFlag.get(0)){
                     camera.unproject(touchPoint.set(x, y, 0));
                     for (int i=tapIcons.size-1; i>=0; --i){ // todo ужасное решение, попробовать сделать лучше
-                        array.add(point1.set(
-                                        tapIcons.get(i).getRect().x,
-                                        tapIcons.get(i).getRect().y)
-                        );
-                        array.add(point2.set(
-                                        tapIcons.get(i).getRect().x + getItemsSize(),
-                                        tapIcons.get(i).getRect().y)
-                        );
-                        array.add(point3.set(
-                                        tapIcons.get(i).getRect().x + getItemsSize(),
-                                        tapIcons.get(i).getRect().y + getItemsSize())
-                        );
-                        array.add(point4.set(
-                                        tapIcons.get(i).getRect().x,
-                                        tapIcons.get(i).getRect().y + getItemsSize())
-                        );
-
+                        fillArrayWithCords(array, mass, i);
                         if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))
                                 && tapIcons.get(i) instanceof BlueIcons){
                             totalScore+=tapIcons.get(i).getScore();
@@ -161,6 +115,25 @@ public class AbstractItemFactory {
             }
         };
         gestureDetector = new GestureDetector(gesturesListener);
+    }
+
+    private void fillArrayWithCords(final Array<Vector2> array, final Vector2[] mass, final int i) {
+        array.add(mass[0].set(
+                        tapIcons.get(i).getRect().x,
+                        tapIcons.get(i).getRect().y)
+        );
+        array.add(mass[1].set(
+                        tapIcons.get(i).getRect().x + getItemsSize(),
+                        tapIcons.get(i).getRect().y)
+        );
+        array.add(mass[2].set(
+                        tapIcons.get(i).getRect().x + getItemsSize(),
+                        tapIcons.get(i).getRect().y + getItemsSize())
+        );
+        array.add(mass[3].set(
+                        tapIcons.get(i).getRect().x,
+                        tapIcons.get(i).getRect().y + getItemsSize())
+        );
     }
 
     public void spawn() {
@@ -200,7 +173,7 @@ public class AbstractItemFactory {
     }
 
     public float getItemsSize() {
-        return Gdx.graphics.getHeight()/5;
+        return Gdx.graphics.getHeight()/7;
     }
 
     public Array<Icon> getIconsArray(){

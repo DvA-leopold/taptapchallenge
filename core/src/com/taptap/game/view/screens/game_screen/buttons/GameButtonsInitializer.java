@@ -15,6 +15,7 @@ import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class GameButtonsInitializer implements Buttons {
     public GameButtonsInitializer(Batch batch) {
+        float buttonSize = Gdx.graphics.getHeight()/7;
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         Skin skinGameMenu = ResourceManager.getInstance().get(ResourceManager.optionSkin);
         Table table = new Table(skinGameMenu);
@@ -22,10 +23,10 @@ public class GameButtonsInitializer implements Buttons {
         optionButton = new Button(skinGameMenu, "popUpMenuButton");
         table.setFillParent(true);
         table.add(optionButton).
-                padTop(-Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/10).
-                padLeft(-Gdx.graphics.getWidth()+Gdx.graphics.getWidth()/15).
-                width(Gdx.graphics.getWidth()/15).
-                height(Gdx.graphics.getHeight()/10);
+                padTop(-Gdx.graphics.getHeight()+buttonSize).
+                padLeft(-Gdx.graphics.getWidth()+buttonSize).
+                width(buttonSize).
+                height(buttonSize);
 
         stage.addActor(table);
     }

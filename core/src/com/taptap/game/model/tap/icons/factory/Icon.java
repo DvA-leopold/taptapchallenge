@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Rectangle;
 
 public interface Icon {
     public int getScore();
-    public void setCoords(int x, int y, int z, int w);
     public Texture getTexture();
     public float getX();
     public float getY();
