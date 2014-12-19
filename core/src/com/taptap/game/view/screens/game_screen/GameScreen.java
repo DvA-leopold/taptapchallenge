@@ -206,8 +206,8 @@ public class GameScreen implements Screen {
         private void runState() {
             if (States.GAME_RUNNING.firstTimeInit) {
                 States.GAME_RUNNING.firstTimeInit = false;
-                alpha = 0;
                 States.GAME_PAUSED.firstTimeInit = true;
+                alpha = 0;
                 inputMultiplexer.addProcessor(gameButtons.getStage());
                 inputMultiplexer.addProcessor(iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
             }
@@ -255,9 +255,9 @@ public class GameScreen implements Screen {
         private void pauseState() {
             if (States.GAME_PAUSED.firstTimeInit) {
                 States.GAME_PAUSED.firstTimeInit = false;
+                States.GAME_RUNNING.firstTimeInit = true;
                 inputMultiplexer.addProcessor(popUpButtons.getStage());
                 inputMultiplexer.removeProcessor(iconFactory.getGestureDetector());
-                States.GAME_RUNNING.firstTimeInit = true;
             }
             alpha = (float) Math.min(alpha + Gdx.graphics.getDeltaTime() / 2, 0.7);
             mainBatch.begin();
@@ -287,6 +287,8 @@ public class GameScreen implements Screen {
                     Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
             mainBatch.end();
             if (Gdx.input.isTouched()) {
+                States.GAME_PAUSED.firstTimeInit = true;
+                States.GAME_RUNNING.firstTimeInit = true;
                 states = States.GAME_EXIT;
             }
             //System.out.println(mainBatch.renderCalls);
