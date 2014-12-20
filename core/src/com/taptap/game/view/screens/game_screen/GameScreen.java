@@ -108,7 +108,7 @@ public class GameScreen implements Screen {
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign) {
-        int temp = numbForRender;// todo можно оптимизировать
+        int temp = numbForRender;
         float width = Gdx.graphics.getWidth();
         Sprite picture;
         while (temp>=0) {
