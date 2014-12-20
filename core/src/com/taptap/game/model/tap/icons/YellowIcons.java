@@ -12,7 +12,7 @@ public class YellowIcons implements Icon {
         taptapImage = ResourceManager.getInstance().get(ResourceManager.iconYellow);
     }
 
-    public YellowIcons(float spawnBoarderX,float spawnBoarderY){
+    public YellowIcons(float spawnBoarderX, float spawnBoarderY){
         cords = new Rectangle(
                 MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth() - taptapImage.getWidth()),
                 MathUtils.random(0, Gdx.graphics.getHeight()-taptapImage.getHeight()-spawnBoarderY-20),

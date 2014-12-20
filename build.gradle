@@ -22,6 +22,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        mavenLocal()
         //maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
@@ -76,8 +77,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion" // testCompile
-        //compile "aurelienribon:tweenengine:6.3.3"
-        //compile "aurelienribon:tweenengine:6.3.3:sources"
+        compile "aurelienribon:tweenengine:6.3.3"
+        compile "aurelienribon:tweenengine:6.3.3:sources"
         //compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         //compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 

@@ -114,62 +114,10 @@ public class GameScreen implements Screen {
         while (temp>=0) {
             int val = temp % 10;
             temp /= 10;
-            switch (val) {
-                case 0:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud0");
-                    break;
-                case 1:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud1");
-                    break;
-                case 2:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud2");
-                    break;
-                case 3:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud3");
-                    break;
-                case 4:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud4");
-                    break;
-                case 5:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud5");
-                    break;
-                case 6:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud6");
-                    break;
-                case 7:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud7");
-                    break;
-                case 8:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud8");
-                    break;
-                case 9:
-                    picture = ResourceManager.getInstance().
-                            get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                            createSprite("hud9");
-                    //picture = coinsAndNumbers.createSprite("hud9");
-                    break;
-                default:
-                    Gdx.app.error("Error", " no such number");
-                    return;
-            }
+            picture = ResourceManager.getInstance().
+                    get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+                    createSprite("hud" + Integer.valueOf(val));
+
             width -= picture.getWidth();
             mainBatch.draw(
                     picture, width + widthAlign,
