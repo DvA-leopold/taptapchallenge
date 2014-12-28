@@ -16,9 +16,10 @@ import com.taptap.game.model.tap.icons.YellowIcons;
 import java.util.Vector;
 
 public class AbstractItemFactory {
-    public AbstractItemFactory(Camera camera) {
+    public AbstractItemFactory(final Camera camera) {
         tapIcons = new Array<Icon>(15);
         initListener(camera);
+        boarder = new Vector2(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getWidth()*0.05f);
     }
 
     public void initListener(final Camera camera) { //TODO ГОСПОДЬ ПОКАРАЕТ ТЕБЯ ЗА ЭТОТ КОД
@@ -72,7 +73,6 @@ public class AbstractItemFactory {
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                //System.out.println("AbstractItemFactory.fling "+ velocityX);
                 return false;
             }
 
@@ -103,13 +103,11 @@ public class AbstractItemFactory {
 
             @Override
             public boolean zoom(float initialDistance, float distance) {
-                //System.out.println("AbstractItemFactory.zoom");
                 return false;
             }
 
             @Override
             public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-                //System.out.println("AbstractItemFactory.pinch");
                 return false;
             }
         };
@@ -122,16 +120,16 @@ public class AbstractItemFactory {
                         tapIcons.get(i).getRect().y)
         );
         array.add(mass[1].set(
-                        tapIcons.get(i).getRect().x + getItemsSize(),
+                        tapIcons.get(i).getRect().x,
                         tapIcons.get(i).getRect().y)
         );
         array.add(mass[2].set(
-                        tapIcons.get(i).getRect().x + getItemsSize(),
-                        tapIcons.get(i).getRect().y + getItemsSize())
+                        tapIcons.get(i).getRect().x,
+                        tapIcons.get(i).getRect().y)
         );
         array.add(mass[3].set(
                         tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y + getItemsSize())
+                        tapIcons.get(i).getRect().y)
         );
     }
 
@@ -139,18 +137,18 @@ public class AbstractItemFactory {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
             tapIcons.add(new BlueIcons(
-                    Gdx.graphics.getWidth() * boarderIndentP,
-                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+                    boarder.x,
+                    boarder.y)
             );
         } else if (rand > 25 && rand < 60) {
             tapIcons.add(new RedIcons(
-                    Gdx.graphics.getWidth() * boarderIndentP,
-                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+                    boarder.x,
+                    boarder.y)
             );
         } else {
             tapIcons.add(new YellowIcons(
-                    Gdx.graphics.getWidth() * boarderIndentP,
-                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+                    boarder.x,
+                    boarder.y)
             );
         }
     }
@@ -171,10 +169,6 @@ public class AbstractItemFactory {
         return gestureDetector;
     }
 
-    public float getItemsSize() {
-        return Gdx.graphics.getHeight()*0.2f;
-    }
-
     public Array<Icon> getIconsArray(){
         return tapIcons;
     }
@@ -182,10 +176,10 @@ public class AbstractItemFactory {
         return totalScore;
     }
 
-    private GestureDetector gestureDetector;
 
+    private GestureDetector gestureDetector;
     private Array<Icon> tapIcons;
-    private float boarderIndentP = 0.05f; //5% boarder
+    private Vector2 boarder;
     private int totalScore;
     private long lastDropTime;
 }

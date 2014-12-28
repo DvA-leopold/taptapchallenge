@@ -2,14 +2,19 @@ package com.taptap.game.model.tap.icons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.tap.icons.factory.Icon;
+import com.taptap.game.model.world.manager.WorldHandler;
 
 public class BlueIcons implements Icon {
     static {
-        taptapImage = ResourceManager.getInstance().get(ResourceManager.iconBlue);
+        taptapImage = new Sprite(ResourceManager.getInstance().get(ResourceManager.iconBlue));
+        BlueIcons.taptapImage.setSize(Gdx.graphics.getHeight() * 0.2f, Gdx.graphics.getHeight() * 0.2f);
     }
 
     public BlueIcons(float spawnBoarderX, float spawnBoarderY){
@@ -18,6 +23,10 @@ public class BlueIcons implements Icon {
                 MathUtils.random(0, Gdx.graphics.getHeight()-taptapImage.getHeight()-spawnBoarderY-20),
                 taptapImage.getWidth(), taptapImage.getHeight()
         );
+        bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(cords.x, cords.y);
+        Body gemeBody = WorldHandler.createBody(bodyDef);
     }
 
     @Override
@@ -27,7 +36,7 @@ public class BlueIcons implements Icon {
 
     @Override
     public Texture getTexture() {
-        return taptapImage;
+        return taptapImage.getTexture();
     }
 
     @Override
@@ -57,5 +66,6 @@ public class BlueIcons implements Icon {
 
 
     private Rectangle cords;
-    private static Texture taptapImage;
+    private BodyDef bodyDef;
+    private static Sprite taptapImage;
 }

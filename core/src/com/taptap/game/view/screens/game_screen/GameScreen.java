@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
+import com.taptap.game.model.world.manager.WorldHandler;
 import com.taptap.game.view.accessors.SpriteAccessor;
 import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
 import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
@@ -28,6 +29,8 @@ public class GameScreen implements Screen {
     public GameScreen() {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        world = new WorldHandler(camera);
 
         font = ResourceManager.getInstance().get(ResourceManager.fonts); //todo поменять шрифты
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
@@ -177,11 +180,11 @@ public class GameScreen implements Screen {
                 mainBatch.disableBlending();
                 mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 mainBatch.enableBlending();
+                world.renderWorld();
                 for (Icon iconsDrop : iconFactory.getIconsArray()) {
                     mainBatch.draw(iconsDrop.getTexture(),
-                            iconsDrop.getX(), iconsDrop.getY(),
-                            iconFactory.getItemsSize(),
-                            iconFactory.getItemsSize());
+                            iconsDrop.getX(), iconsDrop.getY()
+                    );
                 }
                 renderNumbers(iconFactory.getTotalScore(), 0, 0);
                 renderNumbers((int)totalTime, -Gdx.graphics.getWidth() / 2, 0);
@@ -275,6 +278,8 @@ public class GameScreen implements Screen {
     private States states;
 
     public final InputMultiplexer inputMultiplexer;
+
+    private WorldHandler world;
 
     private float totalTime = 150;
     private float alpha = 0;

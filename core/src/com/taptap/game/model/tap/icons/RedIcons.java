@@ -2,6 +2,7 @@ package com.taptap.game.model.tap.icons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.taptap.game.model.resource.manager.ResourceManager;
@@ -9,10 +10,10 @@ import com.taptap.game.model.tap.icons.factory.Icon;
 
 public class RedIcons implements Icon {
     static {
-        taptapImage = ResourceManager.getInstance().get(ResourceManager.iconRed);
+        taptapImage = new Sprite(ResourceManager.getInstance().get(ResourceManager.iconRed));
     }
 
-    public RedIcons(float spawnBoarderX,float spawnBoarderY){
+    public RedIcons(float spawnBoarderX, float spawnBoarderY) {
         cords = new Rectangle(
                 MathUtils.random(spawnBoarderX + 20, Gdx.graphics.getWidth() - taptapImage.getWidth()),
                 MathUtils.random(0, Gdx.graphics.getHeight()-taptapImage.getHeight()-spawnBoarderY-20),
@@ -27,7 +28,7 @@ public class RedIcons implements Icon {
 
     @Override
     public Texture getTexture() {
-        return taptapImage;
+        return taptapImage.getTexture();
     }
 
     @Override
@@ -56,5 +57,5 @@ public class RedIcons implements Icon {
     }
 
     private Rectangle cords;
-    private static Texture taptapImage;
+    private static Sprite taptapImage;
 }

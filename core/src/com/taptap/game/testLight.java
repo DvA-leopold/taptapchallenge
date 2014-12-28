@@ -14,9 +14,9 @@ public class testLight implements Screen {
     public testLight() {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         renderer = new Box2DDebugRenderer();
-        world = new World(new Vector2(0, -10), false); // вектор-гравитация
+        world = new World(new Vector2(0, -9.8f), false);
         BodyDef circleDef = new BodyDef();
-        circleDef.type = BodyDef.BodyType.DynamicBody; // static body
+        circleDef.type = BodyDef.BodyType.DynamicBody;
         circleDef.position.set(100, 100);
 
         Body circleBody = world.createBody(circleDef);
@@ -33,7 +33,7 @@ public class testLight implements Screen {
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
 
-        new PointLight(rayHandler, 5000, Color.OLIVE, 1000, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+        new PointLight(rayHandler, 5000, Color.BLUE, 500, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
     }
 
     @Override
