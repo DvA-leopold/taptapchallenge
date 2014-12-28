@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
@@ -36,7 +37,7 @@ public class RecordScreen implements Screen {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         background = ResourceManager.getInstance().get(ResourceManager.recordBackground);
 
-        GameScreen.getStorage().displayData(table, skinRecords);
+        TapTap.getStorage().displayData(table, skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);
     }
 

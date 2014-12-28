@@ -17,7 +17,8 @@ allprojects {
         gdxVersion = '+'
         roboVMVersion = '1.0.0-alpha-04'
         junitVersion = '+'
-        tweenEngineVersion = '+'
+        tweenEngineVersion = '6.3.3'
+        box2dLight = '+'
     }
 
     repositories {
@@ -25,12 +26,12 @@ allprojects {
         mavenLocal()
         //maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "E:\\.m2\\repository"}
     }
 }
 
 project(":desktop") {
     apply plugin: "java"
-
 
     dependencies {
         compile project(":core")
@@ -77,13 +78,13 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion" // testCompile
-        compile "aurelienribon:tweenengine:6.3.3"
-        compile "aurelienribon:tweenengine:6.3.3:sources"
+        compile "com.badlogicgames.box2dlights:box2dlights:$box2dLight"
+        compile "aurelienribon:tweenengine:$tweenEngineVersion"
+        compile "aurelienribon:tweenengine:$tweenEngineVersion:sources"
         //compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         //compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 
         testCompile "junit:junit:$junitVersion"
-        //testCompile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
 }
 

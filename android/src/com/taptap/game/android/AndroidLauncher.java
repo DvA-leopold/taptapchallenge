@@ -14,7 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
 
         config.useAccelerometer = false;
         config.useCompass = false;
-
         initialize(new TapTap(), config);
 	}
 }

@@ -67,7 +67,6 @@ public class AbstractItemFactory {
                     }
                     array.clear();
                 }
-
                 return false;
             }
 
@@ -173,7 +172,7 @@ public class AbstractItemFactory {
     }
 
     public float getItemsSize() {
-        return Gdx.graphics.getHeight()/7;
+        return Gdx.graphics.getHeight()*0.2f;
     }
 
     public Array<Icon> getIconsArray(){

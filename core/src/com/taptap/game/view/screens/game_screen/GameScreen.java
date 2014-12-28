@@ -1,5 +1,7 @@
 package com.taptap.game.view.screens.game_screen;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -10,8 +12,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.model.save.manager.StorageManager;
+import com.taptap.game.view.accessors.SpriteAccessor;
 import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
 import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 import com.taptap.game.view.buttons.interfaces.Buttons;
@@ -33,6 +36,8 @@ public class GameScreen implements Screen {
         mainBatch = new SpriteBatch();
         transparentBatch = new SpriteBatch();
 
+        tweenManager = new TweenManager();
+
         gameButtons = new GameButtonsInitializer(mainBatch);
         popUpButtons = new PopUpButtonInitializer(mainBatch);
 
@@ -45,7 +50,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 0.5f);
+        Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
@@ -68,6 +73,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        Tween.registerAccessor(SpriteBatch.class, new SpriteAccessor());
         //mainBatch.setProjectionMatrix(camera.combined);
         //transparentBatch.setProjectionMatrix(camera.combined);
         popUpButtons.setListeners(this);
@@ -116,7 +122,7 @@ public class GameScreen implements Screen {
             temp /= 10;
             picture = ResourceManager.getInstance().
                     get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
-                    createSprite("hud" + Integer.valueOf(val));
+                    createSprite("hud" + Integer.toString(val));
 
             width -= picture.getWidth();
             mainBatch.draw(
@@ -127,10 +133,6 @@ public class GameScreen implements Screen {
                 return;
             }
         }
-    }
-
-    public static StorageManager getStorage(){
-        return storage;
     }
 
     public enum States {
@@ -189,8 +191,8 @@ public class GameScreen implements Screen {
                     states = States.GAME_OVER;
                 }
                 if (totalTime <= 0) {
-                    GameScreen.getStorage().saveDataValue(
-                            "player " + GameScreen.getStorage().getAllData().size(),
+                    TapTap.getStorage().saveDataValue(
+                            "player " + TapTap.getStorage().getAllData().size(),
                             iconFactory.getTotalScore()
                     );
                     states = States.GAME_EXIT;
@@ -206,21 +208,28 @@ public class GameScreen implements Screen {
                 States.GAME_RUNNING.firstTimeInit = true;
                 inputMultiplexer.addProcessor(popUpButtons.getStage());
                 inputMultiplexer.removeProcessor(iconFactory.getGestureDetector());
+                Tween.set(mainBatch, SpriteAccessor.ALPHA).target(0).start(tweenManager);
+                Tween.to(mainBatch, SpriteAccessor.ALPHA, 1).target(1).start(tweenManager);
+                // tween .setCallback сделает какое-то действие когда анимация закончится @param TweenCallback()
             }
             alpha = (float) Math.min(alpha + Gdx.graphics.getDeltaTime() / 2, 0.7);
+            tweenManager.update(Gdx.graphics.getDeltaTime());
             mainBatch.begin();
-            mainBatch.disableBlending();
+            //mainBatch.disableBlending();
             mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            mainBatch.enableBlending();
+            for (Icon tapIcon : iconFactory.getIconsArray()) {
+                mainBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
+            }
+            //mainBatch.enableBlending();
             mainBatch.end();
             // todo оптимизировать, здесь куча лишней прорисовки
-            transparentBatch.begin();
-            transparentBatch.setColor(0.0f, 0.0f, 0.0f, alpha);
-            transparentBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            for (Icon tapIcon : iconFactory.getIconsArray()) {
-                transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
-            }
-            transparentBatch.end();
+            //transparentBatch.begin();
+            //transparentBatch.setColor(0.0f, 0.0f, 0.0f, alpha);
+            //transparentBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            //for (Icon tapIcon : iconFactory.getIconsArray()) {
+                //transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
+            //}
+            //transparentBatch.end();
             popUpButtons.render();
         }
 
@@ -245,6 +254,8 @@ public class GameScreen implements Screen {
         private void gameExitState() {
             ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
         }
+
+        private boolean readyToStart = false;
     }
 
     private AbstractItemFactory iconFactory;
@@ -257,15 +268,15 @@ public class GameScreen implements Screen {
     private final SpriteBatch transparentBatch;
     private final SpriteBatch mainBatch;
     private OrthographicCamera camera;
+
+    private TweenManager tweenManager;
+
     private StateManager stateManager;
     private States states;
+
     public final InputMultiplexer inputMultiplexer;
 
-    //    private Sound tapSound;
     private float totalTime = 150;
-    boolean readyToStart = false;
     private float alpha = 0;
     private BitmapFont font;
-
-    private static StorageManager storage = new StorageManager(true);
 }

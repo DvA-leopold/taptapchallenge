@@ -41,8 +41,6 @@ public class ResourceManager {
     // MainMenuScreen
     public static final AssetDescriptor<Texture> menuBackground =
             new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
-    //public static final AssetDescriptor<TextureAtlas> atlasMainMenu =
-    //        new AssetDescriptor<TextureAtlas>("skins/main_menu/buttons/buttons.pack", TextureAtlas.class);
     public static final AssetDescriptor<Skin> mainMenuSkin =
             new AssetDescriptor<Skin>("skins/main_menu/buttons/menuSkin.json", Skin.class);
 
@@ -52,8 +50,6 @@ public class ResourceManager {
     }
 
     //RecordScreen
-    //public static final AssetDescriptor<TextureAtlas> atlasRecordMenu =
-    //        new AssetDescriptor<TextureAtlas>("skins/record_menu/buttons/buttons.pack", TextureAtlas.class);
     public static final AssetDescriptor<Skin> recordSkin =
             new AssetDescriptor<Skin>("skins/record_menu/buttons/recordScreen.json", Skin.class);
     public static final AssetDescriptor<Texture> recordBackground =
@@ -95,6 +91,8 @@ public class ResourceManager {
             new AssetDescriptor<Texture>("skins/game_menu/tap_icons/hud_gem_blue.png", Texture.class);
     public static final AssetDescriptor<Texture> iconYellow =
             new AssetDescriptor<Texture>("skins/game_menu/tap_icons/hud_gem_yellow.png", Texture.class);
+    public static final AssetDescriptor<Texture> zombiLAL =
+            new AssetDescriptor<Texture>("skins/game_menu/tap_icons/zombi_lol.png", Texture.class);
 
     public static final String TextureAtlasNumber = "skins/game_menu/coins_and_numb/coins_and_hud.pack";
 
@@ -102,7 +100,7 @@ public class ResourceManager {
         getInstance().load(gameBackground);
         getInstance().load(gameOver);
         getInstance().load(TextureAtlasNumber, TextureAtlas.class);
-        //getInstance().load(buttonAtlas);
+        getInstance().load(zombiLAL);
         getInstance().load(optionSkin);
         getInstance().load(popUpSkin);
         getInstance().load(fonts);
