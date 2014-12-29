@@ -10,7 +10,7 @@ public class TapTap extends Game {
     @Override
     public void create() {
         storage = new StorageManager(true);
-        setScreen(new testLight()); // LoadScreen()
+        setScreen(new LoadScreen()); // LoadScreen()
     }
 
     @Override

@@ -7,16 +7,18 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.tap.icons.factory.Icon;
 import com.taptap.game.model.world.manager.WorldHandler;
 
-public class BlueIcons implements Icon {
+public class YellowIcon implements Icon {
     static {
         image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
     }
 
-    public BlueIcons(float spawnBoarderX, float spawnBoarderY){
+    public YellowIcon(float spawnBoarderX, float spawnBoarderY) {
         tapSprite = new Sprite(image);
         tapSprite.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getHeight()*0.2f);
         tapSprite.setPosition(
@@ -25,10 +27,19 @@ public class BlueIcons implements Icon {
         );
 
         bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //bodyDef.position.set(cords.x, cords.y);
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(tapSprite.getX(), tapSprite.getY());
         Body body = WorldHandler.createBody(bodyDef);
         body.setUserData(tapSprite);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(3f);
+        FixtureDef circleFixture = new FixtureDef();
+        circleFixture.shape = circleShape;
+        circleFixture.density = 0.4f;
+        circleFixture.friction = 0.2f;
+        circleFixture.restitution = 0.0f;
+
+        body.createFixture(circleFixture);
     }
 
     @Override
@@ -37,7 +48,7 @@ public class BlueIcons implements Icon {
     }
 
     @Override
-    public Sprite getTexture() {
+    public Sprite getSprite() {
         return tapSprite;
     }
 

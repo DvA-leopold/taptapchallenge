@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.taptap.game.model.tap.icons.BlueIcons;
-import com.taptap.game.model.tap.icons.RedIcons;
-import com.taptap.game.model.tap.icons.YellowIcons;
+import com.taptap.game.model.tap.icons.BlueIcon;
+import com.taptap.game.model.tap.icons.RedIcon;
+import com.taptap.game.model.tap.icons.YellowIcon;
 
 import java.util.Vector;
 
@@ -44,7 +44,7 @@ public class AbstractItemFactory {
                 for (int i = 0; i < tapIcons.size; ++i) {
                     fillArrayWithCords(array, mass, i);
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
-                            tapIcons.get(i) instanceof YellowIcons &&
+                            tapIcons.get(i) instanceof YellowIcon &&
                             count == 2 ) {
                         totalScore += (tapIcons.get(i).getScore());
                         tapIcons.removeIndex(i);
@@ -61,7 +61,7 @@ public class AbstractItemFactory {
                 for (int i = 0; i < tapIcons.size; ++i) {
                     fillArrayWithCords(array, mass, i);
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
-                            tapIcons.get(i) instanceof RedIcons) {
+                            tapIcons.get(i) instanceof RedIcon) {
                         totalScore += (tapIcons.get(i).getScore());
                         tapIcons.removeIndex(i);
                         break;
@@ -83,7 +83,7 @@ public class AbstractItemFactory {
                     for (int i=tapIcons.size-1; i>=0; --i){ // todo ужасное решение, попробовать сделать лучше
                         fillArrayWithCords(array, mass, i);
                         if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))
-                                && tapIcons.get(i) instanceof BlueIcons){
+                                && tapIcons.get(i) instanceof BlueIcon){
                             totalScore+=tapIcons.get(i).getScore();
                             tapIcons.removeIndex(i);
                             panFlag.set(0, false);
@@ -115,38 +115,38 @@ public class AbstractItemFactory {
     }
 
     private void fillArrayWithCords(final Array<Vector2> array, final Vector2[] mass, final int i) {
-        /*array.add(mass[0].set(
-                        tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y)
+        array.add(mass[0].set(
+                        tapIcons.get(i).getX(),
+                        tapIcons.get(i).getY())
         );
         array.add(mass[1].set(
-                        tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y)
+                        tapIcons.get(i).getX() + tapIcons.get(i).getWidth(),
+                        tapIcons.get(i).getY())
         );
         array.add(mass[2].set(
-                        tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y)
+                        tapIcons.get(i).getX() + tapIcons.get(i).getWidth(),
+                        tapIcons.get(i).getY() + tapIcons.get(i).getHeight())
         );
         array.add(mass[3].set(
-                        tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y)
-        );*/
+                        tapIcons.get(i).getX(),
+                        tapIcons.get(i).getY() + tapIcons.get(i).getHeight())
+        );
     }
 
     public void spawn() {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcons(
+            tapIcons.add(new BlueIcon(
                     boarder.x,
                     boarder.y)
             );
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcons(
+            tapIcons.add(new RedIcon(
                     boarder.x,
                     boarder.y)
             );
         } else {
-            tapIcons.add(new YellowIcons(
+            tapIcons.add(new YellowIcon(
                     boarder.x,
                     boarder.y)
             );
@@ -160,7 +160,7 @@ public class AbstractItemFactory {
         }
         if (tapIcons.size > 10){
             tapIcons.removeIndex(0);
-            totalScore -=50;
+            totalScore -= 50;
         }
         return totalScore;
     }

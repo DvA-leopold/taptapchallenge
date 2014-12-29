@@ -22,9 +22,6 @@ public class WorldHandler {
         rayHandler.setCombinedMatrix(camera.combined);
         renderer = new Box2DDebugRenderer();
         new PointLight(rayHandler, 5000, Color.BLUE, 500, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
-        new PointLight(rayHandler, 5000, Color.MAGENTA, 500,
-                Gdx.graphics.getWidth()- Gdx.graphics.getWidth()/3,
-                Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3);
     }
 
     public void renderWorld() {

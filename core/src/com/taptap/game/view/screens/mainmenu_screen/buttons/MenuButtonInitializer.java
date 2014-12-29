@@ -20,7 +20,7 @@ public class MenuButtonInitializer implements Buttons {
         int buttonWidth = Gdx.graphics.getWidth()/2;
         int buttonHeight = Gdx.graphics.getHeight()/6;
 
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.mainMenuSkin);
         skin.getFont("blackFont").setScale(2, 2);// todo поменять шрифты
 

@@ -169,7 +169,7 @@ public class GameScreen implements Screen {
                 mainBatch.disableBlending();
                 mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 mainBatch.enableBlending();
-                font.draw(mainBatch, "press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
+                font.draw(mainBatch, " press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
                 mainBatch.end();
                 if (Gdx.input.isTouched()) {
                     readyToStart = true;
@@ -180,14 +180,14 @@ public class GameScreen implements Screen {
                 mainBatch.disableBlending();
                 mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 mainBatch.enableBlending();
-                world.renderWorld();
                 for (Icon iconsDrop : iconFactory.getIconsArray()) {
-                    mainBatch.draw(iconsDrop.getTexture(),
+                    mainBatch.draw(iconsDrop.getSprite(),
                             iconsDrop.getX(), iconsDrop.getY()
                     );
                 }
+                world.renderWorld();
                 renderNumbers(iconFactory.getTotalScore(), 0, 0);
-                renderNumbers((int)totalTime, -Gdx.graphics.getWidth() / 2, 0);
+                renderNumbers((int) totalTime, -Gdx.graphics.getWidth() / 2, 0);
 
                 mainBatch.end();
                 if (iconFactory.controlFiguresNumber() < 0) {
@@ -201,7 +201,6 @@ public class GameScreen implements Screen {
                     states = States.GAME_EXIT;
                 }
                 gameButtons.render();
-                //System.out.println(mainBatch.renderCalls);
             }
 
         }
@@ -221,7 +220,7 @@ public class GameScreen implements Screen {
             //mainBatch.disableBlending();
             mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             for (Icon tapIcon : iconFactory.getIconsArray()) {
-                mainBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
+                mainBatch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
             }
             //mainBatch.enableBlending();
             mainBatch.end();
@@ -230,7 +229,7 @@ public class GameScreen implements Screen {
             //transparentBatch.setColor(0.0f, 0.0f, 0.0f, alpha);
             //transparentBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             //for (Icon tapIcon : iconFactory.getIconsArray()) {
-                //transparentBatch.draw(tapIcon.getTexture(), tapIcon.getX(), tapIcon.getY());
+                //transparentBatch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
             //}
             //transparentBatch.end();
             popUpButtons.render();
