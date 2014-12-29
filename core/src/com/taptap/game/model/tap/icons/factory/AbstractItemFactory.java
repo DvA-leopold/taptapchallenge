@@ -15,8 +15,8 @@ import com.taptap.game.model.tap.icons.YellowIcons;
 
 import java.util.Vector;
 
-public class AbstractItemFactory {
-    public AbstractItemFactory(Camera camera) {
+public class AbstractItemFactory { // todo подумать над повторным использованием ресурсов
+    public AbstractItemFactory(final Camera camera) {
         tapIcons = new Array<Icon>(15);
         initListener(camera);
     }
@@ -33,7 +33,6 @@ public class AbstractItemFactory {
         GestureDetector.GestureListener gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
-                //System.out.println("AbstractItemFactory.touchDown");
                 return false;
             }
 
@@ -72,7 +71,6 @@ public class AbstractItemFactory {
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                //System.out.println("AbstractItemFactory.fling "+ velocityX);
                 return false;
             }
 
@@ -80,7 +78,7 @@ public class AbstractItemFactory {
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 if (panFlag.get(0)){
                     camera.unproject(touchPoint.set(x, y, 0));
-                    for (int i=tapIcons.size-1; i>=0; --i){ // todo ужасное решение, попробовать сделать лучше
+                    for (int i=tapIcons.size-1; i>=0; --i){ // todo плохое решение, попробовать сделать лучше
                         fillArrayWithCords(array, mass, i);
                         if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))
                                 && tapIcons.get(i) instanceof BlueIcons){
@@ -103,13 +101,11 @@ public class AbstractItemFactory {
 
             @Override
             public boolean zoom(float initialDistance, float distance) {
-                //System.out.println("AbstractItemFactory.zoom");
                 return false;
             }
 
             @Override
             public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-                //System.out.println("AbstractItemFactory.pinch");
                 return false;
             }
         };
@@ -118,20 +114,20 @@ public class AbstractItemFactory {
 
     private void fillArrayWithCords(final Array<Vector2> array, final Vector2[] mass, final int i) {
         array.add(mass[0].set(
-                        tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y)
+                        tapIcons.get(i).getX(),
+                        tapIcons.get(i).getY())
         );
         array.add(mass[1].set(
-                        tapIcons.get(i).getRect().x + getItemsSize(),
-                        tapIcons.get(i).getRect().y)
+                        tapIcons.get(i).getX() + tapIcons.get(i).getWidth(),
+                        tapIcons.get(i).getY())
         );
         array.add(mass[2].set(
-                        tapIcons.get(i).getRect().x + getItemsSize(),
-                        tapIcons.get(i).getRect().y + getItemsSize())
+                        tapIcons.get(i).getX() + tapIcons.get(i).getWidth(),
+                        tapIcons.get(i).getY() + tapIcons.get(i).getHeight())
         );
         array.add(mass[3].set(
-                        tapIcons.get(i).getRect().x,
-                        tapIcons.get(i).getRect().y + getItemsSize())
+                        tapIcons.get(i).getX(),
+                        tapIcons.get(i).getY() + tapIcons.get(i).getHeight())
         );
     }
 
@@ -140,17 +136,17 @@ public class AbstractItemFactory {
         if (rand < 25) {
             tapIcons.add(new BlueIcons(
                     Gdx.graphics.getWidth() * boarderIndentP,
-                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+                    Gdx.graphics.getHeight() * boarderIndentP)
             );
         } else if (rand > 25 && rand < 60) {
             tapIcons.add(new RedIcons(
                     Gdx.graphics.getWidth() * boarderIndentP,
-                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+                    Gdx.graphics.getHeight() * boarderIndentP)
             );
         } else {
             tapIcons.add(new YellowIcons(
                     Gdx.graphics.getWidth() * boarderIndentP,
-                    Gdx.graphics.getHeight() * boarderIndentP + getItemsSize())
+                    Gdx.graphics.getHeight() * boarderIndentP)
             );
         }
     }
@@ -171,20 +167,17 @@ public class AbstractItemFactory {
         return gestureDetector;
     }
 
-    public float getItemsSize() {
-        return Gdx.graphics.getHeight()*0.2f;
-    }
-
-    public Array<Icon> getIconsArray(){
+    public Array<Icon> getIconsArray() {
         return tapIcons;
     }
-    public int getTotalScore(){
+
+    public int getTotalScore() {
         return totalScore;
     }
 
     private GestureDetector gestureDetector;
 
-    private Array<Icon> tapIcons;
+    private Array<Icon> tapIcons; // todo заменить массив на связный список, будет быстрее
     private float boarderIndentP = 0.05f; //5% boarder
     private int totalScore;
     private long lastDropTime;
