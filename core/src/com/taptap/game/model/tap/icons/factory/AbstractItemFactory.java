@@ -25,7 +25,7 @@ public class AbstractItemFactory { // todo подумать над повтор�
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
         final Vector2[] mass = new Vector2[4];
-        for (int i=0; i<mass.length;++i){
+        for (int i=0; i<mass.length; ++i){
             mass[i] = new Vector2();
         }
         final Vector<Boolean> panFlag = new Vector<Boolean>(1);

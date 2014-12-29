@@ -259,7 +259,7 @@ public class GameScreen implements Screen {
 
     public final InputMultiplexer inputMultiplexer;
 
-    private float totalTime = 150;
+    private float totalTime = 30.1f;
     private float alpha = 0;
     private BitmapFont font;
 }
