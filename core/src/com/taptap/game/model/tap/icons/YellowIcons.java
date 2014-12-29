@@ -27,8 +27,8 @@ public class YellowIcons implements Icon {
     }
 
     @Override
-    public Texture getTexture() {
-        return taptapImage.getTexture();
+    public Sprite getTexture() {
+        return taptapImage;
     }
 
     @Override
@@ -49,11 +49,6 @@ public class YellowIcons implements Icon {
     @Override
     public float getHeight() {
         return cords.getHeight();
-    }
-
-    @Override
-    public Rectangle getRect() {
-        return cords;
     }
 
     private Rectangle cords;

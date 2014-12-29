@@ -1,7 +1,6 @@
 package com.taptap.game.model.tap.icons;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -27,8 +26,8 @@ public class RedIcons implements Icon {
     }
 
     @Override
-    public Texture getTexture() {
-        return taptapImage.getTexture();
+    public Sprite getTexture() {
+        return taptapImage;
     }
 
     @Override
@@ -49,11 +48,6 @@ public class RedIcons implements Icon {
     @Override
     public float getHeight() {
         return cords.getHeight();
-    }
-
-    @Override
-    public Rectangle getRect() {
-        return cords;
     }
 
     private Rectangle cords;

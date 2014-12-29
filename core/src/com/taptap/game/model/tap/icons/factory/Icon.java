@@ -1,14 +1,12 @@
 package com.taptap.game.model.tap.icons.factory;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public interface Icon {
     public int getScore();
-    public Texture getTexture();
+    public Sprite getTexture();
     public float getX();
     public float getY();
     public float getWidth();
     public float getHeight();
-    public Rectangle getRect();
 }

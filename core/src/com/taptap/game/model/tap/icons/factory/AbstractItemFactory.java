@@ -115,7 +115,7 @@ public class AbstractItemFactory {
     }
 
     private void fillArrayWithCords(final Array<Vector2> array, final Vector2[] mass, final int i) {
-        array.add(mass[0].set(
+        /*array.add(mass[0].set(
                         tapIcons.get(i).getRect().x,
                         tapIcons.get(i).getRect().y)
         );
@@ -130,7 +130,7 @@ public class AbstractItemFactory {
         array.add(mass[3].set(
                         tapIcons.get(i).getRect().x,
                         tapIcons.get(i).getRect().y)
-        );
+        );*/
     }
 
     public void spawn() {
