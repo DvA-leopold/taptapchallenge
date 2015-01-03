@@ -9,7 +9,7 @@ import com.taptap.game.model.tap.icons.factory.Icon;
 
 public class BlueIcons implements Icon {
     static {
-        image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
+        image = ResourceManager.getInstance().get(ResourceManager.zombiLAL);
     }
 
     public BlueIcons(float spawnBoarderX, float spawnBoarderY){

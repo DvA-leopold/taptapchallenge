@@ -91,8 +91,8 @@ public class ResourceManager {
             new AssetDescriptor<Texture>("skins/game_menu/tap_icons/hud_gem_blue.png", Texture.class);
     public static final AssetDescriptor<Texture> iconYellow =
             new AssetDescriptor<Texture>("skins/game_menu/tap_icons/hud_gem_yellow.png", Texture.class);
-    //public static final AssetDescriptor<Texture> zombiLAL =
-    //        new AssetDescriptor<Texture>("skins/game_menu/tap_icons/zombi_lol.png", Texture.class);
+    public static final AssetDescriptor<Texture> zombiLAL =
+            new AssetDescriptor<Texture>("skins/game_menu/tap_icons/zombie.png", Texture.class);
 
     public static final String TextureAtlasNumber = "skins/game_menu/coins_and_numb/coins_and_hud.pack";
 
@@ -100,7 +100,7 @@ public class ResourceManager {
         getInstance().load(gameBackground);
         getInstance().load(gameOver);
         getInstance().load(TextureAtlasNumber, TextureAtlas.class);
-        //getInstance().load(zombiLAL);
+        getInstance().load(zombiLAL);
         getInstance().load(optionSkin);
         getInstance().load(popUpSkin);
         getInstance().load(fonts);
