@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.buttons.MenuButtonInitializer;
@@ -11,7 +12,7 @@ import debug.statistics.FPS_MEM_DC;
 
 public class MainMenuScreen implements Screen {
     public MainMenuScreen() {
-        batch = new SpriteBatch();
+        batch = new SpriteBatch(1000, TapTap.createDefaultShader());
         buttons = new MenuButtonInitializer(batch);
         background = ResourceManager.getInstance().get(ResourceManager.menuBackground);
         camera = new OrthographicCamera();

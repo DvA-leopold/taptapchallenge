@@ -36,8 +36,8 @@ public class GameScreen implements Screen {
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
-        mainBatch = new SpriteBatch();
-        transparentBatch = new SpriteBatch();
+        mainBatch = new SpriteBatch(1000, TapTap.createDefaultShader());
+        transparentBatch = new SpriteBatch(1000, TapTap.createDefaultShader());
 
         tweenManager = new TweenManager();
 

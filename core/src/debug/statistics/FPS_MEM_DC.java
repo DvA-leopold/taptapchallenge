@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.taptap.game.TapTap;
 
 public class FPS_MEM_DC {
     static {
         font = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"), false);
-        logBatch = new SpriteBatch();
+        logBatch = new SpriteBatch(1000, TapTap.createDefaultShader());
     }
 
     public static void fpsLog(){

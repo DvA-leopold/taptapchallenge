@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
@@ -34,7 +36,7 @@ public class LoadScreen implements Screen {
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
+        batch = new SpriteBatch(1000, TapTap.createDefaultShader());
         batch.disableBlending();
         barHorizontalMid = new Texture ("skins/load_menu/bar_yellow_mid.png");
         ResourceManager.queueLoading();
