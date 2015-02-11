@@ -3,6 +3,7 @@ package com.taptap.game.view.screens.help_screen.buttons;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,9 +17,10 @@ import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.view.buttons.interfaces.Buttons;
 // TODO решить проблему различных разрешений экрана ViewPort
 public class HelpButtonInitializer implements Buttons {
-    public HelpButtonInitializer(Batch batch){
-        int buttonWidth = Gdx.graphics.getWidth()/8;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
+    public HelpButtonInitializer(final SpriteBatch batch){
+        this.batch = batch;
+        float buttonWidth = Gdx.graphics.getWidth()*0.2f;
+        float buttonHeight = Gdx.graphics.getHeight()*0.25f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.helpSkin);
@@ -44,7 +46,7 @@ public class HelpButtonInitializer implements Buttons {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
             }
         });
         Gdx.input.setInputProcessor(stage);
@@ -57,12 +59,10 @@ public class HelpButtonInitializer implements Buttons {
 
     @Override
     public void dispose() {
-        //atlas.dispose();
-        //skin.dispose();
         stage.dispose();
     }
 
-    //private TextureAtlas atlas;
+    private final SpriteBatch batch;
     private TextButton button;
     private Stage stage;
 }

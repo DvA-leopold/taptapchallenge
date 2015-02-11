@@ -18,7 +18,7 @@ public class BlueIcon implements Icon {
         image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
     }
 
-    public BlueIcon(float spawnBoarderX, float spawnBoarderY){
+    public BlueIcon(float spawnBoarderX, float spawnBoarderY) {
         tapSprite = new Sprite(image);
         tapSprite.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getHeight()*0.2f);
         tapSprite.setPosition(

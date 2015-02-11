@@ -3,6 +3,8 @@ package com.taptap.game.view.screens.mainmenu_screen.buttons;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -16,13 +18,14 @@ import com.taptap.game.view.screens.records_screen.RecordScreen;
 import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class MenuButtonInitializer implements Buttons {
-    public MenuButtonInitializer(Batch batch){
-        int buttonWidth = Gdx.graphics.getWidth()/2;
-        int buttonHeight = Gdx.graphics.getHeight()/6;
+    public MenuButtonInitializer(final SpriteBatch batch){
+        this.batch = batch;
+        float buttonWidth = Gdx.graphics.getWidth()*0.5f;
+        float buttonHeight = Gdx.graphics.getHeight()*0.15f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.mainMenuSkin);
-        skin.getFont("blackFont").setScale(2, 2);// todo поменять шрифты
+        skin.getFont("blackFont").setScale(2, 2); // todo поменять шрифты
 
         Label heading = new Label("TAP TAP Game", skin, "default");
         buttonPlay = new TextButton("Play", skin, "mainButtons");
@@ -61,19 +64,19 @@ public class MenuButtonInitializer implements Buttons {
         buttonPlay.addListener(new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(batch));
         }
         });
         buttonHelp.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new HelpScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HelpScreen(batch));
             }
         });
         buttonRecords.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new RecordScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new RecordScreen(batch));
             }
         });
         soundButton.addListener(new ClickListener() {
@@ -93,9 +96,9 @@ public class MenuButtonInitializer implements Buttons {
 
     @Override
     public void dispose() {
-        //skin.dispose();
         stage.dispose();
     }
+    private final SpriteBatch batch;
 
     private Stage stage;
     private final TextButton

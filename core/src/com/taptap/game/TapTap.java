@@ -1,17 +1,19 @@
 package com.taptap.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.save.manager.StorageManager;
 import com.taptap.game.view.screens.LoadScreen;
 
-public class TapTap extends Game {
-
+public final class TapTap extends Game {
     @Override
     public void create() {
+        mainBatch = new SpriteBatch(1500, ShaderForTest.createDefaultShader());
         storage = new StorageManager(true);
-        setScreen(new LoadScreen());
+        setScreen(new LoadScreen(mainBatch));
     }
 
     @Override
@@ -22,14 +24,25 @@ public class TapTap extends Game {
     @Override
     public void dispose() {
         ResourceManager.getInstance().dispose();
+        mainBatch.dispose();
     }
 
     public static StorageManager getStorage() {
         return storage;
     }
 
-    // todo сейчас это для теста, в дальнейшем должно работать из коробки
-    static public ShaderProgram createDefaultShader () {
+    private static StorageManager storage;
+    private SpriteBatch mainBatch;
+}
+
+class ShaderForTest {
+    /**
+     * This shader is for Windows systems only, in next library build or
+     * something it must work out of the box,
+     * in linux or android or (not)Windows systems, just delete this and clean Batch arguments.
+     * @return shader program
+     */
+    public static ShaderProgram createDefaultShader() {
         String vertexShader = "#version 330\n"
                 + "in vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "in vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
@@ -65,6 +78,4 @@ public class TapTap extends Game {
         if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
-
-    private static StorageManager storage;
 }

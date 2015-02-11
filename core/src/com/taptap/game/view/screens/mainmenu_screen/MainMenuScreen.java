@@ -4,15 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.buttons.MenuButtonInitializer;
-import debug.statistics.FPS_MEM_DC;
 
 public class MainMenuScreen implements Screen {
-    public MainMenuScreen() {
-        batch = new SpriteBatch(1000, TapTap.createDefaultShader());
+    public MainMenuScreen(final SpriteBatch batch) {
+        this.batch = batch;
         buttons = new MenuButtonInitializer(batch);
         background = ResourceManager.getInstance().get(ResourceManager.menuBackground);
         camera = new OrthographicCamera();
@@ -31,7 +29,6 @@ public class MainMenuScreen implements Screen {
 
         camera.update();
         buttons.render();
-        FPS_MEM_DC.fpsLog();
     }
 
     @Override
@@ -63,14 +60,11 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         buttons.dispose();
-        batch.dispose();
-        //background.dispose();
     }
 
+    private final SpriteBatch batch;
+    private OrthographicCamera camera;
     private MenuButtonInitializer buttons;
 
-    private SpriteBatch batch;
     private Texture background;
-
-    private OrthographicCamera camera;
 }

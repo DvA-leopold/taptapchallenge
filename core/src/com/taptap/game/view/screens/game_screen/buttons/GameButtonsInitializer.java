@@ -2,6 +2,7 @@ package com.taptap.game.view.screens.game_screen.buttons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -14,8 +15,8 @@ import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.buttons.interfaces.Buttons;
 
 public class GameButtonsInitializer implements Buttons {
-    public GameButtonsInitializer(Batch batch) {
-        float buttonSize = Gdx.graphics.getHeight()/7;
+    public GameButtonsInitializer(final SpriteBatch batch) {
+        float buttonSize = Gdx.graphics.getHeight()*0.15f;
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
         Skin skinGameMenu = ResourceManager.getInstance().get(ResourceManager.optionSkin);
         Table table = new Table(skinGameMenu);
@@ -31,6 +32,7 @@ public class GameButtonsInitializer implements Buttons {
         stage.addActor(table);
     }
 
+    @Override
     public void setListeners(final GameScreen gameScreen) {
         optionButton.addListener(new ClickListener() {
             @Override
@@ -46,6 +48,7 @@ public class GameButtonsInitializer implements Buttons {
         stage.draw();
     }
 
+    @Override
     public void dispose() {
         stage.dispose();
     }

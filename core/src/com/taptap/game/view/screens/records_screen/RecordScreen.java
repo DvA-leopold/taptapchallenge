@@ -18,13 +18,12 @@ import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
-import com.taptap.game.view.screens.game_screen.GameScreen;
-import debug.statistics.FPS_MEM_DC;
 
 public class RecordScreen implements Screen {
-    public RecordScreen(){
-        int buttonWidth = Gdx.graphics.getWidth()/3;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
+    public RecordScreen(final SpriteBatch batch){
+        this.batch = batch;
+        float buttonWidth = Gdx.graphics.getWidth()*0.35f;
+        float buttonHeight = Gdx.graphics.getHeight()*0.2f;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -33,7 +32,6 @@ public class RecordScreen implements Screen {
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
-        batch = new SpriteBatch();
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         background = ResourceManager.getInstance().get(ResourceManager.recordBackground);
 
@@ -54,7 +52,6 @@ public class RecordScreen implements Screen {
         stage.act();
         stage.draw();
         camera.update();
-        FPS_MEM_DC.fpsLog();
     }
 
     @Override
@@ -72,7 +69,7 @@ public class RecordScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
             }
         });
     }
@@ -95,7 +92,6 @@ public class RecordScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
         stage.dispose();
     }
 

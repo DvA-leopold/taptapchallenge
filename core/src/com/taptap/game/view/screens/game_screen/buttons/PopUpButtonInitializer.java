@@ -150,8 +150,6 @@ public class PopUpButtonInitializer implements Buttons {
     public void dispose() {
         pauseMenuStage.dispose();
         optionMenuStage.dispose();
-        //skinPopupMenu.dispose();
-        //popUpSkin.dispose();
     }
 
     private boolean windowOptionFlag = false;

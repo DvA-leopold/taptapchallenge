@@ -15,8 +15,8 @@ import com.taptap.game.model.tap.icons.YellowIcon;
 
 import java.util.Vector;
 
-public class AbstractItemFactory {
-    public AbstractItemFactory(final Camera camera) {
+public class ItemFactory {
+    public ItemFactory(final Camera camera) {
         tapIcons = new Array<Icon>(15);
         initListener(camera);
         boarder = new Vector2(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getWidth()*0.05f);

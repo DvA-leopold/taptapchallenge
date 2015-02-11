@@ -1,7 +1,5 @@
 package com.taptap.game.view.screens.game_screen;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -15,18 +13,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.world.manager.WorldHandler;
-import com.taptap.game.view.accessors.SpriteAccessor;
 import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
 import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 import com.taptap.game.view.buttons.interfaces.Buttons;
-import com.taptap.game.model.tap.icons.factory.AbstractItemFactory;
+import com.taptap.game.model.tap.icons.factory.ItemFactory;
 import com.taptap.game.model.tap.icons.factory.Icon;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import debug.statistics.FPS_MEM_DC;
 
 public class GameScreen implements Screen {
-    public GameScreen() {
+    public GameScreen(final SpriteBatch batch) {
+        this.batch = batch;
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -36,15 +33,10 @@ public class GameScreen implements Screen {
         gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
         gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
 
-        mainBatch = new SpriteBatch(1000, TapTap.createDefaultShader());
-        transparentBatch = new SpriteBatch(1000, TapTap.createDefaultShader());
+        gameButtons = new GameButtonsInitializer(batch);
+        popUpButtons = new PopUpButtonInitializer(batch);
 
-        tweenManager = new TweenManager();
-
-        gameButtons = new GameButtonsInitializer(mainBatch);
-        popUpButtons = new PopUpButtonInitializer(mainBatch);
-
-        iconFactory = new AbstractItemFactory(camera);
+        iconFactory = new ItemFactory(camera);
         inputMultiplexer = new InputMultiplexer();
 
         stateManager = new StateManager();
@@ -57,7 +49,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
 
-        switch (states){
+        switch (states) {
             case GAME_RUNNING:
                 stateManager.runState();
                 break;
@@ -71,14 +63,10 @@ public class GameScreen implements Screen {
                 stateManager.gameExitState();
                 break;
         }
-        FPS_MEM_DC.fpsLog();
     }
 
     @Override
     public void show() {
-        Tween.registerAccessor(SpriteBatch.class, new SpriteAccessor());
-        //mainBatch.setProjectionMatrix(camera.combined);
-        //transparentBatch.setProjectionMatrix(camera.combined);
         popUpButtons.setListeners(this);
         gameButtons.setListeners(this);
 
@@ -105,13 +93,10 @@ public class GameScreen implements Screen {
     @Override
     public void resume() {
         MusicManager.play(this);
-        //states = StateManager.GAME_RUNNING;
     }
 
     @Override
     public void dispose() {
-        mainBatch.dispose();
-        transparentBatch.dispose();
         gameButtons.dispose();
         popUpButtons.dispose();
     }
@@ -128,7 +113,7 @@ public class GameScreen implements Screen {
                     createSprite("hud" + Integer.toString(val));
 
             width -= picture.getWidth();
-            mainBatch.draw(
+            batch.draw(
                     picture, width + widthAlign,
                     Gdx.graphics.getHeight() + heightAlign - picture.getHeight()
             );
@@ -165,23 +150,23 @@ public class GameScreen implements Screen {
                 inputMultiplexer.addProcessor(iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
             }
             if (!readyToStart) {
-                mainBatch.begin();
-                mainBatch.disableBlending();
-                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                mainBatch.enableBlending();
-                font.draw(mainBatch, " press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
-                mainBatch.end();
+                batch.begin();
+                batch.disableBlending();
+                batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                batch.enableBlending();
+                font.draw(batch, " press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
+                batch.end();
                 if (Gdx.input.isTouched()) {
                     readyToStart = true;
                 }
             } else {
                 totalTime -= Gdx.graphics.getDeltaTime();
-                mainBatch.begin();
-                mainBatch.disableBlending();
-                mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                mainBatch.enableBlending();
+                batch.begin();
+                batch.disableBlending();
+                batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                batch.enableBlending();
                 for (Icon iconsDrop : iconFactory.getIconsArray()) {
-                    mainBatch.draw(iconsDrop.getSprite(),
+                    batch.draw(iconsDrop.getSprite(),
                             iconsDrop.getX(), iconsDrop.getY()
                     );
                 }
@@ -189,7 +174,7 @@ public class GameScreen implements Screen {
                 renderNumbers(iconFactory.getTotalScore(), 0, 0);
                 renderNumbers((int) totalTime, -Gdx.graphics.getWidth() / 2, 0);
 
-                mainBatch.end();
+                batch.end();
                 if (iconFactory.controlFiguresNumber() < 0) {
                     states = States.GAME_OVER;
                 }
@@ -210,68 +195,52 @@ public class GameScreen implements Screen {
                 States.GAME_RUNNING.firstTimeInit = true;
                 inputMultiplexer.addProcessor(popUpButtons.getStage());
                 inputMultiplexer.removeProcessor(iconFactory.getGestureDetector());
-                Tween.set(mainBatch, SpriteAccessor.ALPHA).target(0).start(tweenManager);
-                Tween.to(mainBatch, SpriteAccessor.ALPHA, 1).target(1).start(tweenManager);
-                // tween .setCallback сделает какое-то действие когда анимация закончится @param TweenCallback()
             }
             alpha = (float) Math.min(alpha + Gdx.graphics.getDeltaTime() / 2, 0.7);
-            tweenManager.update(Gdx.graphics.getDeltaTime());
-            mainBatch.begin();
-            //mainBatch.disableBlending();
-            mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.begin();
+            batch.disableBlending();
+            batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.enableBlending();
             for (Icon tapIcon : iconFactory.getIconsArray()) {
-                mainBatch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
+                batch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
             }
-            //mainBatch.enableBlending();
-            mainBatch.end();
-            // todo оптимизировать, здесь куча лишней прорисовки
-            //transparentBatch.begin();
-            //transparentBatch.setColor(0.0f, 0.0f, 0.0f, alpha);
-            //transparentBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            //for (Icon tapIcon : iconFactory.getIconsArray()) {
-                //transparentBatch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
-            //}
-            //transparentBatch.end();
+            batch.end();
             popUpButtons.render();
         }
 
         private void gameOverState() {
-            mainBatch.begin();
-            mainBatch.setColor(0.5f, 0f, 0f, 0.6f);
-            mainBatch.disableBlending();
-            mainBatch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            mainBatch.enableBlending();
-            mainBatch.draw(gameOver,
+            batch.begin();
+            batch.setColor(0.5f, 0f, 0f, 0.6f);
+            batch.disableBlending();
+            batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.enableBlending();
+            batch.draw(gameOver,
                     Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
                     Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
-            mainBatch.end();
+            batch.end();
             if (Gdx.input.isTouched()) {
                 States.GAME_PAUSED.firstTimeInit = true;
                 States.GAME_RUNNING.firstTimeInit = true;
                 states = States.GAME_EXIT;
             }
-            //System.out.println(mainBatch.renderCalls);
         }
 
         private void gameExitState() {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
         }
 
         private boolean readyToStart = false;
     }
 
-    private AbstractItemFactory iconFactory;
+    private ItemFactory iconFactory;
     private final Buttons
             gameButtons,
             popUpButtons;
 
     private final Sprite gameBackground;
     private final Sprite gameOver;
-    private final SpriteBatch transparentBatch;
-    private final SpriteBatch mainBatch;
+    private final SpriteBatch batch;
     private OrthographicCamera camera;
-
-    private TweenManager tweenManager;
 
     private StateManager stateManager;
     private States states;
@@ -279,7 +248,6 @@ public class GameScreen implements Screen {
     public final InputMultiplexer inputMultiplexer;
 
     private WorldHandler world;
-
     private float totalTime = 150;
     private float alpha = 0;
     private BitmapFont font;
