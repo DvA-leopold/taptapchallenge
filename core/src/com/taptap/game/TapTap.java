@@ -1,6 +1,9 @@
 package com.taptap.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -8,23 +11,31 @@ import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.save.manager.StorageManager;
 import com.taptap.game.view.screens.LoadScreen;
 
+import java.util.logging.FileHandler;
+
 public final class TapTap extends Game {
     @Override
     public void create() {
-        mainBatch = new SpriteBatch(1500, ShaderForTest.createDefaultShader());
+        mainBatch = new SpriteBatch();
+        // resource storage
         storage = new StorageManager(true);
+        //class for debug
+        debug = new Debug();
+        // first screen
         setScreen(new LoadScreen(mainBatch));
     }
 
     @Override
     public void render() {
         super.render();
+        debug.render(mainBatch);
     }
 
     @Override
     public void dispose() {
         ResourceManager.getInstance().dispose();
         mainBatch.dispose();
+        debug.dispose();
     }
 
     public static StorageManager getStorage() {
@@ -33,6 +44,8 @@ public final class TapTap extends Game {
 
     private static StorageManager storage;
     private SpriteBatch mainBatch;
+
+    private Debug debug;
 }
 
 class ShaderForTest {
@@ -78,4 +91,25 @@ class ShaderForTest {
         if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
+}
+
+class Debug {
+    /**
+     * для дебага, показывается fps и draw calls.
+     * @param batch батч в по которому считаются draw calls
+     */
+    public void render(final SpriteBatch batch) {
+        debugBatch.begin();
+        fontStandart.draw(debugBatch,
+                "D_C:" + batch.renderCalls +
+                        " fps:" + Gdx.graphics.getFramesPerSecond(), 20, 30);
+        debugBatch.end();
+    }
+
+    public void dispose() {
+        debugBatch.dispose();
+    }
+
+    private BitmapFont fontStandart = new BitmapFont(new FileHandle("fonts/whiteFont.fnt"));
+    private SpriteBatch debugBatch = new SpriteBatch();
 }
