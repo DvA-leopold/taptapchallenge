@@ -39,7 +39,7 @@ class ShaderForTest {
     /**
      * This shader is for Windows systems only, in next library build or
      * something it must work out of the box,
-     * in linux or android or (not)Windows systems, just delete this and clean Batch arguments.
+     * in linux or android or (not)Windows systems, just clean Batch arguments.
      * @return shader program
      */
     public static ShaderProgram createDefaultShader() {
