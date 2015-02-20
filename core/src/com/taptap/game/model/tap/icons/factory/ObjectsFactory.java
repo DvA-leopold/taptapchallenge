@@ -15,14 +15,14 @@ import com.taptap.game.model.tap.icons.YellowIcon;
 
 import java.util.Vector;
 
-public class ItemFactory {
-    public ItemFactory(final Camera camera) {
+public class ObjectsFactory {
+    public ObjectsFactory(final Camera camera) {
         tapIcons = new Array<Icon>(15);
         initListener(camera);
         boarder = new Vector2(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getWidth()*0.05f);
     }
 
-    public void initListener(final Camera camera) { //TODO ГОСПОДЬ ПОКАРАЕТ ТЕБЯ ЗА ЭТОТ КОД
+    public void initListener(final Camera camera) { //TODO need huge optimisations
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
         final Vector2[] mass = new Vector2[4];
@@ -159,7 +159,7 @@ public class ItemFactory {
             lastDropTime = TimeUtils.millis();
         }
         if (tapIcons.size > 10){
-            tapIcons.removeIndex(0);
+            tapIcons.removeIndex(0);// todo memory reallocation every remove - fix
             totalScore -= 50;
         }
         return totalScore;
@@ -176,6 +176,13 @@ public class ItemFactory {
         return totalScore;
     }
 
+    public void stopGestureDetector() {
+        gestureDetector.cancel();
+    }
+
+    public void startGestureDetector() {
+        gestureDetector.reset();
+    }
 
     private GestureDetector gestureDetector;
     private Array<Icon> tapIcons;

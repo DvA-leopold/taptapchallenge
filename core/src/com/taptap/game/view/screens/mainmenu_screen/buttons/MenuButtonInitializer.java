@@ -10,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.view.screens.game_screen.GameRenderer;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
 import com.taptap.game.view.screens.records_screen.RecordScreen;
@@ -60,7 +62,7 @@ public class MenuButtonInitializer implements Buttons {
         stage.draw();
     }
 
-    public void setListeners(final GameScreen game) {
+    public void setListeners(final GameWorld gameWorld) {
         buttonPlay.addListener(new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
@@ -87,11 +89,6 @@ public class MenuButtonInitializer implements Buttons {
         });
 
         Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public Stage getStage() {
-        return null;
     }
 
     @Override

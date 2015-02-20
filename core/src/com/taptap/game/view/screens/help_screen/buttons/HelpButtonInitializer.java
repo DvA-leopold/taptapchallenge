@@ -11,18 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.view.screens.game_screen.GameRenderer;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.view.buttons.interfaces.Buttons;
-// TODO решить проблему различных разрешений экрана ViewPort
+
 public class HelpButtonInitializer implements Buttons {
     public HelpButtonInitializer(final SpriteBatch batch){
         this.batch = batch;
         float buttonWidth = Gdx.graphics.getWidth()*0.2f;
         float buttonHeight = Gdx.graphics.getHeight()*0.25f;
 
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.helpSkin);
         Table table = new Table(skin);
         button = new TextButton("menu", skin, "default");
@@ -42,7 +44,7 @@ public class HelpButtonInitializer implements Buttons {
     }
 
     @Override
-    public void setListeners(final GameScreen game) {
+    public void setListeners(final GameWorld gameWorld) {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -50,11 +52,6 @@ public class HelpButtonInitializer implements Buttons {
             }
         });
         Gdx.input.setInputProcessor(stage);
-    }
-
-    @Override
-    public Stage getStage() {
-        return null;
     }
 
     @Override

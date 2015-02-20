@@ -4,13 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.tap.icons.factory.Icon;
-import com.taptap.game.model.world.manager.WorldHandler;
 
 public class RedIcon implements Icon {
     static {
@@ -28,8 +26,8 @@ public class RedIcon implements Icon {
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         //bodyDef.position.set(cords.x, cords.y);
-        Body body = WorldHandler.createBody(bodyDef);
-        body.setUserData(tapSprite);
+        //Body body = WorldHandler.createBody(bodyDef);
+        //body.setUserData(tapSprite);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(3f);
         FixtureDef circleFixture = new FixtureDef();
@@ -38,7 +36,7 @@ public class RedIcon implements Icon {
         circleFixture.friction = 0.2f;
         circleFixture.restitution = 0.0f;
 
-        body.createFixture(circleFixture);
+        //body.createFixture(circleFixture);
     }
 
     @Override

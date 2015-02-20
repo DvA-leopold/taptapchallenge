@@ -4,14 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.save.manager.StorageManager;
 import com.taptap.game.view.screens.LoadScreen;
-
-import java.util.logging.FileHandler;
 
 public final class TapTap extends Game {
     @Override
