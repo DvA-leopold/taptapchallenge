@@ -3,12 +3,12 @@ package com.taptap.game.model.game.world;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.tap.icons.factory.Icon;
@@ -20,7 +20,7 @@ import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 public class GameWorld {
     public GameWorld() {
         Box2D.init();
-        world = new World(new Vector2(0, 0), false);
+        world = new World(new Vector2(0, 0), true);
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -40,27 +40,25 @@ public class GameWorld {
         world.step(1/60f, 6, 2);
         totalTime -= Gdx.graphics.getDeltaTime();
 
-        if (objects.controlFiguresNumber() < 0) {
-            changeWorldState(GameWorld.States.GAME_OVER);
+        if (objects.controlFiguresNumber(world) < 0) {
+            changeWorldState(GameWorld.States.GAME_OVER); // todo make a listener
         }
         if (totalTime<= 0) {
-            changeWorldState(GameWorld.States.GAME_EXIT);
+            changeWorldState(GameWorld.States.GAME_EXIT); // todo make a listener
         }
+        //todo its for a debug
+        printTotalInfo();
     }
 
-    public void initialiseButtons(final SpriteBatch batch) {
+    public void initializeActors(final SpriteBatch batch,
+                                 final InputMultiplexer gameScreenMultiplexer) {
         gameButtons = new GameButtonsInitializer(batch);
         popUpButtons = new PopUpButtonInitializer(batch);
+        gameScreenMultiplexer.addProcessor(gameButtons.getStage());
+        gameScreenMultiplexer.addProcessor(popUpButtons.getStage());
+        gameScreenMultiplexer.addProcessor(objects.getGestureDetector());
         gameButtons.setListeners(this);
         popUpButtons.setListeners(this);
-    }
-
-    public Body createBody(BodyDef bodyForCreate) {
-        return world.createBody(bodyForCreate);
-    }
-
-    public void destroyBody(Body body) {
-        world.destroyBody(body);
     }
 
     public RayHandler getRayHandler() {
@@ -83,12 +81,9 @@ public class GameWorld {
             case GAME_RUNNING:
                 objects.startGestureDetector(); // change delays, etc.
                 gameButtons.setVisible(true);
-                //inputMultiplexer.addProcessor(iconFactory.getGestureDetector()); //можно изменить задержку измерения и т.п
                 break;
             case GAME_PAUSED:
-                //inputMultiplexer.addProcessor(popUpButtons.getStage());
                 objects.stopGestureDetector();
-                //inputMultiplexer.removeProcessor(iconFactory.getGestureDetector());
                 break;
             case GAME_EXIT:
                 TapTap.getStorage().saveDataValue(
@@ -119,23 +114,12 @@ public class GameWorld {
         return totalTime;
     }
 
-    /**
-     * @param i gameButtons (i=0), popUpButtons (i=1)
-     * @return select button stage */
-    public Stage getButtonStage(int i) {
-        switch (i) {
-            case 0:
-                return gameButtons.getStage();
-            case 1:
-                return popUpButtons.getStage();
-            default:
-                Gdx.app.log("ERROR", "wrong i type");
-                return null;
-        }
+    public void printTotalInfo() {
+        System.out.println("bodies: " + world.getBodyCount() + " fixtures:" + world.getFixtureCount());
     }
 
     /**
-     * @param i button type
+     * @param i button type todo try to do better
      * @return chosen type of button */
     public Buttons getButtons(int i) {
         switch (i) {
@@ -164,10 +148,8 @@ public class GameWorld {
     }
 
     private float totalTime = 150;
-    private float alpha = 0;
 
-    private GameButtonsInitializer gameButtons;
-    private PopUpButtonInitializer popUpButtons;
+    private Buttons gameButtons, popUpButtons;
 
     private States worldState = States.GAME_RUNNING;
     private ObjectsFactory objects;

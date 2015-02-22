@@ -53,7 +53,6 @@ public class PopUpButtonInitializer implements Buttons {
 
         Skin skinOptions = ResourceManager.getInstance().get(ResourceManager.optionSkin);
 
-        //Table optionWindow = new Table(skinOptions);
         musicControl = new CheckBox(null, skinOptions, "stateOption");
         musicControl.setChecked(!MusicManager.isMusicEnable());
         soundControl = new CheckBox(null, skinOptions, "stateOption");
@@ -63,7 +62,6 @@ public class PopUpButtonInitializer implements Buttons {
         final Label musicLabel = new Label("Music: ", skinOptions);
         final Label soundLabel = new Label("Sound: ", skinOptions);
 
-        //optionWindow.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         optionWindow = new Window("options", skinOptions);
         optionWindow.setFillParent(true);
         optionWindow.padTop(Value.percentHeight(0.35f)).padRight(Value.percentWidth(0.20f));
@@ -139,6 +137,10 @@ public class PopUpButtonInitializer implements Buttons {
 
     public Stage getStage() {
         return stage;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
     }
 
     @Override

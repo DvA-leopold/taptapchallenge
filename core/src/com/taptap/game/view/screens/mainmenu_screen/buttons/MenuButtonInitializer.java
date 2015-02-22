@@ -41,7 +41,7 @@ public class MenuButtonInitializer implements Buttons {
         buttonRecords.pad(10);
         soundButton.pad(10);
 
-        Table table = new Table(skin);
+        table = new Table(skin);
         table.setFillParent(true);
         table.add(heading).padTop(100).width(buttonWidth).height(buttonHeight);
         table.row();
@@ -92,12 +92,23 @@ public class MenuButtonInitializer implements Buttons {
     }
 
     @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        table.setVisible(visible);
+    }
+
+    @Override
     public void dispose() {
         stage.dispose();
     }
     private final SpriteBatch batch;
 
-    private Stage stage;
+    private final Stage stage;
+    private final Table table;
     private final TextButton
             buttonPlay,
             buttonHelp,

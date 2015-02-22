@@ -55,6 +55,15 @@ public class HelpButtonInitializer implements Buttons {
     }
 
     @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+    }
+
+    @Override
     public void dispose() {
         stage.dispose();
     }

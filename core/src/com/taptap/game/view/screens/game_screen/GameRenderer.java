@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.tap.icons.factory.Icon;
-import com.taptap.game.view.buttons.interfaces.Buttons;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class GameRenderer {
@@ -22,9 +21,6 @@ public class GameRenderer {
     }
 
     public void render() {
-        renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
-        gameWorld.getRayHandler().render();
-
         switch (gameWorld.getWorldState()) {
             case GAME_RUNNING:
                 this.renderRunState();
@@ -39,6 +35,8 @@ public class GameRenderer {
                 this.renderGameExitState();
                 break;
         }
+        renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+        gameWorld.getRayHandler().render();
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign) {
@@ -85,7 +83,7 @@ public class GameRenderer {
 
             batch.end();
             gameWorld.getButtons(0).render();
-//            gameWorld.render();
+
         }
     }
 

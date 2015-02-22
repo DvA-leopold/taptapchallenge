@@ -10,4 +10,6 @@ public interface Buttons {
     public void render();
     public void setListeners(final GameWorld gameWorld);
     public void dispose();
+    public Stage getStage();
+    public void setVisible(boolean visible);
 }

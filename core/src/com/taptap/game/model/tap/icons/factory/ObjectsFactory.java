@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.taptap.game.model.tap.icons.BlueIcon;
@@ -19,14 +20,14 @@ public class ObjectsFactory {
     public ObjectsFactory(final Camera camera) {
         tapIcons = new Array<Icon>(15);
         initListener(camera);
-        boarder = new Vector2(Gdx.graphics.getHeight()*0.05f, Gdx.graphics.getWidth()*0.05f);
+        boarder = new Vector2(Gdx.graphics.getHeight() * 0.05f, Gdx.graphics.getWidth() * 0.05f);
     }
 
     public void initListener(final Camera camera) { //TODO need huge optimisations
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
         final Vector2[] mass = new Vector2[4];
-        for (int i=0; i<mass.length;++i){
+        for (int i = 0; i < mass.length; ++i) {
             mass[i] = new Vector2();
         }
         final Vector<Boolean> panFlag = new Vector<Boolean>(1);
@@ -45,7 +46,7 @@ public class ObjectsFactory {
                     fillArrayWithCords(array, mass, i);
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
                             tapIcons.get(i) instanceof YellowIcon &&
-                            count == 2 ) {
+                            count == 2) {
                         totalScore += (tapIcons.get(i).getScore());
                         tapIcons.removeIndex(i);
                         break;
@@ -78,13 +79,13 @@ public class ObjectsFactory {
 
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
-                if (panFlag.get(0)){
+                if (panFlag.get(0)) {
                     camera.unproject(touchPoint.set(x, y, 0));
-                    for (int i=tapIcons.size-1; i>=0; --i){ // todo ужасное решение, попробовать сделать лучше
+                    for (int i = tapIcons.size - 1; i >= 0; --i) { // todo ужасное решение, попробовать сделать лучше
                         fillArrayWithCords(array, mass, i);
-                        if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x,touchPoint.y))
-                                && tapIcons.get(i) instanceof BlueIcon){
-                            totalScore+=tapIcons.get(i).getScore();
+                        if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y))
+                                && tapIcons.get(i) instanceof BlueIcon) {
+                            totalScore += tapIcons.get(i).getScore();
                             tapIcons.removeIndex(i);
                             panFlag.set(0, false);
                             break;
@@ -97,7 +98,7 @@ public class ObjectsFactory {
 
             @Override
             public boolean panStop(float x, float y, int pointer, int button) {
-                panFlag.set(0,true);
+                panFlag.set(0, true);
                 return false;
             }
 
@@ -133,46 +134,41 @@ public class ObjectsFactory {
         );
     }
 
-    public void spawn() {
+    public void spawn(final World world) {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcon(
-                    boarder.x,
-                    boarder.y)
+            tapIcons.add(new BlueIcon(boarder, world)
             );
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcon(
-                    boarder.x,
-                    boarder.y)
+            tapIcons.add(new RedIcon(boarder, world)
             );
         } else {
-            tapIcons.add(new YellowIcon(
-                    boarder.x,
-                    boarder.y)
+            tapIcons.add(new YellowIcon(boarder, world)
             );
         }
     }
 
-    public int controlFiguresNumber() {
-        if(TimeUtils.millis() - lastDropTime > 1000){
-            spawn();
+    public int controlFiguresNumber(final World world) {
+        if (TimeUtils.millis() - lastDropTime > 1000) {
+            spawn(world);
             lastDropTime = TimeUtils.millis();
         }
-        if (tapIcons.size > 10){
+        if (tapIcons.size > 10) {
             tapIcons.removeIndex(0);// todo memory reallocation every remove - fix
             totalScore -= 50;
         }
         return totalScore;
     }
 
-    public GestureDetector getGestureDetector(){
+    public GestureDetector getGestureDetector() {
         return gestureDetector;
     }
 
-    public Array<Icon> getIconsArray(){
+    public Array<Icon> getIconsArray() {
         return tapIcons;
     }
-    public int getTotalScore(){
+
+    public int getTotalScore() {
         return totalScore;
     }
 

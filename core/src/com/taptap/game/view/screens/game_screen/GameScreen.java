@@ -7,18 +7,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.view.buttons.interfaces.Buttons;
-import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
-import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 
 public class GameScreen implements Screen {
     public GameScreen(final SpriteBatch batch) {
         gameWorld = new GameWorld();
-        gameWorld.initialiseButtons(batch);
-
         gameRenderer = new GameRenderer(batch, gameWorld);
 
         inputMultiplexer = new InputMultiplexer();
+        gameWorld.initializeActors(batch, inputMultiplexer);
     }
 
     @Override
@@ -26,15 +22,12 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        gameWorld.update();
         gameRenderer.render();
+        gameWorld.update();
     }
 
     @Override
     public void show() {
-        inputMultiplexer.addProcessor(gameWorld.getButtonStage(0));
-        inputMultiplexer.addProcessor(gameWorld.getButtonStage(1));
-
         //gameWorld.
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
@@ -67,7 +60,6 @@ public class GameScreen implements Screen {
     }
 
     private final InputMultiplexer inputMultiplexer;
-
     private final GameWorld gameWorld;
     private final GameRenderer gameRenderer;
 }
