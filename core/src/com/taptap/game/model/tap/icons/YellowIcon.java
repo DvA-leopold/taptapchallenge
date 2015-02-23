@@ -11,7 +11,7 @@ import com.taptap.game.model.tap.icons.factory.Icon;
 
 public class YellowIcon implements Icon {
     static {
-        image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
+        image = ResourceManager.getInstance().get(ResourceManager.iconYellow);
     }
 
     public YellowIcon(Vector2 spawnBoarder,final World world) {

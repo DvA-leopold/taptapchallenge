@@ -44,6 +44,7 @@ public class PopUpButtonInitializer implements Buttons {
         pauseWindow.row();
         pauseWindow.add(exitMainMenuButton).width(buttonWidth).height(buttonHeight);
 
+        pauseWindow.setVisible(false);
         stage.addActor(pauseWindow);
     }
 
@@ -88,7 +89,7 @@ public class PopUpButtonInitializer implements Buttons {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
-
+                pauseWindow.setVisible(false);
             }
         });
         optionGameButton.addListener(new ClickListener() {
@@ -141,6 +142,7 @@ public class PopUpButtonInitializer implements Buttons {
 
     @Override
     public void setVisible(boolean visible) {
+        pauseWindow.setVisible(visible);
     }
 
     @Override

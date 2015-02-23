@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.tap.icons.factory.Icon;
+import com.taptap.game.view.buttons.interfaces.Buttons;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class GameRenderer {
@@ -37,6 +38,10 @@ public class GameRenderer {
         }
         renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
         gameWorld.getRayHandler().render();
+
+        for (Buttons button : gameWorld.getButtonsArray()) {
+            button.render();
+        }
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign) {
@@ -82,13 +87,11 @@ public class GameRenderer {
             renderNumbers((int)gameWorld.getTotalTime(), - Gdx.graphics.getWidth() / 2, 0);
 
             batch.end();
-            gameWorld.getButtons(0).render();
-
+            //gameWorld.getButtons(0).render();
         }
     }
 
     private void renderPauseState() {
-//        alpha = (float) Math.min(alpha + Gdx.graphics.getDeltaTime() / 2, 0.7);
         batch.begin();
         batch.disableBlending();
         batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -97,7 +100,7 @@ public class GameRenderer {
             batch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
         }
         batch.end();
-        gameWorld.getButtons(1).render();
+        //gameWorld.getButtons(1).render();
     }
 
     private void renderGameOverState() {

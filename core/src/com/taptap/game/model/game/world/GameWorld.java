@@ -28,7 +28,7 @@ public class GameWorld {
 
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
-        new PointLight(rayHandler, 5000, Color.BLUE, 500, Gdx.graphics.getWidth()/3, Gdx.graphics.getHeight()/3);
+        new PointLight(rayHandler, 5000, Color.YELLOW, 500, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void update() {
@@ -43,7 +43,7 @@ public class GameWorld {
         if (objects.controlFiguresNumber(world) < 0) {
             changeWorldState(GameWorld.States.GAME_OVER); // todo make a listener
         }
-        if (totalTime<= 0) {
+        if (totalTime <= 0) {
             changeWorldState(GameWorld.States.GAME_EXIT); // todo make a listener
         }
         //todo its for a debug
@@ -52,13 +52,12 @@ public class GameWorld {
 
     public void initializeActors(final SpriteBatch batch,
                                  final InputMultiplexer gameScreenMultiplexer) {
-        gameButtons = new GameButtonsInitializer(batch);
-        popUpButtons = new PopUpButtonInitializer(batch);
-        gameScreenMultiplexer.addProcessor(gameButtons.getStage());
-        gameScreenMultiplexer.addProcessor(popUpButtons.getStage());
+        buttonsArray = new Buttons[]{new GameButtonsInitializer(batch), new PopUpButtonInitializer(batch)};
+        for (Buttons button : buttonsArray) {
+            gameScreenMultiplexer.addProcessor(button.getStage());
+            button.setListeners(this);
+        }
         gameScreenMultiplexer.addProcessor(objects.getGestureDetector());
-        gameButtons.setListeners(this);
-        popUpButtons.setListeners(this);
     }
 
     public RayHandler getRayHandler() {
@@ -80,10 +79,11 @@ public class GameWorld {
         switch (state){
             case GAME_RUNNING:
                 objects.startGestureDetector(); // change delays, etc.
-                gameButtons.setVisible(true);
+                buttonsArray[0].setVisible(true);
                 break;
             case GAME_PAUSED:
                 objects.stopGestureDetector();
+                buttonsArray[1].setVisible(true);
                 break;
             case GAME_EXIT:
                 TapTap.getStorage().saveDataValue(
@@ -118,25 +118,15 @@ public class GameWorld {
         System.out.println("bodies: " + world.getBodyCount() + " fixtures:" + world.getFixtureCount());
     }
 
-    /**
-     * @param i button type todo try to do better
-     * @return chosen type of button */
-    public Buttons getButtons(int i) {
-        switch (i) {
-            case 0:
-                return gameButtons;
-            case 1:
-                return popUpButtons;
-            default:
-                Gdx.app.log("ERROR ", "wrong button type i");
-                return null;
-        }
+    public Buttons[] getButtonsArray() {
+        return buttonsArray;
     }
 
     public void dispose() {
         rayHandler.dispose();
-        gameButtons.dispose();
-        popUpButtons.dispose();
+        for (Buttons button : buttonsArray) {
+            button.dispose();
+        }
         world.dispose();
     }
 
@@ -149,12 +139,13 @@ public class GameWorld {
 
     private float totalTime = 150;
 
-    private Buttons gameButtons, popUpButtons;
+    private Buttons[] buttonsArray;
 
     private States worldState = States.GAME_RUNNING;
     private ObjectsFactory objects;
-    private final World world;
 
+    private final World world;
     private RayHandler rayHandler;
+
     private final OrthographicCamera camera;
 }
