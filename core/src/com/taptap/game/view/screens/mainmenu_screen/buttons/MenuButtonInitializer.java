@@ -24,7 +24,7 @@ public class MenuButtonInitializer implements Buttons {
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.mainMenuSkin);
-        skin.getFont("blackFont").setScale(2, 2); // todo поменять шрифты
+        skin.getFont("blackFont").setScale(2, 2);
 
         Label heading = new Label("TAP TAP Game", skin, "default");
         buttonPlay = new TextButton("Play", skin, "mainButtons");

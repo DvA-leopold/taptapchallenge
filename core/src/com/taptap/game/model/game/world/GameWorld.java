@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.taptap.game.TapTap;
-import com.taptap.game.model.tap.icons.factory.Icon;
-import com.taptap.game.model.tap.icons.factory.ObjectsFactory;
+import com.taptap.game.model.tap.icons.objects.Icon;
+import com.taptap.game.model.tap.icons.ObjectsFactory;
 import com.taptap.game.view.buttons.interfaces.Buttons;
 import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
 import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
@@ -28,26 +28,26 @@ public class GameWorld {
 
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
-        new PointLight(rayHandler, 5000, Color.YELLOW, 500, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        new PointLight(rayHandler, 1000, Color.WHITE, 2000, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //new ConeLight(rayHandler, 5000, Color.YELLOW, 2000, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight(), -90f, 35f);
     }
 
     public void update() {
-        if (worldState != States.GAME_RUNNING) {
-            return;
-        }
         camera.update();
-        rayHandler.update();
-        world.step(1/60f, 6, 2);
-        totalTime -= Gdx.graphics.getDeltaTime();
+        if (worldState == States.GAME_RUNNING) {
+            rayHandler.update();
+            world.step(1 / 60f, 6, 2);
+            totalTime -= Gdx.graphics.getDeltaTime();
 
-        if (objects.controlFiguresNumber(world) < 0) {
-            changeWorldState(GameWorld.States.GAME_OVER); // todo make a listener
+            if (objects.controlFiguresNumber(world) < 0) {
+                changeWorldState(GameWorld.States.GAME_OVER); // todo make a listener
+            }
+            if (totalTime <= 0) {
+                changeWorldState(GameWorld.States.GAME_EXIT); // todo make a listener
+            }
+            //todo its for a debug
+            System.out.println("bodies: " + world.getBodyCount() + " fixtures:" + world.getFixtureCount());
         }
-        if (totalTime <= 0) {
-            changeWorldState(GameWorld.States.GAME_EXIT); // todo make a listener
-        }
-        //todo its for a debug
-        printTotalInfo();
     }
 
     public void initializeActors(final SpriteBatch batch,
@@ -77,12 +77,15 @@ public class GameWorld {
      * @param state, state to change with */
     public void changeWorldState(States state) {
         switch (state){
+            case GAME_PREPARING:
+                //objects.stopGestureDetector();
+                break;
             case GAME_RUNNING:
-                objects.startGestureDetector(); // change delays, etc.
+                //objects.startGestureDetector(); // change delays, etc.
                 buttonsArray[0].setVisible(true);
                 break;
             case GAME_PAUSED:
-                objects.stopGestureDetector();
+                //objects.stopGestureDetector();
                 buttonsArray[1].setVisible(true);
                 break;
             case GAME_EXIT:
@@ -114,23 +117,25 @@ public class GameWorld {
         return totalTime;
     }
 
-    public void printTotalInfo() {
-        System.out.println("bodies: " + world.getBodyCount() + " fixtures:" + world.getFixtureCount());
-    }
-
     public Buttons[] getButtonsArray() {
         return buttonsArray;
     }
 
     public void dispose() {
-        rayHandler.dispose();
         for (Buttons button : buttonsArray) {
             button.dispose();
         }
+        Array<Body> worldBodies = new Array<Body>();
+        world.getBodies(worldBodies);
+        for (Body body : worldBodies) {
+            world.destroyBody(body);
+        }
         world.dispose();
+        //rayHandler.dispose();
     }
 
     public enum States {
+        GAME_PREPARING,
         GAME_RUNNING,
         GAME_PAUSED,
         GAME_OVER,
@@ -141,10 +146,10 @@ public class GameWorld {
 
     private Buttons[] buttonsArray;
 
-    private States worldState = States.GAME_RUNNING;
+    private States worldState = States.GAME_PREPARING;
     private ObjectsFactory objects;
 
-    private final World world;
+    private World world;
     private RayHandler rayHandler;
 
     private final OrthographicCamera camera;

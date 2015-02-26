@@ -162,5 +162,4 @@ public class PopUpButtonInitializer implements Buttons {
             soundControl;
 
     private Button back;
-
 }

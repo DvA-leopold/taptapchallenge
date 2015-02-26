@@ -1,4 +1,4 @@
-package com.taptap.game.model.tap.icons.factory;
+package com.taptap.game.model.tap.icons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -10,9 +10,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.taptap.game.model.tap.icons.BlueIcon;
-import com.taptap.game.model.tap.icons.RedIcon;
-import com.taptap.game.model.tap.icons.YellowIcon;
+import com.taptap.game.model.tap.icons.objects.BlueIcon;
+import com.taptap.game.model.tap.icons.objects.Icon;
+import com.taptap.game.model.tap.icons.objects.RedIcon;
+import com.taptap.game.model.tap.icons.objects.YellowIcon;
 
 import java.util.Vector;
 
@@ -23,7 +24,7 @@ public class ObjectsFactory {
         boarder = new Vector2(Gdx.graphics.getHeight() * 0.05f, Gdx.graphics.getWidth() * 0.05f);
     }
 
-    public void initListener(final Camera camera) { //TODO need huge optimisations
+    private void initListener(final Camera camera) { //todo need huge optimisations
         final Vector3 touchPoint = new Vector3();
         final Array<Vector2> array = new Array<Vector2>(4);
         final Vector2[] mass = new Vector2[4];
@@ -32,10 +33,10 @@ public class ObjectsFactory {
         }
         final Vector<Boolean> panFlag = new Vector<Boolean>(1);
         panFlag.add(true);
+
         GestureDetector.GestureListener gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
-                //System.out.println("AbstractItemFactory.touchDown");
                 return false;
             }
 
@@ -113,6 +114,7 @@ public class ObjectsFactory {
             }
         };
         gestureDetector = new GestureDetector(gesturesListener);
+        gestureDetector.invalidateTapSquare();
     }
 
     private void fillArrayWithCords(final Array<Vector2> array, final Vector2[] mass, final int i) {
@@ -137,14 +139,11 @@ public class ObjectsFactory {
     public void spawn(final World world) {
         int rand = MathUtils.random(0, 100);
         if (rand < 25) {
-            tapIcons.add(new BlueIcon(boarder, world)
-            );
+            tapIcons.add(new BlueIcon(boarder, world));
         } else if (rand > 25 && rand < 60) {
-            tapIcons.add(new RedIcon(boarder, world)
-            );
+            tapIcons.add(new RedIcon(boarder, world));
         } else {
-            tapIcons.add(new YellowIcon(boarder, world)
-            );
+            tapIcons.add(new YellowIcon(boarder, world));
         }
     }
 
@@ -154,7 +153,7 @@ public class ObjectsFactory {
             lastDropTime = TimeUtils.millis();
         }
         if (tapIcons.size > 10) {
-            tapIcons.removeIndex(0);// todo memory reallocation every remove - fix
+            tapIcons.removeIndex(0); // todo memory reallocation every remove - fix
             totalScore -= 50;
         }
         return totalScore;
@@ -172,16 +171,12 @@ public class ObjectsFactory {
         return totalScore;
     }
 
-    public void stopGestureDetector() {
-        gestureDetector.cancel();
-    }
-
-    public void startGestureDetector() {
-        gestureDetector.reset();
-    }
-
     private GestureDetector gestureDetector;
+
+    //todo replace with object pool
     private Array<Icon> tapIcons;
+    //private ObjectsPool objectsPool;
+
     private Vector2 boarder;
     private int totalScore;
     private long lastDropTime;

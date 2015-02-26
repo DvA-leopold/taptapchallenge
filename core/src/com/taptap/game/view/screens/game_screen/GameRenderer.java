@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.model.tap.icons.factory.Icon;
+import com.taptap.game.model.tap.icons.objects.Icon;
 import com.taptap.game.view.buttons.interfaces.Buttons;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
@@ -23,6 +23,9 @@ public class GameRenderer {
 
     public void render() {
         switch (gameWorld.getWorldState()) {
+            case GAME_PREPARING:
+                this.renderPreparingState();
+                break;
             case GAME_RUNNING:
                 this.renderRunState();
                 break;
@@ -36,8 +39,8 @@ public class GameRenderer {
                 this.renderGameExitState();
                 break;
         }
-        renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
         gameWorld.getRayHandler().render();
+        renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
 
         for (Buttons button : gameWorld.getButtonsArray()) {
             button.render();
@@ -66,29 +69,33 @@ public class GameRenderer {
         }
     }
 
+    private void renderPreparingState() {
+        batch.begin();
+        batch.disableBlending();
+        batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.enableBlending();
+        font.draw(batch, " press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
+        if (Gdx.input.justTouched()){
+            gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
+        }
+
+        batch.end();
+    }
+
     private void renderRunState() {
         batch.begin();
         batch.disableBlending();
         batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();
-        if (!readyToStart) {
-            font.draw(batch, " press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
-            batch.end();
-            if (Gdx.input.isTouched()) {
-                readyToStart = true;
-            }
-        } else {
-            for (Icon iconsDrop : gameWorld.getObjectsPool()) {
-                batch.draw(iconsDrop.getSprite(),
-                        iconsDrop.getX(), iconsDrop.getY()
-                );
-            }
-            renderNumbers(gameWorld.getTotalScore(), 0, 0);
-            renderNumbers((int)gameWorld.getTotalTime(), - Gdx.graphics.getWidth() / 2, 0);
-
-            batch.end();
-            //gameWorld.getButtons(0).render();
+        for (Icon iconsDrop : gameWorld.getObjectsPool()) {
+            batch.draw(iconsDrop.getSprite(),
+                    iconsDrop.getX(), iconsDrop.getY()
+            );
         }
+        renderNumbers(gameWorld.getTotalScore(), 0, 0);
+        renderNumbers((int) gameWorld.getTotalTime(), -Gdx.graphics.getWidth() / 2, 0);
+
+        batch.end();
     }
 
     private void renderPauseState() {
@@ -100,7 +107,6 @@ public class GameRenderer {
             batch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
         }
         batch.end();
-        //gameWorld.getButtons(1).render();
     }
 
     private void renderGameOverState() {
@@ -113,7 +119,7 @@ public class GameRenderer {
                 Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
         batch.end();
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) { // todo fix that
             gameWorld.changeWorldState(GameWorld.States.GAME_EXIT);
         }
     }
@@ -122,9 +128,11 @@ public class GameRenderer {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
     }
 
-    private BitmapFont font;//todo change fonts
+    public void dispose() {
+        //renderer.dispose();
+    }
 
-    private boolean readyToStart = false;
+    private BitmapFont font;
 
     private final SpriteBatch batch;
     private Sprite gameBackground;

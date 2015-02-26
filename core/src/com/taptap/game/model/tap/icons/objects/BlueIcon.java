@@ -1,4 +1,4 @@
-package com.taptap.game.model.tap.icons;
+package com.taptap.game.model.tap.icons.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,14 +7,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.model.tap.icons.factory.Icon;
 
-public class YellowIcon implements Icon {
+public class BlueIcon implements Icon {
     static {
-        image = ResourceManager.getInstance().get(ResourceManager.iconYellow);
+        image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
     }
 
-    public YellowIcon(Vector2 spawnBoarder,final World world) {
+    public BlueIcon(Vector2 spawnBoarder, final World world) {
         tapSprite = new Sprite(image);
         tapSprite.setSize(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.2f);
         tapSprite.setPosition(
@@ -22,12 +21,20 @@ public class YellowIcon implements Icon {
                 MathUtils.random(0, Gdx.graphics.getHeight() - tapSprite.getHeight() - spawnBoarder.y - 20)
         );
 
-        bodyDef = new BodyDef();
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(tapSprite.getX(), tapSprite.getY());
         Body body = world.createBody(bodyDef);
         body.setUserData(tapSprite);
         CircleShape circleShape = new CircleShape();
+        /*PolygonShape polygonShape = new PolygonShape();
+        polygonShape.set(new float[] {
+                tapSprite.getX() + tapSprite.getWidth() / 2,
+                tapSprite.getY(),
+                tapSprite.getX() + tapSprite.getWidth(),
+                tapSprite.getY() + tapSprite.getHeight(),
+                tapSprite.getX(),
+                tapSprite.getY() + tapSprite.getHeight()});*/
         circleShape.setRadius(3f);
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = circleShape;
@@ -68,7 +75,6 @@ public class YellowIcon implements Icon {
         return tapSprite.getWidth();
     }
 
-    private BodyDef bodyDef;
     private Sprite tapSprite;
     private static Texture image;
 }

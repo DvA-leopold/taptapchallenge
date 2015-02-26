@@ -1,4 +1,4 @@
-package com.taptap.game.model.tap.icons;
+package com.taptap.game.model.tap.icons.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,14 +7,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.model.tap.icons.factory.Icon;
 
-public class BlueIcon implements Icon {
+public class YellowIcon implements Icon {
     static {
-        image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
+        image = ResourceManager.getInstance().get(ResourceManager.iconYellow);
     }
 
-    public BlueIcon(Vector2 spawnBoarder, final World world) {
+    public YellowIcon(Vector2 spawnBoarder,final World world) {
         tapSprite = new Sprite(image);
         tapSprite.setSize(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.2f);
         tapSprite.setPosition(

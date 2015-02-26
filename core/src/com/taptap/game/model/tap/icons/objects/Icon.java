@@ -1,4 +1,4 @@
-package com.taptap.game.model.tap.icons.factory;
+package com.taptap.game.model.tap.icons.objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 

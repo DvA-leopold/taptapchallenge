@@ -28,7 +28,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        //gameWorld.
         Gdx.input.setInputProcessor(inputMultiplexer);
         MusicManager.play(this);
     }
@@ -56,6 +55,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        //gameRenderer.dispose();
         gameWorld.dispose();
     }
 
