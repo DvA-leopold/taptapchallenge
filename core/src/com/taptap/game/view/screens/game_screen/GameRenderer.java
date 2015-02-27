@@ -78,7 +78,6 @@ public class GameRenderer {
         if (Gdx.input.justTouched()){
             gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
         }
-
         batch.end();
     }
 
@@ -111,7 +110,6 @@ public class GameRenderer {
 
     private void renderGameOverState() {
         batch.begin();
-        batch.setColor(0.5f, 0f, 0f, 0.6f);
         batch.disableBlending();
         batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();

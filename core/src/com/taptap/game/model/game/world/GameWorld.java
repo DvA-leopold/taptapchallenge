@@ -17,6 +17,8 @@ import com.taptap.game.view.buttons.interfaces.Buttons;
 import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
 import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 
+import java.util.List;
+
 public class GameWorld {
     public GameWorld() {
         Box2D.init();
@@ -24,7 +26,7 @@ public class GameWorld {
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        objects = new ObjectsFactory(camera);
+        objects = new ObjectsFactory(camera, world);
 
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
@@ -39,14 +41,12 @@ public class GameWorld {
             world.step(1 / 60f, 6, 2);
             totalTime -= Gdx.graphics.getDeltaTime();
 
-            if (objects.controlFiguresNumber(world) < 0) {
+            if (objects.controlFiguresNumber() < 0) {
                 changeWorldState(GameWorld.States.GAME_OVER); // todo make a listener
             }
             if (totalTime <= 0) {
                 changeWorldState(GameWorld.States.GAME_EXIT); // todo make a listener
             }
-            //todo its for a debug
-            System.out.println("bodies: " + world.getBodyCount() + " fixtures:" + world.getFixtureCount());
         }
     }
 
@@ -76,7 +76,7 @@ public class GameWorld {
      * every state changes should be made only by this func
      * @param state, state to change with */
     public void changeWorldState(States state) {
-        switch (state){
+        switch (state) {
             case GAME_PREPARING:
                 //objects.stopGestureDetector();
                 break;
@@ -105,8 +105,8 @@ public class GameWorld {
         return worldState;
     }
 
-    public Array<Icon> getObjectsPool() {
-        return objects.getIconsArray();
+    public List<Icon> getObjectsPool() {
+        return objects.getIconsList();
     }
 
     public int getTotalScore() {
@@ -125,13 +125,16 @@ public class GameWorld {
         for (Buttons button : buttonsArray) {
             button.dispose();
         }
-        Array<Body> worldBodies = new Array<Body>();
+        rayHandler.getLightMapBuffer().dispose();
+        rayHandler.getLightMapTexture().dispose();
+        //rayHandler.dispose(); todo fix error when dispose this
+
+        Array<Body> worldBodies = new Array<>(world.getBodyCount());
         world.getBodies(worldBodies);
         for (Body body : worldBodies) {
             world.destroyBody(body);
         }
         world.dispose();
-        //rayHandler.dispose();
     }
 
     public enum States {

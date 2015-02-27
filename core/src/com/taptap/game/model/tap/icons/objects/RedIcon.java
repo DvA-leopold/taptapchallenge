@@ -21,10 +21,10 @@ public class RedIcon implements Icon {
                 MathUtils.random(0, Gdx.graphics.getHeight() - tapSprite.getHeight() - spawnBoarder.y - 20)
         );
 
-        bodyDef = new BodyDef();
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(tapSprite.getX(), tapSprite.getY());
-        Body body = world.createBody(bodyDef);
+        body = world.createBody(bodyDef);
         body.setUserData(tapSprite);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(3f);
@@ -67,7 +67,12 @@ public class RedIcon implements Icon {
         return tapSprite.getWidth();
     }
 
-    private BodyDef bodyDef;
+    @Override
+    public void destroyBody() {
+        body.getWorld().destroyBody(body);
+    }
+
+    private Body body;
     private Sprite tapSprite;
     private static Texture image;
 }

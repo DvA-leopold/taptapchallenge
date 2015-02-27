@@ -24,7 +24,7 @@ public class BlueIcon implements Icon {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(tapSprite.getX(), tapSprite.getY());
-        Body body = world.createBody(bodyDef);
+        body = world.createBody(bodyDef);
         body.setUserData(tapSprite);
         CircleShape circleShape = new CircleShape();
         /*PolygonShape polygonShape = new PolygonShape();
@@ -75,6 +75,12 @@ public class BlueIcon implements Icon {
         return tapSprite.getWidth();
     }
 
+    @Override
+    public void destroyBody() {
+        body.getWorld().destroyBody(body);
+    }
+
+    private Body body;
     private Sprite tapSprite;
     private static Texture image;
 }

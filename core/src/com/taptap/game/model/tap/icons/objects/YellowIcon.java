@@ -13,7 +13,7 @@ public class YellowIcon implements Icon {
         image = ResourceManager.getInstance().get(ResourceManager.iconYellow);
     }
 
-    public YellowIcon(Vector2 spawnBoarder,final World world) {
+    public YellowIcon(Vector2 spawnBoarder, final World world) {
         tapSprite = new Sprite(image);
         tapSprite.setSize(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.2f);
         tapSprite.setPosition(
@@ -21,10 +21,10 @@ public class YellowIcon implements Icon {
                 MathUtils.random(0, Gdx.graphics.getHeight() - tapSprite.getHeight() - spawnBoarder.y - 20)
         );
 
-        bodyDef = new BodyDef();
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(tapSprite.getX(), tapSprite.getY());
-        Body body = world.createBody(bodyDef);
+        body = world.createBody(bodyDef);
         body.setUserData(tapSprite);
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(3f);
@@ -67,7 +67,12 @@ public class YellowIcon implements Icon {
         return tapSprite.getWidth();
     }
 
-    private BodyDef bodyDef;
+    @Override
+    public void destroyBody() {
+        body.getWorld().destroyBody(body);
+    }
+
+    private Body body;
     private Sprite tapSprite;
     private static Texture image;
 }
