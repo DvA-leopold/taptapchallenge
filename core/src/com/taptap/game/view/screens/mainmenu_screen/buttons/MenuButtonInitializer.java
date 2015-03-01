@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
@@ -26,11 +27,11 @@ public class MenuButtonInitializer implements Buttons {
         Skin skin = ResourceManager.getInstance().get(ResourceManager.mainMenuSkin);
         skin.getFont("blackFont").setScale(2, 2);
 
-        Label heading = new Label("TAP TAP Game", skin, "default");
-        buttonPlay = new TextButton("Play", skin, "mainButtons");
-        buttonHelp = new TextButton("Help", skin, "mainButtons");
-        buttonRecords = new TextButton("Records", skin, "mainButtons");
-        soundButton = new TextButton("Music:", skin,"soundTest");
+        Label heading = new Label(I18NBundleMy.getString("game_name"), skin, "default");
+        buttonPlay = new TextButton(I18NBundleMy.getString("play"), skin, "mainButtons");
+        buttonHelp = new TextButton(I18NBundleMy.getString("help"), skin, "mainButtons");
+        buttonRecords = new TextButton(I18NBundleMy.getString("records"), skin, "mainButtons");
+        soundButton = new TextButton(I18NBundleMy.getString("music"), skin,"soundTest");
         soundButton.setChecked(!MusicManager.isMusicEnable());
 
         buttonPlay.pad(10);
