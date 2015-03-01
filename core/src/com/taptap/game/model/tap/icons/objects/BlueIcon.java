@@ -27,14 +27,6 @@ public class BlueIcon implements Icon {
         body = world.createBody(bodyDef);
         body.setUserData(tapSprite);
         CircleShape circleShape = new CircleShape();
-        /*PolygonShape polygonShape = new PolygonShape();
-        polygonShape.set(new float[] {
-                tapSprite.getX() + tapSprite.getWidth() / 2,
-                tapSprite.getY(),
-                tapSprite.getX() + tapSprite.getWidth(),
-                tapSprite.getY() + tapSprite.getHeight(),
-                tapSprite.getX(),
-                tapSprite.getY() + tapSprite.getHeight()});*/
         circleShape.setRadius(3f);
         FixtureDef circleFixture = new FixtureDef();
         circleFixture.shape = circleShape;

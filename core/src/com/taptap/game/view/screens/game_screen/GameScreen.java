@@ -10,11 +10,12 @@ import com.taptap.game.model.music.player.MusicManager;
 
 public class GameScreen implements Screen {
     public GameScreen(final SpriteBatch batch) {
-        gameWorld = new GameWorld();
+        inputMultiplexer = new InputMultiplexer();
+
+        gameWorld = new GameWorld(inputMultiplexer);
         gameRenderer = new GameRenderer(batch, gameWorld);
 
-        inputMultiplexer = new InputMultiplexer();
-        gameWorld.initializeActors(batch, inputMultiplexer);
+        gameWorld.initializeActors(batch);
     }
 
     @Override

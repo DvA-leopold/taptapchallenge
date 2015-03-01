@@ -23,9 +23,7 @@ public class ObjectsFactory {
     public ObjectsFactory(final Camera camera, final World world) {
         this.world = world;
         boarder = new Vector2(Gdx.graphics.getHeight() * 0.05f, Gdx.graphics.getWidth() * 0.05f);
-
         initListener(camera);
-
         tapIconsList = new LinkedList<>();
     }
 

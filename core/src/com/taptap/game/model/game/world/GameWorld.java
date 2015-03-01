@@ -20,9 +20,10 @@ import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 import java.util.List;
 
 public class GameWorld {
-    public GameWorld() {
+    public GameWorld(final InputMultiplexer inputMultiplexer) {
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
+        this.inputMultiplexer = inputMultiplexer;
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -50,14 +51,13 @@ public class GameWorld {
         }
     }
 
-    public void initializeActors(final SpriteBatch batch,
-                                 final InputMultiplexer gameScreenMultiplexer) {
+    public void initializeActors(final SpriteBatch batch) {
         buttonsArray = new Buttons[]{new GameButtonsInitializer(batch), new PopUpButtonInitializer(batch)};
         for (Buttons button : buttonsArray) {
-            gameScreenMultiplexer.addProcessor(button.getStage());
+            inputMultiplexer.addProcessor(button.getStage());
             button.setListeners(this);
         }
-        gameScreenMultiplexer.addProcessor(objects.getGestureDetector());
+        inputMultiplexer.addProcessor(objects.getGestureDetector());
     }
 
     public RayHandler getRayHandler() {
@@ -78,14 +78,14 @@ public class GameWorld {
     public void changeWorldState(States state) {
         switch (state) {
             case GAME_PREPARING:
-                //objects.stopGestureDetector();
+                inputMultiplexer.removeProcessor(objects.getGestureDetector());
                 break;
             case GAME_RUNNING:
-                //objects.startGestureDetector(); // change delays, etc.
+                inputMultiplexer.addProcessor(objects.getGestureDetector());
                 buttonsArray[0].setVisible(true);
                 break;
             case GAME_PAUSED:
-                //objects.stopGestureDetector();
+                inputMultiplexer.removeProcessor(objects.getGestureDetector());
                 buttonsArray[1].setVisible(true);
                 break;
             case GAME_EXIT:
@@ -153,6 +153,7 @@ public class GameWorld {
     private ObjectsFactory objects;
 
     private World world;
+    private final InputMultiplexer inputMultiplexer;
     private RayHandler rayHandler;
 
     private final OrthographicCamera camera;
