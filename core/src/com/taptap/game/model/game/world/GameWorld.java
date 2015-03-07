@@ -57,7 +57,7 @@ public class GameWorld {
             inputMultiplexer.addProcessor(button.getStage());
             button.setListeners(this);
         }
-        inputMultiplexer.addProcessor(objects.getGestureDetector());
+        //inputMultiplexer.addProcessor(objects.getGestureDetector());
     }
 
     public RayHandler getRayHandler() {
@@ -78,7 +78,7 @@ public class GameWorld {
     public void changeWorldState(States state) {
         switch (state) {
             case GAME_PREPARING:
-                inputMultiplexer.removeProcessor(objects.getGestureDetector());
+                //inputMultiplexer.removeProcessor(objects.getGestureDetector());
                 break;
             case GAME_RUNNING:
                 inputMultiplexer.addProcessor(objects.getGestureDetector());
@@ -95,6 +95,9 @@ public class GameWorld {
                 );
                 break;
             case GAME_OVER:
+
+                break;
+            default:
 
                 break;
         }
