@@ -7,10 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class PopUpButtonInitializer implements Buttons {
     public PopUpButtonInitializer(final Batch batch) {
@@ -28,9 +29,9 @@ public class PopUpButtonInitializer implements Buttons {
         Skin skinMainMenu = ResourceManager.getInstance().get(ResourceManager.popUpSkin);
 
         skinMainMenu.getFont("blackFont").setScale(2, 2);
-        resumeGameButton = new TextButton("return", skinMainMenu, "popUpButtons");
-        optionGameButton = new TextButton("options", skinMainMenu, "popUpButtons");
-        exitMainMenuButton = new TextButton("exit", skinMainMenu, "popUpButtons");
+        resumeGameButton = new TextButton(I18NBundleMy.getString("return"), skinMainMenu, "popUpButtons");
+        optionGameButton = new TextButton(I18NBundleMy.getString("options"), skinMainMenu, "popUpButtons");
+        exitMainMenuButton = new TextButton(I18NBundleMy.getString("exit"), skinMainMenu, "popUpButtons");
 
         resumeGameButton.pad(10);
         optionGameButton.pad(10);
@@ -60,8 +61,8 @@ public class PopUpButtonInitializer implements Buttons {
         back = new Button(skinOptions, "arrow");
 
         skinOptions.getFont("whiteFont").setScale(2, 2);
-        final Label musicLabel = new Label("Music: ", skinOptions);
-        final Label soundLabel = new Label("Sound: ", skinOptions);
+        final Label musicLabel = new Label(I18NBundleMy.getString("music1"), skinOptions);
+        final Label soundLabel = new Label(I18NBundleMy.getString("sound"), skinOptions);
 
         optionWindow = new Window("options", skinOptions);
         optionWindow.setFillParent(true);

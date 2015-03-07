@@ -4,10 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.tap.icons.objects.Icon;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class GameRenderer {
@@ -74,7 +75,7 @@ public class GameRenderer {
         batch.disableBlending();
         batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();
-        font.draw(batch, " press anywhere to start", 5, Gdx.graphics.getHeight() / 2);
+        font.draw(batch, I18NBundleMy.getString("tap_anyway"), 5, Gdx.graphics.getHeight() / 2);
         if (Gdx.input.justTouched()){
             gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
         }

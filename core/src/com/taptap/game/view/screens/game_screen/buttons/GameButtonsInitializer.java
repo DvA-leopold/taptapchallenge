@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class GameButtonsInitializer implements Buttons {
     public GameButtonsInitializer(final Batch batch) {

@@ -15,7 +15,7 @@ import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
 import com.taptap.game.view.screens.records_screen.RecordScreen;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class MenuButtonInitializer implements Buttons {
     public MenuButtonInitializer(final SpriteBatch batch){

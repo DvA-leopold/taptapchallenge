@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.tap.icons.objects.Icon;
 import com.taptap.game.model.tap.icons.ObjectsFactory;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
 import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 
@@ -142,7 +142,7 @@ public class GameWorld {
         GAME_RUNNING,
         GAME_PAUSED,
         GAME_OVER,
-        GAME_EXIT;
+        GAME_EXIT
     }
 
     private float totalTime = 150;

@@ -13,7 +13,7 @@ import com.taptap.game.view.screens.LoadScreen;
 public final class TapTap extends Game {
     @Override
     public void create() {
-        mainBatch = new SpriteBatch();
+        mainBatch = new SpriteBatch(4000, DebugShader.createDefaultShader());
         // resource storage
         storage = new StorageManager(true);
         //class for debug
@@ -45,7 +45,7 @@ public final class TapTap extends Game {
     private Debug debug;
 }
 
-class ShaderForTest {
+class DebugShader {
     /**
      * This shader is for Windows systems only, in next library build or
      * something it must work out of the box,
@@ -91,15 +91,11 @@ class ShaderForTest {
 }
 
 class Debug {
-    /**
-     * для дебага, показывается fps и draw calls.
-     * @param batch батч в по которому считаются draw calls
-     */
     public void render(final SpriteBatch batch) {
         debugBatch.begin();
         fontStandart.draw(debugBatch,
                 "D_C:" + batch.renderCalls +
-                        " fps:" + Gdx.graphics.getFramesPerSecond(), 20, 30);
+                " fps:" + Gdx.graphics.getFramesPerSecond(), 20, 30);
         debugBatch.end();
     }
 
@@ -108,5 +104,5 @@ class Debug {
     }
 
     private BitmapFont fontStandart = new BitmapFont(new FileHandle("fonts/whiteFont.fnt"));
-    private SpriteBatch debugBatch = new SpriteBatch();
+    private SpriteBatch debugBatch = new SpriteBatch(4000, DebugShader.createDefaultShader());
 }

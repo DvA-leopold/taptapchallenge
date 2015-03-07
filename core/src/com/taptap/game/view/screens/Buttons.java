@@ -1,4 +1,4 @@
-package com.taptap.game.view.buttons.interfaces;
+package com.taptap.game.view.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.taptap.game.model.game.world.GameWorld;

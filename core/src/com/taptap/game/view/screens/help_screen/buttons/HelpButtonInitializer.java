@@ -2,7 +2,6 @@ package com.taptap.game.view.screens.help_screen.buttons;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,12 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.view.screens.game_screen.GameRenderer;
-import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class HelpButtonInitializer implements Buttons {
     public HelpButtonInitializer(final SpriteBatch batch){
@@ -27,7 +25,7 @@ public class HelpButtonInitializer implements Buttons {
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.helpSkin);
         Table table = new Table(skin);
-        button = new TextButton("menu", skin, "default");
+        button = new TextButton(I18NBundleMy.getString("menu"), skin, "default");
 
         table.setFillParent(true);
         table.add(button).

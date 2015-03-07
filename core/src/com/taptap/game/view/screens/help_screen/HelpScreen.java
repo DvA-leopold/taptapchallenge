@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.help_screen.buttons.HelpButtonInitializer;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class HelpScreen implements Screen {
     public HelpScreen(final SpriteBatch batch) {
@@ -26,7 +26,7 @@ public class HelpScreen implements Screen {
 
         batch.begin();
         batch.disableBlending();
-        batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();
         batch.end();
         buttons.render();
