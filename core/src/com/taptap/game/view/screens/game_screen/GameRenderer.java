@@ -40,8 +40,10 @@ public class GameRenderer {
                 this.renderGameExitState();
                 break;
         }
-        gameWorld.getRayHandler().render();
-        renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+        if (gameWorld.getWorldState() != GameWorld.States.GAME_PREPARING) {
+            gameWorld.getRayHandler().render();
+            renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+        }
 
         for (Buttons button : gameWorld.getButtonsArray()) {
             button.render();
