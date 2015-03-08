@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        //gameRenderer.dispose();
+        gameRenderer.dispose();
         gameWorld.dispose();
     }
 

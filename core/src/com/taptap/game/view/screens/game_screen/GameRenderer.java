@@ -135,7 +135,7 @@ public class GameRenderer {
     }
 
     public void dispose() {
-        //renderer.dispose();
+        renderer.dispose();
     }
 
     private BitmapFont font;
