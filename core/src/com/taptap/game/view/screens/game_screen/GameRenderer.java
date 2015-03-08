@@ -89,7 +89,8 @@ public class GameRenderer {
         batch.enableBlending();
         for (Icon iconsDrop : gameWorld.getObjectsPool()) {
             batch.draw(iconsDrop.getSprite(),
-                    iconsDrop.getX(), iconsDrop.getY()
+                    iconsDrop.getX(), iconsDrop.getY(),
+                    iconsDrop.getWidth(), iconsDrop.getHeight()
             );
         }
         renderNumbers(gameWorld.getTotalScore(), 0, 0);
@@ -104,7 +105,11 @@ public class GameRenderer {
         batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();
         for (Icon tapIcon : gameWorld.getObjectsPool()) {
-            batch.draw(tapIcon.getSprite(), tapIcon.getX(), tapIcon.getY());
+            batch.draw(
+                    tapIcon.getSprite(),
+                    tapIcon.getX(), tapIcon.getY(),
+                    tapIcon.getWidth(), tapIcon.getHeight()
+            );
         }
         batch.end();
     }

@@ -36,7 +36,6 @@ public class ObjectsFactory {
         }
         final Vector<Boolean> panFlag = new Vector<>(1);
         panFlag.add(true);
-
         GestureDetector.GestureListener gesturesListener = new GestureDetector.GestureListener() {
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
