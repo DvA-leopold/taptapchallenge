@@ -13,7 +13,7 @@ import com.taptap.game.view.screens.LoadScreen;
 public final class TapTap extends Game {
     @Override
     public void create() {
-        mainBatch = new SpriteBatch(4000, DebugShader.createDefaultShader());
+        mainBatch = new SpriteBatch();
         // resource storage
         storage = new StorageManager(true);
         //class for debug
@@ -104,5 +104,5 @@ class Debug {
     }
 
     private BitmapFont fontStandart = new BitmapFont(new FileHandle("fonts/whiteFont.fnt"));
-    private SpriteBatch debugBatch = new SpriteBatch(4000, DebugShader.createDefaultShader());
+    private SpriteBatch debugBatch = new SpriteBatch();
 }

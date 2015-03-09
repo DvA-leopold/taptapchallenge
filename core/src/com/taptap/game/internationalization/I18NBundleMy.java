@@ -9,7 +9,8 @@ public final class I18NBundleMy {
     static {
         myBundle = I18NBundle.createBundle(
                 Gdx.files.internal("i18n/MyBundle"),
-                new Locale("ru", "RU", "VAR1"));
+                new Locale("ru", "RU", "VAR1")
+        );
     }
 
     public static String getString(String key) {

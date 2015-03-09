@@ -31,7 +31,9 @@ public class GameWorld {
 
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
-        new PointLight(rayHandler, 1000, Color.WHITE, 2000, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        rayHandler.setBlur(false);
+        rayHandler.setShadows(false);
+        new PointLight(rayHandler, 500, Color.WHITE, 1000, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()).setSoftnessLength(0);
         //new ConeLight(rayHandler, 5000, Color.YELLOW, 2000, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight(), -90f, 35f);
     }
 
