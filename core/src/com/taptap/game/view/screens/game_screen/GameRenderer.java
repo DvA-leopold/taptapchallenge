@@ -135,7 +135,8 @@ public class GameRenderer {
     }
 
     public void dispose() {
-        renderer.dispose();
+        //todo cant dispose renderer only on windows
+        //renderer.dispose();
     }
 
     private BitmapFont font;
