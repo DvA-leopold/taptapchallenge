@@ -6,6 +6,7 @@ import com.taptap.game.debug.Debug;
 import com.taptap.game.debug.DebugShader;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.model.save.manager.StorageManager;
+import com.taptap.game.versioning.VersionHandler;
 import com.taptap.game.view.screens.LoadScreen;
 
 public final class TapTap extends Game {
@@ -28,6 +29,7 @@ public final class TapTap extends Game {
     public void render() {
         super.render();
         debug.render(mainBatch);
+        VersionHandler.render(mainBatch);
     }
 
     @Override
