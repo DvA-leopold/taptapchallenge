@@ -10,6 +10,10 @@ import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class LoadScreen implements Screen {
+    public LoadScreen(final SpriteBatch batch) {
+        this.batch = batch;
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -23,20 +27,17 @@ public class LoadScreen implements Screen {
         }
         batch.end();
         if (progress>=100){
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
         }
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
-        batch.disableBlending();
-        barHorizontalMid = new Texture ("skins/load_menu/bar_yellow_mid.png");
+        barHorizontalMid = new Texture("skins/load_menu/bar_yellow_mid.png");
         ResourceManager.queueLoading();
     }
 
@@ -57,7 +58,6 @@ public class LoadScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
         barHorizontalMid.dispose();
     }
 

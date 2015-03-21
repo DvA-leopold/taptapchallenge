@@ -2,7 +2,7 @@ package com.taptap.game.view.screens.help_screen.buttons;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -10,20 +10,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.internationalization.I18NBundleMy;
+import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
-import com.taptap.game.view.buttons.interfaces.Buttons;
-// TODO решить проблему различных разрешений экрана ViewPort
-public class HelpButtonInitializer implements Buttons {
-    public HelpButtonInitializer(Batch batch){
-        int buttonWidth = Gdx.graphics.getWidth()/8;
-        int buttonHeight = Gdx.graphics.getHeight()/7;
+import com.taptap.game.view.screens.Buttons;
 
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+public class HelpButtonInitializer implements Buttons {
+    public HelpButtonInitializer(final SpriteBatch batch){
+        this.batch = batch;
+        float buttonWidth = Gdx.graphics.getWidth()*0.2f;
+        float buttonHeight = Gdx.graphics.getHeight()*0.25f;
+
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         Skin skin = ResourceManager.getInstance().get(ResourceManager.helpSkin);
         Table table = new Table(skin);
-        button = new TextButton("menu", skin, "default");
+        button = new TextButton(I18NBundleMy.getString("menu"), skin, "default");
 
         table.setFillParent(true);
         table.add(button).
@@ -40,11 +42,11 @@ public class HelpButtonInitializer implements Buttons {
     }
 
     @Override
-    public void setListeners(final GameScreen game) {
+    public void setListeners(final GameWorld gameWorld) {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
             }
         });
         Gdx.input.setInputProcessor(stage);
@@ -52,17 +54,19 @@ public class HelpButtonInitializer implements Buttons {
 
     @Override
     public Stage getStage() {
-        return null;
+        return stage;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
     }
 
     @Override
     public void dispose() {
-        //atlas.dispose();
-        //skin.dispose();
         stage.dispose();
     }
 
-    //private TextureAtlas atlas;
+    private final SpriteBatch batch;
     private TextButton button;
     private Stage stage;
 }

@@ -7,34 +7,37 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.internationalization.I18NBundleMy;
+import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.view.screens.game_screen.GameScreen;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class PopUpButtonInitializer implements Buttons {
-    public PopUpButtonInitializer(Batch batch) {
-        menuStageInit(batch);
-        optionStageInit(batch);
+    public PopUpButtonInitializer(final Batch batch) {
+        stage = new Stage(
+                new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),
+                batch);
+        menuStageInit(stage);
+        optionStageInit(stage);
     }
 
-    public void menuStageInit(Batch batch) {
-        int buttonWidth = Gdx.graphics.getWidth() / 3;
-        int buttonHeight = Gdx.graphics.getHeight() / 7;
+    public void menuStageInit(final Stage stage) {
+        float buttonWidth = Gdx.graphics.getWidth() * 0.3f;
+        float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
-        pauseMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
         Skin skinMainMenu = ResourceManager.getInstance().get(ResourceManager.popUpSkin);
 
         skinMainMenu.getFont("blackFont").setScale(2, 2);
-        resumeGameButton = new TextButton("return", skinMainMenu, "popUpButtons");
-        optionGameButton = new TextButton("options", skinMainMenu, "popUpButtons");
-        exitMainMenuButton = new TextButton("exit", skinMainMenu, "popUpButtons");
+        resumeGameButton = new TextButton(I18NBundleMy.getString("return"), skinMainMenu, "popUpButtons");
+        optionGameButton = new TextButton(I18NBundleMy.getString("options"), skinMainMenu, "popUpButtons");
+        exitMainMenuButton = new TextButton(I18NBundleMy.getString("exit"), skinMainMenu, "popUpButtons");
 
         resumeGameButton.pad(10);
         optionGameButton.pad(10);
         exitMainMenuButton.pad(10);
 
-        Window pauseWindow = new Window("", skinMainMenu);
+        pauseWindow = new Window("", skinMainMenu);
         pauseWindow.setFillParent(true);
         pauseWindow.add(resumeGameButton).width(buttonWidth).height(buttonHeight);
         pauseWindow.row();
@@ -42,28 +45,26 @@ public class PopUpButtonInitializer implements Buttons {
         pauseWindow.row();
         pauseWindow.add(exitMainMenuButton).width(buttonWidth).height(buttonHeight);
 
-        pauseMenuStage.addActor(pauseWindow);
+        pauseWindow.setVisible(false);
+        stage.addActor(pauseWindow);
     }
 
-    public void optionStageInit(Batch batch) {
-        int buttonWidth = Gdx.graphics.getWidth()/10;
-        int buttonHeight = Gdx.graphics.getHeight()/8;
-        optionMenuStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+    public void optionStageInit(final Stage stage) {
+        float buttonWidth = Gdx.graphics.getWidth()*0.1f;
+        float buttonHeight = Gdx.graphics.getHeight()*0.15f;
 
         Skin skinOptions = ResourceManager.getInstance().get(ResourceManager.optionSkin);
 
-        //Table optionWindow = new Table(skinOptions);
         musicControl = new CheckBox(null, skinOptions, "stateOption");
         musicControl.setChecked(!MusicManager.isMusicEnable());
         soundControl = new CheckBox(null, skinOptions, "stateOption");
         back = new Button(skinOptions, "arrow");
 
         skinOptions.getFont("whiteFont").setScale(2, 2);
-        final Label musicLabel = new Label("Music: ", skinOptions);
-        final Label soundLabel = new Label("Sound: ", skinOptions);
+        final Label musicLabel = new Label(I18NBundleMy.getString("music1"), skinOptions);
+        final Label soundLabel = new Label(I18NBundleMy.getString("sound"), skinOptions);
 
-        //optionWindow.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Window optionWindow = new Window("options", skinOptions);
+        optionWindow = new Window("options", skinOptions);
         optionWindow.setFillParent(true);
         optionWindow.padTop(Value.percentHeight(0.35f)).padRight(Value.percentWidth(0.20f));
         optionWindow.add(musicLabel).center();
@@ -74,16 +75,41 @@ public class PopUpButtonInitializer implements Buttons {
         optionWindow.row();
         optionWindow.add(back).width(buttonWidth).height(buttonHeight).bottom().left().expand();
 
-        optionMenuStage.addActor(optionWindow);
+        optionWindow.setVisible(false);
+        stage.addActor(optionWindow);
     }
 
     @Override
-    public void setListeners(final GameScreen gameScreen) {
-        initOptionListeners(gameScreen);
-        initMenuListeners(gameScreen);
+    public void setListeners(final GameWorld gameWorld) {
+        initOptionListeners();
+        initMenuListeners(gameWorld);
     }
 
-    public void initOptionListeners(final GameScreen gameScreen){
+    public void initMenuListeners(final GameWorld gameWorld) {
+        resumeGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
+                pauseWindow.setVisible(false);
+            }
+        });
+        optionGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pauseWindow.setVisible(false);
+                optionWindow.setVisible(true);
+            }
+        });
+        exitMainMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameWorld.changeWorldState(GameWorld.States.GAME_EXIT);
+                pauseWindow.setVisible(false);
+            }
+        });
+    }
+
+    public void initOptionListeners() {
         musicControl.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -99,63 +125,34 @@ public class PopUpButtonInitializer implements Buttons {
         back.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameScreen.inputMultiplexer.addProcessor(pauseMenuStage);
-                gameScreen.inputMultiplexer.removeProcessor(optionMenuStage);
-                windowOptionFlag = false;
+                optionWindow.setVisible(false);
+                pauseWindow.setVisible(true);
             }
         });
-    }
-
-    public void initMenuListeners(final GameScreen gameScreen){
-        resumeGameButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameScreen.changeState(GameScreen.States.GAME_RUNNING);
-                gameScreen.inputMultiplexer.removeProcessor(pauseMenuStage);
-            }
-        });
-        optionGameButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameScreen.inputMultiplexer.removeProcessor(pauseMenuStage);
-                gameScreen.inputMultiplexer.addProcessor(optionMenuStage);
-                windowOptionFlag = true;
-            }
-        });
-        exitMainMenuButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                gameScreen.changeState(GameScreen.States.GAME_EXIT);
-            }
-        });
-    }
-
-    @Override
-    public Stage getStage() {
-        return pauseMenuStage;
     }
 
     @Override
     public void render() {
-        if (!windowOptionFlag){
-            pauseMenuStage.act(); // это можно убрать если у нас не будет ресайза
-            pauseMenuStage.draw();
-        } else {
-            optionMenuStage.act();
-            optionMenuStage.draw();
-        }
+        stage.act();
+        stage.draw();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        pauseWindow.setVisible(visible);
     }
 
     @Override
     public void dispose() {
-        pauseMenuStage.dispose();
-        optionMenuStage.dispose();
-        //skinPopupMenu.dispose();
-        //popUpSkin.dispose();
+        stage.dispose();
     }
 
-    private boolean windowOptionFlag = false;
-    private Stage pauseMenuStage, optionMenuStage;
+    private Window optionWindow, pauseWindow;
+    private final Stage stage;
     private TextButton
             resumeGameButton,
             optionGameButton,
@@ -166,5 +163,4 @@ public class PopUpButtonInitializer implements Buttons {
             soundControl;
 
     private Button back;
-
 }

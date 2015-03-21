@@ -9,33 +9,37 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.ResourceManager;
-import com.taptap.game.view.screens.game_screen.GameScreen;
-import com.taptap.game.view.buttons.interfaces.Buttons;
+import com.taptap.game.view.screens.Buttons;
 
 public class GameButtonsInitializer implements Buttons {
-    public GameButtonsInitializer(Batch batch) {
-        float buttonSize = Gdx.graphics.getHeight()/7;
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),batch);
+    public GameButtonsInitializer(final Batch batch) {
+        float buttonSize = Gdx.graphics.getHeight()*0.15f;
+        stage = new Stage(
+                new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
+                batch);
         Skin skinGameMenu = ResourceManager.getInstance().get(ResourceManager.optionSkin);
-        Table table = new Table(skinGameMenu);
+        table = new Table(skinGameMenu);
 
         optionButton = new Button(skinGameMenu, "popUpMenuButton");
         table.setFillParent(true);
         table.add(optionButton).
-                padTop(-Gdx.graphics.getHeight()+buttonSize).
-                padLeft(-Gdx.graphics.getWidth()+buttonSize).
+                padTop(-Gdx.graphics.getHeight() + buttonSize).
+                padLeft(-Gdx.graphics.getWidth() + buttonSize).
                 width(buttonSize).
                 height(buttonSize);
 
         stage.addActor(table);
     }
 
-    public void setListeners(final GameScreen gameScreen) {
+    @Override
+    public void setListeners(final GameWorld gameWorld) {
         optionButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameScreen.changeState(GameScreen.States.GAME_PAUSED);
+                table.setVisible(false);
+                gameWorld.changeWorldState(GameWorld.States.GAME_PAUSED);
             }
         });
     }
@@ -46,13 +50,20 @@ public class GameButtonsInitializer implements Buttons {
         stage.draw();
     }
 
+    @Override
     public void dispose() {
         stage.dispose();
     }
-    public Stage getStage(){
+
+    public Stage getStage() {
         return stage;
     }
 
+    public void setVisible(boolean visible) {
+        table.setVisible(visible);
+    }
+
     private final Stage stage;
+    private final Table table;
     private final Button optionButton;
 }

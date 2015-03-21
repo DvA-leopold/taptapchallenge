@@ -8,15 +8,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.ResourceManager;
 import com.taptap.game.view.screens.help_screen.buttons.HelpButtonInitializer;
-import com.taptap.game.view.buttons.interfaces.Buttons;
-import debug.statistics.FPS_MEM_DC;
+import com.taptap.game.view.screens.Buttons;
 
 public class HelpScreen implements Screen {
-    public HelpScreen() {
-        batch = new SpriteBatch();
+    public HelpScreen(final SpriteBatch batch) {
+        this.batch = batch;
         buttons = new HelpButtonInitializer(batch);
 
-        background = ResourceManager.getInstance().get(ResourceManager.helpBackground);
+        background = ResourceManager.
+                getInstance().
+                get(ResourceManager.helpBackground);
     }
 
     @Override
@@ -25,12 +26,10 @@ public class HelpScreen implements Screen {
 
         batch.begin();
         batch.disableBlending();
-        batch.draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();
         batch.end();
         buttons.render();
-
-        FPS_MEM_DC.fpsLog();
     }
 
     @Override
@@ -61,11 +60,11 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
         buttons.dispose();
     }
 
+    private final SpriteBatch batch;
     private Buttons buttons;
-    private SpriteBatch batch;
+
     private Texture background;
 }

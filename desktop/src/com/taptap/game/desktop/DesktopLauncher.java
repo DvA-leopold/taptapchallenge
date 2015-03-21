@@ -7,7 +7,7 @@ import com.taptap.game.TapTap;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.useGL30 = true;
+		config.useGL30 = false;
 		config.title = "TapTap";
 		config.height = 640;
 		config.width = 800;
