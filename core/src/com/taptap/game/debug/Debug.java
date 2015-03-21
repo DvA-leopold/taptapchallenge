@@ -24,7 +24,7 @@ public class Debug {
     public boolean isWindows() {
         final String os = System.getProperty("os.name").toLowerCase();
         //windows
-        return !os.contains("win");
+        return os.contains("win");
     }
 
     public void dispose() {

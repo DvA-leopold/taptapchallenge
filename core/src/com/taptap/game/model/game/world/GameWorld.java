@@ -134,7 +134,7 @@ public class GameWorld {
         rayHandler.getLightMapTexture().dispose();
         //rayHandler.dispose(); todo fix error when dispose this
 
-        Array<Body> worldBodies = new Array<>(world.getBodyCount());
+        Array<Body> worldBodies = new Array<Body>(world.getBodyCount());
         world.getBodies(worldBodies);
         for (Body body : worldBodies) {
             world.destroyBody(body);
