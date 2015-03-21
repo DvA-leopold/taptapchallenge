@@ -1,7 +1,6 @@
 package com.taptap.game.debug;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -32,6 +31,6 @@ public class Debug {
         debugBatch.dispose();
     }
 
-    private BitmapFont fontStandart = new BitmapFont(new FileHandle("fonts/whiteFont.fnt"));
+    private BitmapFont fontStandart = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"));
     private SpriteBatch debugBatch;
 }
