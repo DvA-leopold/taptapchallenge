@@ -43,8 +43,8 @@ public final class TapTap extends Game {
         return storage;
     }
 
-    private static StorageManager storage;
-    private SpriteBatch mainBatch;
-
     private Debug debug;
+    private static StorageManager storage;
+
+    private SpriteBatch mainBatch;
 }
