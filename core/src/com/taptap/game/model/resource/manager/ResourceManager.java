@@ -25,12 +25,12 @@ public class ResourceManager {
         musicLoad();
     }
 
-    public static float updateLoadingQueue(){
+    public static float updateLoadingQueue() {
         ResourceManager.getInstance().update();
         return getInstance().getProgress();
     }
 
-    public void dispose(){
+    public void dispose() {
         storage.dispose();
     }
 
@@ -55,7 +55,7 @@ public class ResourceManager {
     public static final AssetDescriptor<Texture> recordBackground =
             new AssetDescriptor<Texture>("skins/main_menu/background/bg_desert.png", Texture.class);
 
-    private static void recordScreenLoad(){
+    private static void recordScreenLoad() {
         getInstance().load(recordSkin);
         getInstance().load(recordBackground);
     }
@@ -68,7 +68,7 @@ public class ResourceManager {
     //public static final AssetDescriptor<TextureAtlas> atlasHelpMenu =
     //        new AssetDescriptor<TextureAtlas>("skins/help_menu/buttons/helpButton.pack", TextureAtlas.class);
 
-    private static void helpScreenLoad(){
+    private static void helpScreenLoad() {
         getInstance().load(helpBackground);
         getInstance().load(helpSkin);
         //getInstance().load(atlasHelpMenu);
@@ -94,7 +94,7 @@ public class ResourceManager {
 
     public static final String TextureAtlasNumber = "skins/game_menu/coins_and_numb/coins_and_hud.pack";
 
-    private static void gameScreenLoad(){
+    private static void gameScreenLoad() {
         getInstance().load(gameBackground);
         getInstance().load(gameOver);
         getInstance().load(TextureAtlasNumber, TextureAtlas.class);
@@ -112,7 +112,7 @@ public class ResourceManager {
     public static final AssetDescriptor<Music> notGameLoopMusic =
             new AssetDescriptor<Music>("music/The Path of the Goblin King.mp3", Music.class);
 
-    private static void musicLoad(){
+    private static void musicLoad() {
         getInstance().load(mainGameMusic);
         getInstance().load(notGameLoopMusic);
     }

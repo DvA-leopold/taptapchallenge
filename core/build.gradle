@@ -91,7 +91,6 @@ class ProjectVersion {
 
     @Override
     String toString() {
-        //"$major.$minor${patch ? '' : '-SNAPSHOT'}"
         "$major.$minor.$patch"
     }
 }
