@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -24,10 +23,14 @@ public class DResourceManager {
         mimeFileTypes.put("png", Texture.class);
         mimeFileTypes.put("jpeg", Texture.class);
         mimeFileTypes.put("bmp", Texture.class);
+
         mimeFileTypes.put("pack", TextureAtlas.class);
         mimeFileTypes.put("atlas", TextureAtlas.class);
+
         mimeFileTypes.put("mp3", Music.class);
+
         mimeFileTypes.put("fnt", BitmapFont.class);
+
         mimeFileTypes.put("json", Skin.class);
     }
 
@@ -35,6 +38,11 @@ public class DResourceManager {
         return SingletonHolder.instance;
     }
 
+    /**
+     * load all files in section folder and subfolder of this section
+     * @param section path to the folder
+     * @param sync if this is true than we will wait till all files are load
+     */
     public void loadSection(String section, boolean sync) {
         FileHandle sectionRoot = Gdx.files.internal(section);
         FileHandle[] allFiles = new FileHandle[0];
@@ -55,6 +63,10 @@ public class DResourceManager {
         }
     }
 
+    /**
+     * unload chosen files in a folder and files in a sub-folders
+     * @param section path to the folder
+     */
     public void unloadSection(String section) {
         FileHandle sectionRoot = Gdx.files.internal(section);
         FileHandle[] allFiles = new FileHandle[0];
