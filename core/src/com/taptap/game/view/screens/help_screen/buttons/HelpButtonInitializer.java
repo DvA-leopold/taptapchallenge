@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.view.screens.Buttons;
 
@@ -23,7 +23,8 @@ public class HelpButtonInitializer implements Buttons {
         float buttonHeight = Gdx.graphics.getHeight()*0.25f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
-        Skin skin = ResourceManager.getInstance().get(ResourceManager.helpSkin);
+        Skin skin = (Skin) DResourceManager.getInstance().
+                get("skins/help_menu/buttons/helpSkin.json");
         Table table = new Table(skin);
         button = new TextButton(I18NBundleMy.getString("menu"), skin, "default");
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.help_screen.buttons.HelpButtonInitializer;
 import com.taptap.game.view.screens.Buttons;
 
@@ -15,9 +15,8 @@ public class HelpScreen implements Screen {
         this.batch = batch;
         buttons = new HelpButtonInitializer(batch);
 
-        background = ResourceManager.
-                getInstance().
-                get(ResourceManager.helpBackground);
+        background = (Texture) DResourceManager.getInstance().
+                get("skins/help_menu/bg_grasslands.png");
     }
 
     @Override

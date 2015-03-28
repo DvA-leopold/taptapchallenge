@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class RecordScreen implements Screen {
@@ -28,12 +28,14 @@ public class RecordScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        Skin skinRecords = ResourceManager.getInstance().get(ResourceManager.recordSkin);
+        Skin skinRecords = (Skin) DResourceManager.getInstance().
+                get("skins/record_menu/buttons/recordScreen.json");
         table = new Table(skinRecords);
         exitButton = new Button(skinRecords);
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
-        background = ResourceManager.getInstance().get(ResourceManager.recordBackground);
+        background = (Texture) DResourceManager.getInstance().
+                get("skins/main_menu/background/bg_desert.png");
 
         TapTap.getStorage().displayData(table, skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);

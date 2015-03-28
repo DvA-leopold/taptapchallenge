@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class LoadScreen implements Screen {
@@ -18,10 +18,10 @@ public class LoadScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        int progress = (int)(ResourceManager.updateLoadingQueue()*100);
+        int progress = (int)(DResourceManager.getInstance().updateAndGetProgress()*100);
         float position = 100;
         batch.begin();
-        for (int i=0;i<progress/8;++i){
+        for (int i=0; i<progress/8; ++i){
             batch.draw(barHorizontalMid, 70, position);
             position+=barHorizontalMid.getWidth();
         }
@@ -32,13 +32,15 @@ public class LoadScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-    }
+    public void resize(int width, int height) { }
 
     @Override
     public void show() {
+        //TODO: change this later
         barHorizontalMid = new Texture("skins/load_menu/bar_yellow_mid.png");
-        ResourceManager.queueLoading();
+        DResourceManager.getInstance().loadSection("fonts", false);
+        DResourceManager.getInstance().loadSection("music", false);
+        DResourceManager.getInstance().loadSection("skins", false);
     }
 
     @Override
@@ -61,7 +63,6 @@ public class LoadScreen implements Screen {
         barHorizontalMid.dispose();
     }
 
-    //private float position = 100;
     private Texture barHorizontalMid;
     private SpriteBatch batch;
 }

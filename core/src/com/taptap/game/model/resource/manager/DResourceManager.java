@@ -18,7 +18,7 @@ import java.util.Queue;
 public class DResourceManager {
     private DResourceManager() {
         assetManager = new AssetManager();
-        mimeFileTypes = new Hashtable<>(10);
+        mimeFileTypes = new Hashtable<>(8);
 
         mimeFileTypes.put("png", Texture.class);
         mimeFileTypes.put("jpeg", Texture.class);
@@ -28,9 +28,7 @@ public class DResourceManager {
         mimeFileTypes.put("atlas", TextureAtlas.class);
 
         mimeFileTypes.put("mp3", Music.class);
-
         mimeFileTypes.put("fnt", BitmapFont.class);
-
         mimeFileTypes.put("json", Skin.class);
     }
 
@@ -39,7 +37,7 @@ public class DResourceManager {
     }
 
     /**
-     * load all files in section folder and subfolder of this section
+     * load all files in section folder and sub folder of this section
      * @param section path to the folder
      * @param sync if this is true than we will wait till all files are load
      */
@@ -52,10 +50,10 @@ public class DResourceManager {
             e.printStackTrace();
         }
         for (FileHandle allFile : allFiles) {
-            String fileName = allFile.file().getAbsolutePath();
+            String fileName = allFile.file().getName();
             String extension = FilenameUtils.getExtension(fileName);
-            if (mimeFileTypes.contains(extension)) {
-                getInstance().assetManager.load(fileName, mimeFileTypes.get(extension));
+            if (mimeFileTypes.containsKey(extension)) {
+                getInstance().assetManager.load(allFile.path(), mimeFileTypes.get(extension));
             }
         }
         if (sync) {
@@ -76,13 +74,47 @@ public class DResourceManager {
             e.printStackTrace();
         }
         for (FileHandle allFile : allFiles) {
-            getInstance().assetManager.unload(allFile.file().getAbsolutePath());
+            assetManager.unload(allFile.path());
         }
     }
 
-    public float getProgress() {
+    /**
+     * load separate file from a directory
+     * @param fileName name of the file fo downloading
+     * @param sync if this parameter is <code>true</code> than stop and wait loading finished/
+     * @throws FileNotFoundException if no such extension in <code>mimeFileType</code> exist
+     */
+    public void loadFile(String fileName, boolean sync) throws FileNotFoundException {
+        String fileExtension = FilenameUtils.getExtension(fileName);
+        if (mimeFileTypes.contains(fileExtension)){
+            assetManager.load(fileName, mimeFileTypes.get(fileExtension));
+        } else {
+            throw new FileNotFoundException("no such extension for this type of file");
+        }
+        if (sync) {
+            assetManager.finishLoading();
+        }
+    }
+
+    public void unloadFile(String fileName) {
+        assetManager.unload(fileName);
+    }
+
+    public Object get(String fileName) {
+        if (assetManager.isLoaded(fileName)) {
+            return assetManager.get(fileName);
+        } else {
+            return null;
+        }
+    }
+
+    public float updateAndGetProgress() {
         assetManager.update();
         return assetManager.getProgress();
+    }
+
+    public void dispose() {
+        getInstance().assetManager.dispose();
     }
 
     private FileHandle[] getFiles(FileHandle sectionForLoading) throws FileNotFoundException {
@@ -103,12 +135,9 @@ public class DResourceManager {
                 }
             }
         }
-
-        return (FileHandle[]) filesList.toArray();
-    }
-
-    public static void dispose() {
-        getInstance().assetManager.dispose();
+        FileHandle[] filesListArray = new FileHandle[filesList.size()];
+        filesList.toArray(filesListArray);
+        return filesListArray;
     }
 
     private static class SingletonHolder {

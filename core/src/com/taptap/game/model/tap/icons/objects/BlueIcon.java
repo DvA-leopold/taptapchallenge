@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 
 public class BlueIcon implements Icon {
     static {
-        image = ResourceManager.getInstance().get(ResourceManager.iconBlue);
+        image = (Texture) DResourceManager.getInstance().
+                get("skins/game_menu/tap_icons/Farmer2.png");
     }
 
     public BlueIcon(Vector2 spawnBoarder, final World world) {

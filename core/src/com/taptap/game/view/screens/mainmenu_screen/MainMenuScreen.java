@@ -5,14 +5,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.buttons.MenuButtonInitializer;
 
 public class MainMenuScreen implements Screen {
     public MainMenuScreen(final SpriteBatch batch) {
         this.batch = batch;
         buttons = new MenuButtonInitializer(batch);
-        background = ResourceManager.getInstance().get(ResourceManager.menuBackground);
+        background = (Texture) DResourceManager.getInstance().
+                get("skins/main_menu/background/bg_desert.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }

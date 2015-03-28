@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.game.world.GameWorld;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.Buttons;
 
 public class GameButtonsInitializer implements Buttons {
@@ -19,7 +19,8 @@ public class GameButtonsInitializer implements Buttons {
         stage = new Stage(
                 new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 batch);
-        Skin skinGameMenu = ResourceManager.getInstance().get(ResourceManager.optionSkin);
+        Skin skinGameMenu = (Skin) DResourceManager.getInstance().
+                get("skins/game_menu/buttons/option_menu/optionIconSkin.json");
         table = new Table(skinGameMenu);
 
         optionButton = new Button(skinGameMenu, "popUpMenuButton");

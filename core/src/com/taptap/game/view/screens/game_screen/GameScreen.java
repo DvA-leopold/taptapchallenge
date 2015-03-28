@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
+import com.taptap.game.view.renderer.GameRenderer;
 
 public class GameScreen implements Screen {
     public GameScreen(final SpriteBatch batch) {

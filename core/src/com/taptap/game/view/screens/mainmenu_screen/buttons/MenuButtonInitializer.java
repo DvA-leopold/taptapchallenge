@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
 import com.taptap.game.view.screens.records_screen.RecordScreen;
@@ -24,7 +24,8 @@ public class MenuButtonInitializer implements Buttons {
         float buttonHeight = Gdx.graphics.getHeight()*0.15f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
-        Skin skin = ResourceManager.getInstance().get(ResourceManager.mainMenuSkin);
+        Skin skin = (Skin) DResourceManager.getInstance().
+                get("skins/main_menu/buttons/menuSkin.json");
         skin.getFont("blackFont").setScale(2, 2);
 
         Label heading = new Label(I18NBundleMy.getString("game_name"), skin, "default");

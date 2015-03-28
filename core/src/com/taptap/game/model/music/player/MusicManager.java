@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
@@ -13,8 +13,13 @@ import com.taptap.game.view.screens.records_screen.RecordScreen;
 public class MusicManager {
     static {
         //.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mainGameMusic = ResourceManager.getInstance().get(ResourceManager.mainGameMusic);
-        notGameLoopMusic = ResourceManager.getInstance().get(ResourceManager.notGameLoopMusic);
+        //mainGameMusic = ResourceManager.getInstance().get(ResourceManager.mainGameMusic);
+        mainGameMusic = (Music) DResourceManager.
+                getInstance().
+                get("music/Black Vortex.mp3");
+        notGameLoopMusic = (Music) DResourceManager.
+                getInstance().
+                get("music/The Path of the Goblin King.mp3");
         musicEnableFlag = true;
     }
 

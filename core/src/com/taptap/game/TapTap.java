@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.debug.Debug;
 import com.taptap.game.debug.DebugShader;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.model.save.manager.StorageManager;
 import com.taptap.game.versioning.VersionHandler;
 import com.taptap.game.view.screens.LoadScreen;
@@ -14,7 +14,7 @@ public final class TapTap extends Game {
     public void create() {
         //class for debug
         debug = new Debug();
-        // resource storage
+        // save score manager
         storage = new StorageManager(true);
         // first screen
         if (debug.isWindows()) {
@@ -34,7 +34,7 @@ public final class TapTap extends Game {
 
     @Override
     public void dispose() {
-        ResourceManager.getInstance().dispose();
+        DResourceManager.getInstance().dispose();
         mainBatch.dispose();
         debug.dispose();
     }

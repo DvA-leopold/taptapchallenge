@@ -1,12 +1,13 @@
-package com.taptap.game.view.screens.game_screen;
+package com.taptap.game.view.renderer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.model.tap.icons.objects.Icon;
 import com.taptap.game.view.screens.Buttons;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
@@ -17,9 +18,11 @@ public class GameRenderer {
         this.gameWorld = gameWorld;
         renderer = new Box2DDebugRenderer();
 
-        font = ResourceManager.getInstance().get(ResourceManager.fonts);
-        gameBackground = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameBackground));
-        gameOver = new Sprite(ResourceManager.getInstance().get(ResourceManager.gameOver));
+        font = (BitmapFont) DResourceManager.getInstance().get("fonts/whiteFont.fnt");
+        gameBackground = new Sprite((Texture)
+                DResourceManager.getInstance().get("skins/game_menu/game_bg.png"));
+        gameOver = new Sprite(
+                (Texture) DResourceManager.getInstance().get("skins/game_menu/game_over.png"));
     }
 
     public void render() {
@@ -57,8 +60,8 @@ public class GameRenderer {
         while (temp>=0) {
             int val = temp % 10;
             temp /= 10;
-            picture = ResourceManager.getInstance().
-                    get(ResourceManager.TextureAtlasNumber, TextureAtlas.class).
+            picture = ((TextureAtlas)DResourceManager.getInstance().
+                    get("skins/game_menu/coins_and_numb/coins_and_hud.pack")).
                     createSprite("hud" + Integer.toString(val));
 
             width -= picture.getWidth();

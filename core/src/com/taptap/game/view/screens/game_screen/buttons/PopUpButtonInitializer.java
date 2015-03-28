@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
-import com.taptap.game.model.resource.manager.ResourceManager;
+import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.Buttons;
 
 public class PopUpButtonInitializer implements Buttons {
@@ -26,7 +26,8 @@ public class PopUpButtonInitializer implements Buttons {
         float buttonWidth = Gdx.graphics.getWidth() * 0.3f;
         float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
-        Skin skinMainMenu = ResourceManager.getInstance().get(ResourceManager.popUpSkin);
+        Skin skinMainMenu = (Skin) DResourceManager.getInstance().
+                get("skins/game_menu/buttons/pop_up/popUpSkin.json");
 
         skinMainMenu.getFont("blackFont").setScale(2, 2);
         resumeGameButton = new TextButton(I18NBundleMy.getString("return"), skinMainMenu, "popUpButtons");
@@ -53,7 +54,8 @@ public class PopUpButtonInitializer implements Buttons {
         float buttonWidth = Gdx.graphics.getWidth()*0.1f;
         float buttonHeight = Gdx.graphics.getHeight()*0.15f;
 
-        Skin skinOptions = ResourceManager.getInstance().get(ResourceManager.optionSkin);
+        Skin skinOptions = (Skin) DResourceManager.getInstance().
+                get("skins/game_menu/buttons/option_menu/optionIconSkin.json");
 
         musicControl = new CheckBox(null, skinOptions, "stateOption");
         musicControl.setChecked(!MusicManager.isMusicEnable());
