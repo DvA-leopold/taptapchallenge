@@ -14,7 +14,7 @@ eclipse.project {
  * this is task for working with versioning
  * only one version file is in out multi platform project
  */
-ext.versionFile = file('assets\\version\\version.properties')
+ext.versionFile = file('assets/version/version.properties')
 
 task loadVersion {
     project.version = readVersion()
