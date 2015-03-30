@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.apache.commons.io.FilenameUtils;
+import sun.rmi.runtime.Log;
 
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
@@ -104,6 +105,7 @@ public class DResourceManager {
         if (assetManager.isLoaded(fileName)) {
             return assetManager.get(fileName);
         } else {
+            System.err.print(fileName + "was not loaded");
             return null;
         }
     }

@@ -16,6 +16,7 @@ import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
 import com.taptap.game.view.screens.records_screen.RecordScreen;
 import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.town_screen.TownScreen;
 
 public class MenuButtonInitializer implements Buttons {
     public MenuButtonInitializer(final SpriteBatch batch){
@@ -65,7 +66,7 @@ public class MenuButtonInitializer implements Buttons {
         buttonPlay.addListener(new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(batch));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new TownScreen(batch));
         }
         });
         buttonHelp.addListener(new ClickListener(){

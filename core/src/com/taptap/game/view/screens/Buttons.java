@@ -5,9 +5,9 @@ import com.taptap.game.model.game.world.GameWorld;
 
 public interface Buttons {
     //public void resize(int width, int height);
-    public void render();
-    public void setListeners(final GameWorld gameWorld);
-    public void dispose();
-    public Stage getStage();
-    public void setVisible(boolean visible);
+    void render();
+    void setListeners(final GameWorld gameWorld);
+    void dispose();
+    Stage getStage();
+    void setVisible(boolean visible);
 }
