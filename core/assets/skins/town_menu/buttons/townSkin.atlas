@@ -1,0 +1,20 @@
+town_buttons.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonSquare_grey
+  rotate: false
+  xy: 1, 1
+  size: 45, 49
+  split: 8, 8, 17, 20
+  orig: 45, 49
+  offset: 0, 0
+  index: -1
+buttonSquare_grey_pressed
+  rotate: false
+  xy: 48, 5
+  size: 45, 45
+  split: 8, 7, 16, 16
+  orig: 45, 45
+  offset: 0, 0
+  index: -1

@@ -40,7 +40,7 @@ public class LoadScreen implements Screen {
         DResourceManager.getInstance().loadSection("fonts", false);
         DResourceManager.getInstance().loadSection("music", false);
         DResourceManager.getInstance().loadSection("skins", false);
-        DResourceManager.getInstance().loadSection("sectors", false); // TODO: load sectors if needed
+//        DResourceManager.getInstance().loadSection("sectors", false); // TODO: load sectors if needed
     }
 
     @Override

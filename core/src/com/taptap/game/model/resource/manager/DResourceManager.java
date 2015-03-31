@@ -105,7 +105,7 @@ public class DResourceManager {
         if (assetManager.isLoaded(fileName)) {
             return assetManager.get(fileName);
         } else {
-            System.err.print(fileName + "was not loaded");
+            System.err.print(fileName + " was not loaded ");
             return null;
         }
     }
