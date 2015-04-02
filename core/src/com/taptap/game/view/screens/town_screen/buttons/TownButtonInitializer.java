@@ -7,45 +7,34 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
+import com.taptap.game.view.popup.windows.OptionWindow;
 import com.taptap.game.view.screens.Buttons;
 
 public class TownButtonInitializer implements Buttons {
     public TownButtonInitializer(final SpriteBatch batch, final OrthographicCamera camera) {
         this.camera = camera;
         float buttonSize = Gdx.graphics.getWidth() * 0.1f;
-        tableXaxesPosition = Gdx.graphics.getWidth()/2;
+        tableXaxesPosition = Gdx.graphics.getWidth() * 0.5f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = (Skin) DResourceManager.getInstance().get("skins/town_menu/buttons/townSkin.json");
-        table = new Table();
-        trainingCamp = new Button(skin);
-        library = new Button(skin);
-        wallOfFame = new Button(skin);
-        bank = new Button(skin);
-        mail = new Button(skin);
-        options = new Button(skin);
-        options.setPosition(0, Gdx.graphics.getWidth() - buttonSize * 3);
-        options.setSize(buttonSize, buttonSize);
+        initTableAndButtons(skin, buttonSize);
 
-        table.setPosition(tableXaxesPosition, Gdx.graphics.getHeight() / 2);
-        table.add(trainingCamp).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
-        table.add(library).padTop(Gdx.graphics.getHeight()/2).size(buttonSize);
-        table.add(wallOfFame).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
-        table.add(bank).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
-        table.add(mail).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
-        table.debug();
+        optionWindow = new OptionWindow("",
+                (Skin) DResourceManager.getInstance().get("skins/pop_up/optionWindowSkin.json")
+        );
+        optionWindow.initButtonSize(buttonSize, buttonSize);
+        optionWindow.createButtons();
 
         setListeners(null);
-
         stage.addActor(table);
         stage.addActor(options);
+        stage.addActor(optionWindow);
     }
 
     @Override
@@ -57,6 +46,7 @@ public class TownButtonInitializer implements Buttons {
     @Override
     public void setListeners(GameWorld gameWorld) {
         InputMultiplexer gestureMultiplexer = new InputMultiplexer();
+        optionWindow.setListeners();
         trainingCamp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -95,16 +85,17 @@ public class TownButtonInitializer implements Buttons {
         options.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //((Game) Gdx.app.getApplicationListener()).setScreen(new Screen);
-                System.out.println("options");
+                optionWindow.setVisible(true);
             }
         });
 
         GestureDetector gestureDetector = new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
-                camera.position.add(-deltaX, 0, 0);
-                table.setPosition(tableXaxesPosition += deltaX, Gdx.graphics.getHeight() / 2, 0);
+                if (!optionWindow.isVisible()) {
+                    camera.position.add(-deltaX, 0, 0);
+                    table.setPosition(tableXaxesPosition += deltaX, Gdx.graphics.getHeight() / 2, 0);
+                }
                 return super.pan(x, y, deltaX, deltaY);
             }
         });
@@ -128,9 +119,29 @@ public class TownButtonInitializer implements Buttons {
         table.setVisible(visible);
     }
 
+    private void initTableAndButtons(final Skin skin, float buttonSize) {
+        table = new Table();
+        trainingCamp = new Button(skin);
+        library = new Button(skin);
+        wallOfFame = new Button(skin);
+        bank = new Button(skin);
+        mail = new Button(skin);
+        options = new Button(skin);
+        options.setPosition(0, Gdx.graphics.getWidth() - buttonSize * 3);
+        options.setSize(buttonSize, buttonSize);
+
+        table.setPosition(tableXaxesPosition, Gdx.graphics.getHeight() / 2);
+        table.add(trainingCamp).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
+        table.add(library).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
+        table.add(wallOfFame).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
+        table.add(bank).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
+        table.add(mail).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
+        table.debug();
+    }
+
     private final Stage stage;
-    private final Table table;
-    private final Button
+    private Table table;
+    private Button
             trainingCamp,
             library,
             wallOfFame,
@@ -138,6 +149,8 @@ public class TownButtonInitializer implements Buttons {
             mail,
             options;
 
+    private final OptionWindow optionWindow;
+
     private final OrthographicCamera camera;
-    private int tableXaxesPosition;
+    private float tableXaxesPosition;
 }

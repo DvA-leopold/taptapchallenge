@@ -16,7 +16,7 @@ import com.taptap.game.view.screens.Buttons;
 public class PopUpButtonInitializer implements Buttons {
     public PopUpButtonInitializer(final Batch batch) {
         stage = new Stage(
-                new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()),
+                new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 batch);
         menuStageInit(stage);
         optionStageInit(stage);
@@ -26,19 +26,19 @@ public class PopUpButtonInitializer implements Buttons {
         float buttonWidth = Gdx.graphics.getWidth() * 0.3f;
         float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
-        Skin skinMainMenu = (Skin) DResourceManager.getInstance().
+        Skin skin = (Skin) DResourceManager.getInstance().
                 get("skins/game_menu/buttons/pop_up/popUpSkin.json");
 
-        skinMainMenu.getFont("blackFont").setScale(2, 2);
-        resumeGameButton = new TextButton(I18NBundleMy.getString("return"), skinMainMenu, "popUpButtons");
-        optionGameButton = new TextButton(I18NBundleMy.getString("options"), skinMainMenu, "popUpButtons");
-        exitMainMenuButton = new TextButton(I18NBundleMy.getString("exit"), skinMainMenu, "popUpButtons");
+        skin.getFont("blackFont").setScale(2, 2);
+        resumeGameButton = new TextButton(I18NBundleMy.getString("return"), skin, "popUpButtons");
+        optionGameButton = new TextButton(I18NBundleMy.getString("options"), skin, "popUpButtons");
+        exitMainMenuButton = new TextButton(I18NBundleMy.getString("exit"), skin, "popUpButtons");
 
         resumeGameButton.pad(10);
         optionGameButton.pad(10);
         exitMainMenuButton.pad(10);
 
-        pauseWindow = new Window("", skinMainMenu);
+        pauseWindow = new Window("", skin);
         pauseWindow.setFillParent(true);
         pauseWindow.add(resumeGameButton).width(buttonWidth).height(buttonHeight);
         pauseWindow.row();
@@ -50,9 +50,10 @@ public class PopUpButtonInitializer implements Buttons {
         stage.addActor(pauseWindow);
     }
 
+    //TODO: change this window to custom OptionWindow from popup package
     public void optionStageInit(final Stage stage) {
-        float buttonWidth = Gdx.graphics.getWidth()*0.1f;
-        float buttonHeight = Gdx.graphics.getHeight()*0.15f;
+        float buttonWidth = Gdx.graphics.getWidth() * 0.1f;
+        float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
         Skin skinOptions = (Skin) DResourceManager.getInstance().
                 get("skins/game_menu/buttons/option_menu/optionIconSkin.json");

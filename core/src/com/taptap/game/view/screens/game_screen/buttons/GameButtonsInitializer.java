@@ -19,11 +19,11 @@ public class GameButtonsInitializer implements Buttons {
         stage = new Stage(
                 new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 batch);
-        Skin skinGameMenu = (Skin) DResourceManager.getInstance().
+        Skin skin = (Skin) DResourceManager.getInstance().
                 get("skins/game_menu/buttons/option_menu/optionIconSkin.json");
-        table = new Table(skinGameMenu);
+        table = new Table(skin);
 
-        optionButton = new Button(skinGameMenu, "popUpMenuButton");
+        optionButton = new Button(skin, "popUpMenuButton");
         table.setFillParent(true);
         table.add(optionButton).
                 padTop(-Gdx.graphics.getHeight() + buttonSize).

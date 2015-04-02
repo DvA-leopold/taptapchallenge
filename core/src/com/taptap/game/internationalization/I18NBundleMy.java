@@ -7,10 +7,7 @@ import java.util.Locale;
 
 public final class I18NBundleMy {
     static {
-        myBundle = I18NBundle.createBundle(
-                Gdx.files.internal("i18n/MyBundle"),
-                new Locale("ru", "RU", "VAR1")
-        );
+        initLangCode();
     }
 
     public static String getString(String key) {
@@ -21,5 +18,29 @@ public final class I18NBundleMy {
         return myBundle.format(key, args);
     }
 
-    private static I18NBundle myBundle;
+    public static String getLangCodes() {
+        return langCodes[0];
+    }
+
+    public static void initLangCode(String[] langCode) {
+        langCodes = langCode;
+        myBundle = I18NBundle.createBundle(
+                Gdx.files.internal("i18n/MyBundle"),
+                new Locale(langCode[0], langCode[1], langCode[2])
+        );
+    }
+
+    private static void initLangCode() {
+        langCodes = new String[3];
+        langCodes[0] = "ru";
+        langCodes[1] = "RU";
+        langCodes[2] = "VAR1";
+        myBundle = I18NBundle.createBundle(
+                Gdx.files.internal("i18n/MyBundle"),
+                new Locale(langCodes[0], langCodes[1], langCodes[2])
+        );
+    }
+
+    static private String[] langCodes;
+    static private I18NBundle myBundle;
 }

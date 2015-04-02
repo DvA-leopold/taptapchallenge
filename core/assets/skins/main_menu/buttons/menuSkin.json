@@ -18,7 +18,6 @@
     "blackFont": {"file": "fonts/blackFont.fnt"}
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
-    // $ is an inner class
     "default": {
       "font": "blackFont",
       "fontColor": "black"

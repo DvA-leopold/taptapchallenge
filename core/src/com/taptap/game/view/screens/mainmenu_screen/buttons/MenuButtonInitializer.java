@@ -29,7 +29,7 @@ public class MenuButtonInitializer implements Buttons {
                 get("skins/main_menu/buttons/menuSkin.json");
         skin.getFont("blackFont").setScale(2, 2);
 
-        Label heading = new Label(I18NBundleMy.getString("game_name"), skin, "default");
+        Label heading = new Label(I18NBundleMy.getString("game_name"), skin);
         buttonPlay = new TextButton(I18NBundleMy.getString("play"), skin, "mainButtons");
         buttonHelp = new TextButton(I18NBundleMy.getString("help"), skin, "mainButtons");
         buttonRecords = new TextButton(I18NBundleMy.getString("records"), skin, "mainButtons");
@@ -105,6 +105,7 @@ public class MenuButtonInitializer implements Buttons {
     public void dispose() {
         stage.dispose();
     }
+
     private final SpriteBatch batch;
 
     private final Stage stage;
