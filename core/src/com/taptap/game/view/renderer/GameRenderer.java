@@ -10,7 +10,6 @@ import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.model.tap.icons.objects.Icon;
 import com.taptap.game.view.screens.Buttons;
-import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 import com.taptap.game.view.screens.town_screen.TownScreen;
 
 public class GameRenderer {
@@ -29,24 +28,33 @@ public class GameRenderer {
     public void render() {
         switch (gameWorld.getWorldState()) {
             case GAME_PREPARING:
+                this.renderBackground();
                 this.renderPreparingState();
                 break;
             case GAME_RUNNING:
+                this.renderBackground();
+                gameWorld.getRayHandler().render();
+                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
                 this.renderRunState();
                 break;
             case GAME_PAUSED:
+                this.renderBackground();
+                gameWorld.getRayHandler().render();
+                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
                 this.renderPauseState();
                 break;
             case GAME_OVER:
+                this.renderBackground();
+                gameWorld.getRayHandler().render();
+                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
                 this.renderGameOverState();
                 break;
             case GAME_EXIT:
+                this.renderBackground();
+                gameWorld.getRayHandler().render();
+                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
                 this.renderGameExitState();
                 break;
-        }
-        if (gameWorld.getWorldState() != GameWorld.States.GAME_PREPARING) {
-            gameWorld.getRayHandler().render();
-            renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
         }
 
         for (Buttons button : gameWorld.getButtonsArray()) {
@@ -78,9 +86,9 @@ public class GameRenderer {
 
     private void renderPreparingState() {
         batch.begin();
-        batch.disableBlending();
-        batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.enableBlending();
+        //batch.disableBlending();
+        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //batch.enableBlending();
         font.draw(batch, I18NBundleMy.getString("tap_anyway"), 5, Gdx.graphics.getHeight() / 2);
         if (Gdx.input.justTouched()){
             gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
@@ -90,9 +98,9 @@ public class GameRenderer {
 
     private void renderRunState() {
         batch.begin();
-        batch.disableBlending();
-        batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.enableBlending();
+        //batch.disableBlending();
+        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //batch.enableBlending();
         for (Icon iconsDrop : gameWorld.getObjectsPool()) {
             batch.draw(iconsDrop.getSprite(),
                     iconsDrop.getX(), iconsDrop.getY(),
@@ -107,9 +115,9 @@ public class GameRenderer {
 
     private void renderPauseState() {
         batch.begin();
-        batch.disableBlending();
-        batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.enableBlending();
+        //batch.disableBlending();
+        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //batch.enableBlending();
         for (Icon tapIcon : gameWorld.getObjectsPool()) {
             batch.draw(
                     tapIcon.getSprite(),
@@ -122,9 +130,9 @@ public class GameRenderer {
 
     private void renderGameOverState() {
         batch.begin();
-        batch.disableBlending();
-        batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.enableBlending();
+        //batch.disableBlending();
+        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //batch.enableBlending();
         batch.draw(gameOver,
                 Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
@@ -132,6 +140,14 @@ public class GameRenderer {
         if (Gdx.input.isTouched()) { // todo fix that
             gameWorld.changeWorldState(GameWorld.States.GAME_EXIT);
         }
+    }
+
+    private void renderBackground() {
+        batch.begin();
+        batch.disableBlending();
+        batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.enableBlending();
+        batch.end();
     }
 
     private void renderGameExitState() {

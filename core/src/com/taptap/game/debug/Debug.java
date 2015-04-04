@@ -15,22 +15,27 @@ public class Debug {
 
     public void render(final SpriteBatch batch) {
         debugBatch.begin();
-        fontStandart.draw(debugBatch,
+        fontStandard.draw(debugBatch,
                 "D_C:" + batch.renderCalls +
                         " fps:" + Gdx.graphics.getFramesPerSecond(), 20, 30);
         debugBatch.end();
     }
 
     public boolean isWindows() {
-        final String os = System.getProperty("os.name").toLowerCase();
+        String os = null;
+        try {
+            os = System.getProperty("os.name").toLowerCase();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         //windows
-        return os.contains("win");
+        return os != null && os.contains("win");
     }
 
     public void dispose() {
         debugBatch.dispose();
     }
 
-    private BitmapFont fontStandart = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"));
+    private BitmapFont fontStandard = new BitmapFont(Gdx.files.internal("fonts/whiteFont.fnt"));
     private SpriteBatch debugBatch;
 }
