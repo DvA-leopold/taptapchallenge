@@ -1,5 +1,6 @@
 package com.taptap.game.view.screens.town_screen.buttons;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,6 +15,7 @@ import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.popup.windows.OptionWindow;
 import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.game_screen.GameScreen;
 
 public class TownButtonInitializer implements Buttons {
     public TownButtonInitializer(final SpriteBatch batch, final OrthographicCamera camera) {
@@ -34,6 +36,7 @@ public class TownButtonInitializer implements Buttons {
         setListeners(null);
         stage.addActor(table);
         stage.addActor(options);
+        stage.addActor(testLevelButton);
         stage.addActor(optionWindow);
     }
 
@@ -89,12 +92,20 @@ public class TownButtonInitializer implements Buttons {
             }
         });
 
+        testLevelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen((SpriteBatch) stage.getBatch()));
+            }
+        });
+
         GestureDetector gestureDetector = new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 if (!optionWindow.isVisible()) {
                     camera.position.add(-deltaX, 0, 0);
                     table.setPosition(tableXaxesPosition += deltaX, Gdx.graphics.getHeight() / 2, 0);
+                    testLevelButton.setPosition(testLevelButton.getX()+deltaX, testLevelButton.getY());
                 }
                 return super.pan(x, y, deltaX, deltaY);
             }
@@ -119,6 +130,10 @@ public class TownButtonInitializer implements Buttons {
         table.setVisible(visible);
     }
 
+    public void setMaxXPos(float maxXPos) {
+        this.maxXPos = maxXPos;
+    }
+
     private void initTableAndButtons(final Skin skin, float buttonSize) {
         table = new Table();
         trainingCamp = new Button(skin);
@@ -127,8 +142,11 @@ public class TownButtonInitializer implements Buttons {
         bank = new Button(skin);
         mail = new Button(skin);
         options = new Button(skin);
-        options.setPosition(0, Gdx.graphics.getWidth() - buttonSize * 3);
         options.setSize(buttonSize, buttonSize);
+        options.setPosition(0, Gdx.graphics.getHeight() - buttonSize);
+        testLevelButton = new Button(skin);
+        testLevelButton.setSize(buttonSize, buttonSize);
+        testLevelButton.setPosition(Gdx.graphics.getWidth() + 100, 300);
 
         table.setPosition(tableXaxesPosition, Gdx.graphics.getHeight() / 2);
         table.add(trainingCamp).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
@@ -149,8 +167,10 @@ public class TownButtonInitializer implements Buttons {
             mail,
             options;
 
+    private Button testLevelButton;
+
     private final OptionWindow optionWindow;
 
     private final OrthographicCamera camera;
-    private float tableXaxesPosition;
+    private float tableXaxesPosition, maxXPos;
 }

@@ -11,6 +11,7 @@ import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.model.tap.icons.objects.Icon;
 import com.taptap.game.view.screens.Buttons;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
+import com.taptap.game.view.screens.town_screen.TownScreen;
 
 public class GameRenderer {
     public GameRenderer(final SpriteBatch batch, final GameWorld gameWorld) {
@@ -134,7 +135,7 @@ public class GameRenderer {
     }
 
     private void renderGameExitState() {
-        ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new TownScreen(batch));
     }
 
     public void dispose() {

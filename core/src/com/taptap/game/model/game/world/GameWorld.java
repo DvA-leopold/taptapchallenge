@@ -97,6 +97,7 @@ public class GameWorld {
                         "player " + TapTap.getStorage().getAllData().size(),
                         getTotalScore()
                 );
+                // switch to another screen in gameRenderer
                 break;
             case GAME_OVER:
 

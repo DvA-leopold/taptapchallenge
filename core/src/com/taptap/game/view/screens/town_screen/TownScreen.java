@@ -26,6 +26,7 @@ public class TownScreen implements Screen {
         backgroundList.add((Texture) DResourceManager.getInstance().get("skins/town_menu/sectors/town_grass.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("skins/town_menu/sectors/black.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("skins/town_menu/sectors/white.png"));
+        buttons.setMaxXPos(backgroundList.size() * Gdx.graphics.getWidth());
     }
 
     @Override
@@ -33,10 +34,10 @@ public class TownScreen implements Screen {
         Gdx.gl.glClearColor(0, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         float offset = 0;
-        batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         for (Texture background : backgroundList) {
-            batch.draw(background, 0 + offset, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.draw(background, offset, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             offset += Gdx.graphics.getWidth();
         }
         batch.end();

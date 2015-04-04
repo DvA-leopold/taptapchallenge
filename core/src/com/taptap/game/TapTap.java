@@ -17,7 +17,7 @@ public final class TapTap extends Game {
         // save score manager
         storage = new StorageManager(true);
         // first screen
-        if (debug.isWindows()) {
+        if (!debug.isWindows()) {
             mainBatch = new SpriteBatch(5000, DebugShader.createDefaultShader());
         } else {
             mainBatch = new SpriteBatch();
