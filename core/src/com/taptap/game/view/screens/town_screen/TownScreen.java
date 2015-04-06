@@ -23,9 +23,9 @@ public class TownScreen implements Screen {
     @Override
     public void show() {
         backgroundList = new LinkedList<>();
-        backgroundList.add((Texture) DResourceManager.getInstance().get("skins/town_menu/sectors/town_grass.png"));
-        backgroundList.add((Texture) DResourceManager.getInstance().get("skins/town_menu/sectors/black.png"));
-        backgroundList.add((Texture) DResourceManager.getInstance().get("skins/town_menu/sectors/white.png"));
+        backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/main.png"));
+        backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/bad.png"));
+        backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/good.png"));
         buttons.setMaxXPos(backgroundList.size() * Gdx.graphics.getWidth());
     }
 

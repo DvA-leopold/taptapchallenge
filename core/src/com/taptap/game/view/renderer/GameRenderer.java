@@ -87,9 +87,6 @@ public class GameRenderer {
 
     private void renderPreparingState() {
         batch.begin();
-        //batch.disableBlending();
-        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //batch.enableBlending();
         font.draw(batch, I18NBundleMy.getString("tap_anyway"), 5, Gdx.graphics.getHeight() / 2);
         if (Gdx.input.justTouched()){
             gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
@@ -146,7 +143,6 @@ public class GameRenderer {
     }
 
     public void dispose() {
-        //todo cant dispose renderer only on windows
         renderer.dispose();
     }
 
