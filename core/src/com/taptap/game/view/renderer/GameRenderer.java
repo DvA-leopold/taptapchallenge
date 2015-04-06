@@ -33,26 +33,22 @@ public class GameRenderer {
                 break;
             case GAME_RUNNING:
                 this.renderBackground();
-                gameWorld.getRayHandler().render();
-                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+                this.renderWorldAndLight();
                 this.renderRunState();
                 break;
             case GAME_PAUSED:
                 this.renderBackground();
-                gameWorld.getRayHandler().render();
-                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+                this.renderWorldAndLight();
                 this.renderPauseState();
                 break;
             case GAME_OVER:
                 this.renderBackground();
-                gameWorld.getRayHandler().render();
-                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+                this.renderWorldAndLight();
                 this.renderGameOverState();
                 break;
             case GAME_EXIT:
                 this.renderBackground();
-                gameWorld.getRayHandler().render();
-                renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
+                this.renderWorldAndLight();
                 this.renderGameExitState();
                 break;
         }
@@ -60,6 +56,11 @@ public class GameRenderer {
         for (Buttons button : gameWorld.getButtonsArray()) {
             button.render();
         }
+    }
+
+    private void renderWorldAndLight() {
+        gameWorld.getRayHandler().render();
+        renderer.render(gameWorld.getWorld(), gameWorld.getCamera().combined);
     }
 
     private void renderNumbers(int numbForRender, float widthAlign, float heightAlign) {
@@ -98,9 +99,6 @@ public class GameRenderer {
 
     private void renderRunState() {
         batch.begin();
-        //batch.disableBlending();
-        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //batch.enableBlending();
         for (Icon iconsDrop : gameWorld.getObjectsPool()) {
             batch.draw(iconsDrop.getSprite(),
                     iconsDrop.getX(), iconsDrop.getY(),
@@ -109,15 +107,11 @@ public class GameRenderer {
         }
         renderNumbers(gameWorld.getTotalScore(), 0, 0);
         renderNumbers((int) gameWorld.getTotalTime(), -Gdx.graphics.getWidth() / 2, 0);
-
         batch.end();
     }
 
     private void renderPauseState() {
         batch.begin();
-        //batch.disableBlending();
-        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //batch.enableBlending();
         for (Icon tapIcon : gameWorld.getObjectsPool()) {
             batch.draw(
                     tapIcon.getSprite(),
@@ -130,9 +124,6 @@ public class GameRenderer {
 
     private void renderGameOverState() {
         batch.begin();
-        //batch.disableBlending();
-        //batch.draw(gameBackground, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //batch.enableBlending();
         batch.draw(gameOver,
                 Gdx.graphics.getWidth() / 2 - gameOver.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2 - gameOver.getHeight() / 2);
@@ -156,7 +147,7 @@ public class GameRenderer {
 
     public void dispose() {
         //todo cant dispose renderer only on windows
-        //renderer.dispose();
+        renderer.dispose();
     }
 
     private BitmapFont font;
