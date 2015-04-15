@@ -1,10 +1,11 @@
 package com.taptap.game.view.popup.windows;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.taptap.game.TapTap;
 import com.taptap.game.internationalization.I18NBundleMy;
-import com.taptap.game.model.music.player.MusicManager;
 
 public class OptionWindow extends Window {
     public OptionWindow(String title, Skin skin) {
@@ -38,13 +39,13 @@ public class OptionWindow extends Window {
         voiceButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MusicManager.onOffSound();
+                //TODO: switch the music
             }
         });
         musicButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MusicManager.onOffMusic();
+                ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().onOffMusic();
             }
         });
         languageButton.addListener(new ClickListener() {

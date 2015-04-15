@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.taptap.game.TapTap;
+import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.town_screen.buttons.TownButtonInitializer;
 
@@ -18,6 +20,8 @@ public class TownScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         buttons = new TownButtonInitializer(batch, camera);
+        ((TapTap) Gdx.app.getApplicationListener()).
+                getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.ADD_MUSIC);
     }
 
     @Override
@@ -27,6 +31,7 @@ public class TownScreen implements Screen {
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/bad.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/good.png"));
         buttons.setMaxXPos(backgroundList.size() * Gdx.graphics.getWidth());
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override
@@ -53,16 +58,17 @@ public class TownScreen implements Screen {
 
     @Override
     public void pause() {
-
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
     }
 
     @Override
     public void resume() {
-
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override
     public void hide() {
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
         dispose();
     }
 

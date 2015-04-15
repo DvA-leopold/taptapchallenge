@@ -39,6 +39,8 @@ public class RecordScreen implements Screen {
 
         TapTap.getStorage().displayData(table, skinRecords);
         table.add(exitButton).height(buttonHeight).width(buttonWidth);
+        ((TapTap) Gdx.app.getApplicationListener()).
+                getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.ADD_MUSIC);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class RecordScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
 
         exitButton.addListener(new ClickListener(){
             @Override
@@ -78,18 +80,18 @@ public class RecordScreen implements Screen {
 
     @Override
     public void hide() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
         dispose();
     }
 
     @Override
     public void pause() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
     }
 
     @Override
     public void resume() {
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override

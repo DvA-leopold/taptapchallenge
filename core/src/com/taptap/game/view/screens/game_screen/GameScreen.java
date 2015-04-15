@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.view.renderer.GameRenderer;
@@ -17,6 +18,8 @@ public class GameScreen implements Screen {
         gameRenderer = new GameRenderer(batch, gameWorld);
 
         gameWorld.initializeActors(batch);
+        ((TapTap) Gdx.app.getApplicationListener()).
+                getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.MAIN_MUSIC);
     }
 
     @Override
@@ -31,12 +34,12 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(inputMultiplexer);
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override
     public void hide() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
         dispose();
     }
 
@@ -46,13 +49,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
         gameWorld.changeWorldState(GameWorld.States.GAME_PAUSED);
     }
 
     @Override
     public void resume() {
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override

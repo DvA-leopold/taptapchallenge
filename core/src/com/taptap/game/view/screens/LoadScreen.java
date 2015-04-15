@@ -36,7 +36,7 @@ public class LoadScreen implements Screen {
 
     @Override
     public void show() {
-        barHorizontalMid = new Texture("skins/load_menu/bar_yellow_mid.png"); // TODO: get from resource manager
+        barHorizontalMid = new Texture("skins/load_menu/bar_yellow_mid.png");
         DResourceManager.getInstance().loadSection("fonts", false);
         DResourceManager.getInstance().loadSection("music", false);
         DResourceManager.getInstance().loadSection("skins", false);

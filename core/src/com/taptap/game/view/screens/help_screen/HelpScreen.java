@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.help_screen.buttons.HelpButtonInitializer;
@@ -17,6 +18,8 @@ public class HelpScreen implements Screen {
 
         background = (Texture) DResourceManager.getInstance().
                 get("skins/help_menu/bg_grasslands.png");
+        ((TapTap) Gdx.app.getApplicationListener()).
+                getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.ADD_MUSIC);
     }
 
     @Override
@@ -38,23 +41,23 @@ public class HelpScreen implements Screen {
     @Override
     public void show() {
         buttons.setListeners(null);
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override
     public void hide() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
         dispose();
     }
 
     @Override
     public void pause() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
     }
 
     @Override
     public void resume() {
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override

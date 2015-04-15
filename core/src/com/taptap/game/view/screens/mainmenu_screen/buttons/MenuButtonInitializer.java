@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.taptap.game.TapTap;
 import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
@@ -84,7 +85,7 @@ public class MenuButtonInitializer implements Buttons {
         soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MusicManager.onOffMusic();
+                ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().onOffMusic();
             }
         });
 

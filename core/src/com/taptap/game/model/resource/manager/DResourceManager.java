@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import org.apache.commons.io.FilenameUtils;
-import sun.rmi.runtime.Log;
 
 import java.io.FileNotFoundException;
 import java.util.Hashtable;

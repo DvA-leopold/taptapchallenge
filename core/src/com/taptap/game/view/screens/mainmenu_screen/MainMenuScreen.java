@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.buttons.MenuButtonInitializer;
@@ -16,6 +17,8 @@ public class MainMenuScreen implements Screen {
                 get("skins/main_menu/background/bg_desert.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        ((TapTap) Gdx.app.getApplicationListener()).
+                getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.ADD_MUSIC);
     }
 
     @Override
@@ -35,12 +38,12 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         buttons.setListeners(null);
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override
     public void hide() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
         dispose();
     }
 
@@ -50,12 +53,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void pause() {
-        MusicManager.pause(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
     }
 
     @Override
     public void resume() {
-        MusicManager.play(this);
+        ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
     @Override

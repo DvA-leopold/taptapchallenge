@@ -5,96 +5,103 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
-import com.taptap.game.view.screens.game_screen.GameScreen;
-import com.taptap.game.view.screens.help_screen.HelpScreen;
-import com.taptap.game.view.screens.records_screen.RecordScreen;
 
+import java.util.HashMap;
+
+
+/**
+ * this class work with all music in the game,
+ * all its method choose the music to playMusic inside of them
+ * depend on screen, there they was called,
+ * <code>OnCompletionListener</code> implement if needed.
+ */
+//TODO: move all duplicated checks into separate function
 public class MusicManager {
-    static {
-        //.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        //mainGameMusic = ResourceManager.getInstance().get(ResourceManager.mainGameMusic);
-        mainGameMusic = (Music) DResourceManager.
-                getInstance().
-                get("music/Black Vortex.mp3");
-        notGameLoopMusic = (Music) DResourceManager.
-                getInstance().
-                get("music/The Path of the Goblin King.mp3");
+    public MusicManager() {
+        musicTable = new HashMap<>(10);
         musicEnableFlag = true;
     }
 
-    public static void play(Screen screen){
-        if (musicEnableFlag){
-            mainGameMusic.setLooping(true);
-            notGameLoopMusic.setLooping(true);
-            if ((screen instanceof MainMenuScreen ||
-                    screen instanceof HelpScreen ||
-                    screen instanceof RecordScreen) &&
-                    !notGameLoopMusic.isPlaying()){
-                mainGameMusic.stop();
-                notGameLoopMusic.play();
-            }
-            if (screen instanceof GameScreen){
-                notGameLoopMusic.stop();
-                mainGameMusic.play();
-            }
+    /**
+     * every screen should register the <code>MusicType</code> which will playMusic
+     *
+     * @param sClass    class of the current screen
+     * @param musicType instance of <code>MusicType</code> enum class
+     */
+    public void registerMusic(Class<? extends Screen> sClass, MusicTypes musicType) {
+        if (mainGameMusic == null) {
+            mainGameMusic = (Music) DResourceManager.
+                    getInstance().
+                    get("music/Black Vortex.mp3");
         }
+        if (additionMusic == null) {
+            additionMusic = (Music) DResourceManager.
+                    getInstance().
+                    get("music/The Path of the Goblin King.mp3");
+        }
+        musicTable.put(sClass, musicType);
     }
 
-    public static void pause(Screen screen){
-        if (musicEnableFlag){
-            if (screen instanceof MainMenuScreen ||
-                    screen instanceof HelpScreen ||
-                    screen instanceof RecordScreen){
-                notGameLoopMusic.pause();
-            }
-            if (screen instanceof GameScreen){
-                mainGameMusic.pause();
-            }
-        }
-    }
-
-    public static void onOffMusic(){
-        Screen screen = ((Game) Gdx.app.getApplicationListener()).getScreen();
+    public void onOffMusic() {
         musicEnableFlag = !musicEnableFlag;
-        if (musicEnableFlag){
-            musicOn(screen);
+        if (musicEnableFlag) {
+            play();
         } else {
-            musicOff(screen);
+            pauseMusic();
         }
     }
 
-    private static void musicOff(Screen screen){
-        if (screen instanceof MainMenuScreen ||
-                screen instanceof HelpScreen ||
-                screen instanceof RecordScreen){
-            notGameLoopMusic.pause();
+    public void playMusic() {
+        if (musicEnableFlag) {
+            Class<? extends Screen> sClass = ((Game) Gdx.app.getApplicationListener()).getScreen().getClass();
+            mainGameMusic.setLooping(true);
+            additionMusic.setLooping(true);
+            if (musicTable.get(sClass) == MusicTypes.MAIN_MUSIC) {
+                additionMusic.stop();
+                mainGameMusic.play();
+            } else if (musicTable.get(sClass) == MusicTypes.ADD_MUSIC) {
+                mainGameMusic.stop();
+                additionMusic.play();
+            }
         }
-        if (screen instanceof GameScreen){
+    }
+
+    public void pauseMusic() {
+        Class<? extends Screen> sClass = ((Game) Gdx.app.getApplicationListener()).getScreen().getClass();
+        if (musicTable.get(sClass) == MusicTypes.MAIN_MUSIC) {
             mainGameMusic.pause();
+        } else if (musicTable.get(sClass) == MusicTypes.ADD_MUSIC) {
+            additionMusic.pause();
         }
     }
 
-    private static void musicOn(Screen screen){
-        if ((screen instanceof MainMenuScreen ||
-                screen instanceof HelpScreen ||
-                screen instanceof RecordScreen)) {
-            notGameLoopMusic.play();
-        }
-        if (screen instanceof GameScreen) {
-            mainGameMusic.play();
-        }
-    }
-
-    public static boolean isMusicEnable(){
+    public static boolean isMusicEnable() {
         return musicEnableFlag;
     }
-    public static void onOffSound(){
-        soundEnableFlag = !soundEnableFlag;
+
+    public void dispose() {
+        DResourceManager.getInstance().unloadSection("music");
+        additionMusic.dispose();
+        mainGameMusic.dispose();
     }
 
-    private static boolean soundEnableFlag;
+    private void play() {
+        Class<? extends Screen> sClass = ((Game) Gdx.app.getApplicationListener()).getScreen().getClass();
+        if (musicTable.get(sClass) == MusicTypes.MAIN_MUSIC) {
+            mainGameMusic.play();
+        } else if (musicTable.get(sClass) == MusicTypes.ADD_MUSIC) {
+            additionMusic.play();
+        }
+    }
+
+    public enum MusicTypes {
+        MAIN_MUSIC,
+        ADD_MUSIC
+    }
+
+
+    private HashMap<Class, MusicTypes> musicTable;
+    private Music additionMusic = null, mainGameMusic = null;
+
     private static boolean musicEnableFlag;
-    private static Music notGameLoopMusic;
-    private static Music mainGameMusic;
 }
