@@ -30,7 +30,6 @@ public class TownScreen implements Screen {
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/main.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/bad.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/good.png"));
-        buttons.setMaxXPos(backgroundList.size() * Gdx.graphics.getWidth());
         ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 

@@ -1,0 +1,59 @@
+{
+  "com.badlogic.gdx.graphics.Color": {
+    "white": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "black": {
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 1
+    }
+  },
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "whiteFont": {"file": "fonts/whiteFont.fnt"},
+    "blackFont": {"file": "fonts/blackFont.fnt"}
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+    "default": {
+      "up": "exit_up",
+      "down": "exit_down"
+    }
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+    "bowBox": {
+      "up": "bow_up",
+      "down": "bow_down",
+      "checked": "bow_down",
+      "font": "whiteFont"
+    },
+    "swordBox": {
+      "up": "sword_up",
+      "down": "sword_down",
+      "checked": "sword_down",
+      "font": "whiteFont"
+    },
+    "staffBox": {
+      "up": "staff_up",
+      "down": "staff_down",
+      "checked": "staff_down",
+      "font": "whiteFont"
+    },
+    "spellBox": {
+      "up": "spell_up",
+      "down": "spell_down",
+      "checked": "spell_down",
+      "font": "whiteFont"
+    }
+  },
+
+  "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
+    "default": {
+      "titleFont": "whiteFont",
+      "background": "dirt"
+    }
+  }
+}
