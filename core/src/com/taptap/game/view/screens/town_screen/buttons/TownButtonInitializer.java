@@ -40,7 +40,6 @@ public class TownButtonInitializer implements Buttons {
                 (Skin) DResourceManager.getInstance().
                         get("skins/pop_up/training_camp_window/trainingCampSkin.json")
         );
-        trainingCampWindow.initButtonSize(buttonSize, buttonSize);
         trainingCampWindow.createButtons();
 
         setListeners(null);

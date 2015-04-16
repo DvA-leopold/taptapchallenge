@@ -13,42 +13,44 @@ public class TrainingCampWindow extends Window {
                 Gdx.graphics.getWidth() * 0.5f - this.getWidth() * 0.5f,
                 Gdx.graphics.getHeight() * 0.5f - this.getHeight() * 0.5f
         );
-        setVisible(false);
+        this.buttonWidth = this.getWidth() / 4;
+        this.buttonHeight = this.getHeight() / 4;
+        this.setVisible(false);
         this.skin = skin;
         skillGroup = new ButtonGroup<>();
     }
 
     public void createButtons() {
-        bowBox = new CheckBox(null, skin, "bowBox");
+        CheckBox bowBox = new CheckBox(null, skin, "bowBox");
         bowBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: switch box
             }
         });
-        swordBox = new CheckBox(null, skin, "swordBox");
-        swordBox.addListener(new ClickListener(){
+        CheckBox swordBox = new CheckBox(null, skin, "swordBox");
+        swordBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: switch box
             }
         });
-        staffBox = new CheckBox(null, skin, "staffBox");
-        staffBox.addListener(new ClickListener(){
+        CheckBox staffBox = new CheckBox(null, skin, "staffBox");
+        staffBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: switch box
             }
         });
-        spellBox = new CheckBox(null, skin, "spellBox");
-        spellBox.addListener(new ClickListener(){
+        CheckBox spellBox = new CheckBox(null, skin, "spellBox");
+        spellBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //TODO: switch box
             }
         });
-        exitButton = new Button(skin);
-        exitButton.addListener(new ClickListener(){
+        Button exitButton = new Button(skin);
+        exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 setVisible(false);
@@ -67,14 +69,8 @@ public class TrainingCampWindow extends Window {
         this.debug();
     }
 
-    public void initButtonSize(float buttonWidth, float buttonHeight) {
-        this.buttonWidth = buttonWidth;
-        this.buttonHeight = buttonHeight;
-    }
 
     private final Skin skin;
-    private CheckBox bowBox, swordBox, staffBox, spellBox;
-    private Button exitButton;
     private ButtonGroup<CheckBox> skillGroup;
 
     private float buttonWidth, buttonHeight;

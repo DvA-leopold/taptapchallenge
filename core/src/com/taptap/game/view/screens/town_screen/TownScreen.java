@@ -16,7 +16,6 @@ import java.util.LinkedList;
 public class TownScreen implements Screen {
     public TownScreen(final SpriteBatch batch) {
         this.batch = batch;
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         buttons = new TownButtonInitializer(batch, camera);
