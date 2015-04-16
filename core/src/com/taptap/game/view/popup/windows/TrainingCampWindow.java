@@ -13,7 +13,8 @@ public class TrainingCampWindow extends Window {
                 Gdx.graphics.getWidth() * 0.5f - this.getWidth() * 0.5f,
                 Gdx.graphics.getHeight() * 0.5f - this.getHeight() * 0.5f
         );
-        this.buttonWidth = this.getWidth() / 4;
+        // sum of all buttons sizes must be smaller then window size
+        this.buttonWidth = this.getWidth() / 7;
         this.buttonHeight = this.getHeight() / 4;
         this.setVisible(false);
         this.skin = skin;
@@ -72,6 +73,5 @@ public class TrainingCampWindow extends Window {
 
     private final Skin skin;
     private ButtonGroup<CheckBox> skillGroup;
-
     private float buttonWidth, buttonHeight;
 }

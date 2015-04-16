@@ -1,53 +1,68 @@
 
-buttons.png
+optionWindowSkin.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-arrow_down
+dirt
   rotate: false
-  xy: 1, 53
-  size: 50, 50
-  split: 0, 0, 0, 1
-  orig: 50, 50
+  xy: 1, 89
+  size: 160, 160
+  orig: 160, 160
   offset: 0, 0
   index: -1
-arrow_up
+clear_down
   rotate: false
-  xy: 1, 1
-  size: 50, 50
-  split: 0, 0, 0, 1
-  orig: 50, 50
+  xy: 1, 39
+  size: 50, 48
+  orig: 50, 48
   offset: 0, 0
   index: -1
-buttonSquare_grey
+clear_up
   rotate: false
-  xy: 53, 54
-  size: 45, 49
-  split: 7, 6, 16, 20
-  orig: 45, 49
+  xy: 163, 201
+  size: 50, 48
+  orig: 50, 48
   offset: 0, 0
   index: -1
-button_square_on
+close_down
   rotate: false
-  xy: 53, 3
-  size: 45, 49
-  split: 7, 6, 16, 20
-  orig: 45, 49
+  xy: 53, 39
+  size: 50, 48
+  orig: 50, 48
   offset: 0, 0
   index: -1
-buttonSquare_grey_pressed
+close_up
   rotate: false
-  xy: 100, 58
-  size: 45, 45
-  split: 7, 7, 16, 15
-  orig: 45, 45
+  xy: 163, 151
+  size: 50, 48
+  orig: 50, 48
   offset: 0, 0
   index: -1
-button_square_off
+music_off
   rotate: false
-  xy: 100, 11
-  size: 45, 45
-  split: 7, 7, 16, 15
-  orig: 45, 45
+  xy: 105, 39
+  size: 50, 48
+  orig: 50, 48
+  offset: 0, 0
+  index: -1
+music_on
+  rotate: false
+  xy: 163, 101
+  size: 50, 48
+  orig: 50, 48
+  offset: 0, 0
+  index: -1
+sound_off
+  rotate: false
+  xy: 163, 51
+  size: 50, 48
+  orig: 50, 48
+  offset: 0, 0
+  index: -1
+sound_on
+  rotate: false
+  xy: 157, 1
+  size: 50, 48
+  orig: 50, 48
   offset: 0, 0
   index: -1

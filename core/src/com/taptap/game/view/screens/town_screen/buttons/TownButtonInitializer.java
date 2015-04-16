@@ -97,7 +97,9 @@ public class TownButtonInitializer implements Buttons {
         options.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                optionWindow.setVisible(true);
+                if (!trainingCampWindow.isVisible()) {
+                    optionWindow.setVisible(true);
+                }
             }
         });
 
@@ -127,7 +129,6 @@ public class TownButtonInitializer implements Buttons {
     @Override
     public void dispose() {
         stage.dispose();
-
     }
 
     @Override
