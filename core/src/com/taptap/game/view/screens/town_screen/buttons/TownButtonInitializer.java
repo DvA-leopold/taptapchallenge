@@ -97,9 +97,7 @@ public class TownButtonInitializer implements Buttons {
         options.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!trainingCampWindow.isVisible()) {
-                    optionWindow.setVisible(true);
-                }
+                optionWindow.setVisible(true);
             }
         });
 

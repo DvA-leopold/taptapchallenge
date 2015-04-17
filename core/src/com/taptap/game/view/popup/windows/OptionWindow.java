@@ -15,6 +15,7 @@ public class OptionWindow extends Window {
                 Gdx.graphics.getWidth() * 0.5f - this.getWidth() * 0.5f,
                 Gdx.graphics.getHeight() * 0.5f - this.getHeight() * 0.5f);
         this.setVisible(false);
+        this.setModal(true);
         this.skin = skin;
     }
 

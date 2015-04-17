@@ -13,6 +13,7 @@ public class TrainingCampWindow extends Window {
                 Gdx.graphics.getWidth() * 0.5f - this.getWidth() * 0.5f,
                 Gdx.graphics.getHeight() * 0.5f - this.getHeight() * 0.5f
         );
+        this.setModal(true);
         // sum of all buttons sizes must be smaller then window size
         this.buttonWidth = this.getWidth() / 7;
         this.buttonHeight = this.getHeight() / 4;
@@ -66,7 +67,8 @@ public class TrainingCampWindow extends Window {
         this.add(staffBox).width(buttonWidth).height(buttonHeight).pad(1);
         this.row();
         this.add(spellBox).width(buttonWidth).height(buttonHeight).pad(1);
-        this.add(exitButton).width(buttonWidth).height(buttonHeight);
+        this.add(exitButton).width(buttonWidth).height(buttonHeight).
+                padLeft(this.getWidth() - buttonWidth * 2);
         this.debug();
     }
 
