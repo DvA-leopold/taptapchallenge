@@ -34,7 +34,6 @@ public class RedIcon implements Icon {
         circleFixture.density = 0.4f;
         circleFixture.friction = 0.2f;
         circleFixture.restitution = 0.0f;
-
         body.createFixture(circleFixture);
     }
 

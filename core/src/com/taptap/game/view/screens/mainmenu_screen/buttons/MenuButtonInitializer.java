@@ -107,11 +107,11 @@ public class MenuButtonInitializer implements Buttons {
         stage.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
 
-    private final Stage stage;
-    private final Table table;
-    private final TextButton
+    final private Stage stage;
+    final private Table table;
+    final private TextButton
             buttonPlay,
             buttonHelp,
             soundButton,

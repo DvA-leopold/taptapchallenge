@@ -162,7 +162,7 @@ public class TownButtonInitializer implements Buttons {
         table.debug();
     }
 
-    private final Stage stage;
+    final private Stage stage;
     private Table table;
     private Button
             trainingCamp,
@@ -174,9 +174,9 @@ public class TownButtonInitializer implements Buttons {
 
     private Button testLevelButton;
 
-    private final OptionWindow optionWindow;
-    private final TrainingCampWindow trainingCampWindow;
+    final private OptionWindow optionWindow;
+    final private TrainingCampWindow trainingCampWindow;
 
-    private final OrthographicCamera camera;
+    final private OrthographicCamera camera;
     private float tableXaxesPosition;
 }

@@ -64,7 +64,7 @@ public class GameScreen implements Screen {
         gameWorld.dispose();
     }
 
-    private final InputMultiplexer inputMultiplexer;
-    private final GameWorld gameWorld;
-    private final GameRenderer gameRenderer;
+    final private InputMultiplexer inputMultiplexer;
+    final private GameWorld gameWorld;
+    final private GameRenderer gameRenderer;
 }

@@ -67,7 +67,7 @@ public class HelpButtonInitializer implements Buttons {
         stage.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private TextButton button;
     private Stage stage;
 }

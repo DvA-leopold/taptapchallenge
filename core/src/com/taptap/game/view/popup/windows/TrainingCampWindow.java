@@ -73,7 +73,7 @@ public class TrainingCampWindow extends Window {
     }
 
 
-    private final Skin skin;
+    final private Skin skin;
     private ButtonGroup<CheckBox> skillGroup;
     private float buttonWidth, buttonHeight;
 }

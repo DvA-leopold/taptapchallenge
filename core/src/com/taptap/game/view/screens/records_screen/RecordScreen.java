@@ -99,12 +99,12 @@ public class RecordScreen implements Screen {
         stage.dispose();
     }
 
-    private final Stage stage;
-    private final Table table;
-    private final Button exitButton;
+    final private Stage stage;
+    final private Table table;
+    final private Button exitButton;
 
-    private final SpriteBatch batch;
-    private final Texture background;
+    final private SpriteBatch batch;
+    final private Texture background;
 
     private OrthographicCamera camera;
 }

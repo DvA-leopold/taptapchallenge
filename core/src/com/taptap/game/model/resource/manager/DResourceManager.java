@@ -145,6 +145,6 @@ public class DResourceManager {
         private static final DResourceManager instance = new DResourceManager();
     }
 
-    private final Hashtable<String, Class> mimeFileTypes;
-    private final AssetManager assetManager;
+    final private Hashtable<String, Class> mimeFileTypes;
+    final private AssetManager assetManager;
 }

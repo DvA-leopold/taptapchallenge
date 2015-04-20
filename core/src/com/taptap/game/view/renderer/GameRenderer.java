@@ -88,7 +88,7 @@ public class GameRenderer {
     private void renderPreparingState() {
         batch.begin();
         font.draw(batch, I18NBundleMy.getString("tap_anyway"), 5, Gdx.graphics.getHeight() / 2);
-        if (Gdx.input.justTouched()){
+        if (Gdx.input.justTouched()) {
             gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
         }
         batch.end();
@@ -148,10 +148,10 @@ public class GameRenderer {
 
     private BitmapFont font;
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private Sprite gameBackground;
     private Sprite gameOver;
 
-    private final GameWorld gameWorld;
-    private final Box2DDebugRenderer renderer; // todo change to release renderer
+    final private GameWorld gameWorld;
+    final private Box2DDebugRenderer renderer; // todo change to release renderer
 }

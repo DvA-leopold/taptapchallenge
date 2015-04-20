@@ -161,8 +161,8 @@ public class GameWorld {
     private ObjectsFactory objects;
 
     private World world;
-    private final InputMultiplexer inputMultiplexer;
+    final private InputMultiplexer inputMultiplexer;
     private RayHandler rayHandler;
 
-    private final OrthographicCamera camera;
+    final private OrthographicCamera camera;
 }

@@ -39,7 +39,7 @@ public class ObjectsFactory {
         GestureDetector.GestureAdapter gestureAdapter = new GestureDetector.GestureAdapter() {
             @Override
             public boolean tap(float x, float y, int count, int button) {
-                camera.unproject(touchPoint.set(x, y, 0));
+                camera.unproject(touchPoint.set(x, y, 0)); // TODO: - y + getWidth
                 for (int i = 0; i < tapIconsList.size(); ++i) {
                     fillArrayWithCords(array, mass, i);
                     if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
@@ -146,7 +146,7 @@ public class ObjectsFactory {
         return totalScore;
     }
 
-    private final World world;
+    final private World world;
     private GestureDetector gestureDetector;
 
     private List<Icon> tapIconsList;

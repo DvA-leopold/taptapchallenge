@@ -156,7 +156,7 @@ public class PopUpButtonInitializer implements Buttons {
     }
 
     private Window optionWindow, pauseWindow;
-    private final Stage stage;
+    final private Stage stage;
     private TextButton
             resumeGameButton,
             optionGameButton,

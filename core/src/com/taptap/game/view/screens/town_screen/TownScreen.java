@@ -75,7 +75,7 @@ public class TownScreen implements Screen {
         buttons.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private OrthographicCamera camera;
     private TownButtonInitializer buttons;
 
