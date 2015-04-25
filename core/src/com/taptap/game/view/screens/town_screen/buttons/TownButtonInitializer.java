@@ -159,7 +159,7 @@ public class TownButtonInitializer implements Buttons {
         table.add(wallOfFame).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
         table.add(bank).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
         table.add(mail).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
-        table.debug();
+        //table.debug();
     }
 
     final private Stage stage;

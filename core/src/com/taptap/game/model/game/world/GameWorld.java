@@ -1,10 +1,8 @@
 package com.taptap.game.model.game.world;
 
-import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.taptap.game.TapTap;
+import com.taptap.game.model.game.world.bodies.SunBody;
 import com.taptap.game.model.tap.icons.ObjectsFactory;
 import com.taptap.game.model.tap.icons.objects.Icon;
 import com.taptap.game.view.screens.Buttons;
@@ -34,14 +33,15 @@ public class GameWorld {
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
         rayHandler.setBlur(false);
-        rayHandler.setShadows(false);
-        new PointLight(rayHandler, 500, Color.WHITE, 1000, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()).setSoftnessLength(0);
-        //new ConeLight(rayHandler, 5000, Color.YELLOW, 2000, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight(), -90f, 35f);
+        rayHandler.setShadows(true);
+        rayHandler.setAmbientLight(0.8f);
+        sun = new SunBody(rayHandler);
     }
 
     public void update() {
         camera.update();
         if (worldState == States.GAME_RUNNING) {
+            sun.moveSun(-0.5f, 0);
             rayHandler.update();
             world.step(1 / 60f, 6, 2);
             totalTime -= Gdx.graphics.getDeltaTime();
@@ -117,6 +117,10 @@ public class GameWorld {
         return objects.getIconsList();
     }
 
+    public SunBody getSun() {
+        return sun;
+    }
+
     public int getTotalScore() {
         return objects.getTotalScore();
     }
@@ -159,6 +163,7 @@ public class GameWorld {
 
     private States worldState = States.GAME_PREPARING;
     private ObjectsFactory objects;
+    private SunBody sun;
 
     private World world;
     final private InputMultiplexer inputMultiplexer;
