@@ -10,8 +10,12 @@ import com.taptap.game.internationalization.I18NBundleMy;
 public class OptionWindow extends Window {
     public OptionWindow(String title, Skin skin) {
         super(title, skin);
-        setFillParent(true);
-        setVisible(false);
+        this.setSize(Gdx.graphics.getWidth() * 0.7f, Gdx.graphics.getHeight() * 0.7f);
+        this.setPosition(
+                Gdx.graphics.getWidth() * 0.5f - this.getWidth() * 0.5f,
+                Gdx.graphics.getHeight() * 0.5f - this.getHeight() * 0.5f);
+        this.setVisible(false);
+        this.setModal(true);
         this.skin = skin;
     }
 
@@ -21,12 +25,12 @@ public class OptionWindow extends Window {
     }
 
     public void createButtons() {
-        voiceButton = new CheckBox("v", skin, "owCheckBox");
-        musicButton = new CheckBox("m", skin, "owCheckBox");
+        soundButton = new CheckBox(null, skin, "soundCheckBox");
+        musicButton = new CheckBox(null, skin, "musicCheckBox");
         languageButton = new TextButton(I18NBundleMy.getLangCodes(), skin);
         deleteSavesButton = new TextButton(I18NBundleMy.getString("delete"), skin);
-        closeButton = new Button(skin);
-        this.add(voiceButton).width(buttonWidth * 2).height(buttonHeight).pad(10);
+        closeButton = new Button(skin, "close");
+        this.add(soundButton).width(buttonWidth * 2).height(buttonHeight).pad(10);
         this.add(musicButton).width(buttonWidth * 2).height(buttonHeight).pad(10);
         this.add(closeButton).width(buttonWidth / 2).height(buttonHeight / 2).top().right();
         this.row();
@@ -36,10 +40,10 @@ public class OptionWindow extends Window {
     }
 
     public void setListeners() {
-        voiceButton.addListener(new ClickListener() {
+        soundButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //TODO: switch the music
+                //TODO: switch the sound
             }
         });
         musicButton.addListener(new ClickListener() {
@@ -70,7 +74,7 @@ public class OptionWindow extends Window {
 
     private final Skin skin;
 
-    private CheckBox voiceButton, musicButton;
+    private CheckBox soundButton, musicButton;
     private TextButton languageButton, deleteSavesButton;
     private Button closeButton;
 

@@ -18,36 +18,40 @@
     "blackFont": {"file": "fonts/blackFont.fnt"}
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
-    "default": {
-      "up": "buttonSquare_grey",
-      "down": "buttonSquare_grey_pressed"
-    },
-    "arrow": {
-      "up": "arrow_up",
-      "down": "arrow_down"
-      }
+    "close": {
+      "up": "close_up",
+      "down": "close_down",
+      "pressedOffsetX": 1,
+      "pressedOffsetY": -2
+    }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
     "default" : {
-      "up": "buttonSquare_grey",
-      "down": "buttonSquare_grey_pressed",
+      "up": "clear_up",
+      "down": "clear_down",
       "pressedOffsetX": 1,
       "pressedOffsetY": -2,
-      "font" : "whiteFont"
+      "font" : "blackFont"
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
-    "owCheckBox": {
-      "up": "button_square_on",
-      "down": "button_square_off",
-      "checked": "button_square_off",
+    "musicCheckBox": {
+      "up": "music_on",
+      "down": "music_off",
+      "checked": "music_off",
+      "font": "whiteFont"
+    },
+    "soundCheckBox": {
+      "up": "sound_on",
+      "down": "sound_off",
+      "checked": "sound_off",
       "font": "whiteFont"
     }
   },
   "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
     "default": {
-      "titleFont": "whiteFont"
-      // "background" "stageBackground"
+      "titleFont": "whiteFont",
+      "background": "dirt"
     }
   }
 }

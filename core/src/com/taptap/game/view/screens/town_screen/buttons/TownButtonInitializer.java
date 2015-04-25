@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.popup.windows.OptionWindow;
+import com.taptap.game.view.popup.windows.TrainingCampWindow;
 import com.taptap.game.view.screens.Buttons;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 
@@ -24,20 +25,29 @@ public class TownButtonInitializer implements Buttons {
         tableXaxesPosition = Gdx.graphics.getWidth() * 0.5f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
-        Skin skin = (Skin) DResourceManager.getInstance().get("skins/town_menu/buttons/townSkin.json");
+        Skin skin = (Skin) DResourceManager.
+                getInstance().get("skins/town_menu/buttons/townSkin.json");
         initTableAndButtons(skin, buttonSize);
 
         optionWindow = new OptionWindow("",
-                (Skin) DResourceManager.getInstance().get("skins/pop_up/optionWindowSkin.json")
+                (Skin) DResourceManager.getInstance().
+                        get("skins/pop_up/option_window/optionWindowSkin.json")
         );
         optionWindow.initButtonSize(buttonSize, buttonSize);
         optionWindow.createButtons();
+
+        trainingCampWindow = new TrainingCampWindow("",
+                (Skin) DResourceManager.getInstance().
+                        get("skins/pop_up/training_camp_window/trainingCampSkin.json")
+        );
+        trainingCampWindow.createButtons();
 
         setListeners(null);
         stage.addActor(table);
         stage.addActor(options);
         stage.addActor(testLevelButton);
         stage.addActor(optionWindow);
+        stage.addActor(trainingCampWindow);
     }
 
     @Override
@@ -53,8 +63,7 @@ public class TownButtonInitializer implements Buttons {
         trainingCamp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //((Game) Gdx.app.getApplicationListener()).setScreen(new Screen);
-                System.out.println("training camp");
+                trainingCampWindow.setVisible(true);
             }
         });
         library.addListener(new ClickListener() {
@@ -102,7 +111,7 @@ public class TownButtonInitializer implements Buttons {
         GestureDetector gestureDetector = new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
-                if (!optionWindow.isVisible()) {
+                if (!optionWindow.isVisible() && !trainingCampWindow.isVisible()) {
                     camera.position.add(-deltaX, 0, 0);
                     table.setPosition(tableXaxesPosition += deltaX, Gdx.graphics.getHeight() / 2, 0);
                     testLevelButton.setPosition(testLevelButton.getX()+deltaX, testLevelButton.getY());
@@ -130,10 +139,6 @@ public class TownButtonInitializer implements Buttons {
         table.setVisible(visible);
     }
 
-    public void setMaxXPos(float maxXPos) {
-        this.maxXPos = maxXPos;
-    }
-
     private void initTableAndButtons(final Skin skin, float buttonSize) {
         table = new Table();
         trainingCamp = new Button(skin);
@@ -154,10 +159,10 @@ public class TownButtonInitializer implements Buttons {
         table.add(wallOfFame).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
         table.add(bank).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
         table.add(mail).padTop(Gdx.graphics.getHeight() / 2).size(buttonSize);
-        table.debug();
+        //table.debug();
     }
 
-    private final Stage stage;
+    final private Stage stage;
     private Table table;
     private Button
             trainingCamp,
@@ -169,8 +174,9 @@ public class TownButtonInitializer implements Buttons {
 
     private Button testLevelButton;
 
-    private final OptionWindow optionWindow;
+    final private OptionWindow optionWindow;
+    final private TrainingCampWindow trainingCampWindow;
 
-    private final OrthographicCamera camera;
-    private float tableXaxesPosition, maxXPos;
+    final private OrthographicCamera camera;
+    private float tableXaxesPosition;
 }

@@ -20,10 +20,10 @@ import com.taptap.game.view.screens.Buttons;
 import com.taptap.game.view.screens.town_screen.TownScreen;
 
 public class MenuButtonInitializer implements Buttons {
-    public MenuButtonInitializer(final SpriteBatch batch){
+    public MenuButtonInitializer(final SpriteBatch batch) {
         this.batch = batch;
-        float buttonWidth = Gdx.graphics.getWidth()*0.5f;
-        float buttonHeight = Gdx.graphics.getHeight()*0.15f;
+        float buttonWidth = Gdx.graphics.getWidth() * 0.4f;
+        float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = (Skin) DResourceManager.getInstance().
@@ -107,11 +107,11 @@ public class MenuButtonInitializer implements Buttons {
         stage.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
 
-    private final Stage stage;
-    private final Table table;
-    private final TextButton
+    final private Stage stage;
+    final private Table table;
+    final private TextButton
             buttonPlay,
             buttonHelp,
             soundButton,

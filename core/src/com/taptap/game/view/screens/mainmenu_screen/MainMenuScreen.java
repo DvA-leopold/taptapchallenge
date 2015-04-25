@@ -66,7 +66,7 @@ public class MainMenuScreen implements Screen {
         buttons.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private OrthographicCamera camera;
     private MenuButtonInitializer buttons;
 

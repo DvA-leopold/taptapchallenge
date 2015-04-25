@@ -35,6 +35,8 @@ public class GameRenderer {
                 this.renderBackground();
                 this.renderWorldAndLight();
                 this.renderRunState();
+                renderNumbers(gameWorld.getTotalScore(), 0, 0);
+                renderNumbers((int) gameWorld.getTotalTime(), -Gdx.graphics.getWidth() / 2, 0);
                 break;
             case GAME_PAUSED:
                 this.renderBackground();
@@ -67,10 +69,11 @@ public class GameRenderer {
         int temp = numbForRender;
         float width = Gdx.graphics.getWidth();
         Sprite picture;
+        batch.begin();
         while (temp>=0) {
             int val = temp % 10;
             temp /= 10;
-            picture = ((TextureAtlas)DResourceManager.getInstance().
+            picture = ((TextureAtlas) DResourceManager.getInstance().
                     get("skins/game_menu/coins_and_numb/coins_and_hud.pack")).
                     createSprite("hud" + Integer.toString(val));
 
@@ -79,16 +82,18 @@ public class GameRenderer {
                     picture, width + widthAlign,
                     Gdx.graphics.getHeight() + heightAlign - picture.getHeight()
             );
-            if (temp<=0){
+            if (temp<=0) {
+                batch.end();
                 return;
             }
         }
+        batch.end();
     }
 
     private void renderPreparingState() {
         batch.begin();
         font.draw(batch, I18NBundleMy.getString("tap_anyway"), 5, Gdx.graphics.getHeight() / 2);
-        if (Gdx.input.justTouched()){
+        if (Gdx.input.isTouched()) {
             gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
         }
         batch.end();
@@ -96,14 +101,13 @@ public class GameRenderer {
 
     private void renderRunState() {
         batch.begin();
+        gameWorld.getSun().getSunSprite().draw(batch);
         for (Icon iconsDrop : gameWorld.getObjectsPool()) {
             batch.draw(iconsDrop.getSprite(),
                     iconsDrop.getX(), iconsDrop.getY(),
                     iconsDrop.getWidth(), iconsDrop.getHeight()
             );
         }
-        renderNumbers(gameWorld.getTotalScore(), 0, 0);
-        renderNumbers((int) gameWorld.getTotalTime(), -Gdx.graphics.getWidth() / 2, 0);
         batch.end();
     }
 
@@ -148,10 +152,10 @@ public class GameRenderer {
 
     private BitmapFont font;
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private Sprite gameBackground;
     private Sprite gameOver;
 
-    private final GameWorld gameWorld;
-    private final Box2DDebugRenderer renderer; // todo change to release renderer
+    final private GameWorld gameWorld;
+    final private Box2DDebugRenderer renderer; // todo change to release renderer
 }

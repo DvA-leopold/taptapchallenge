@@ -1,0 +1,82 @@
+
+trainingCampSkin.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+dirt
+  rotate: false
+  xy: 1, 92
+  size: 160, 160
+  orig: 160, 160
+  offset: 0, 0
+  index: -1
+exit_up
+  rotate: false
+  xy: 1, 41
+  size: 45, 49
+  orig: 45, 49
+  offset: 0, 0
+  index: -1
+exit_down
+  rotate: false
+  xy: 163, 207
+  size: 45, 45
+  orig: 45, 45
+  offset: 0, 0
+  index: -1
+bow_down
+  rotate: false
+  xy: 1, 1
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+bow_up
+  rotate: false
+  xy: 48, 52
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+spell_down
+  rotate: false
+  xy: 163, 167
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+spell_up
+  rotate: false
+  xy: 210, 214
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+staff_down
+  rotate: false
+  xy: 85, 52
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+staff_up
+  rotate: false
+  xy: 163, 127
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+sword_down
+  rotate: false
+  xy: 122, 52
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1
+sword_up
+  rotate: false
+  xy: 163, 87
+  size: 35, 38
+  orig: 35, 38
+  offset: 0, 0
+  index: -1

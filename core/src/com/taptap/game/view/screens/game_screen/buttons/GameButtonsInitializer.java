@@ -64,7 +64,7 @@ public class GameButtonsInitializer implements Buttons {
         table.setVisible(visible);
     }
 
-    private final Stage stage;
-    private final Table table;
-    private final Button optionButton;
+    final private Stage stage;
+    final private Table table;
+    final private Button optionButton;
 }

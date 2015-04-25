@@ -16,7 +16,6 @@ import java.util.LinkedList;
 public class TownScreen implements Screen {
     public TownScreen(final SpriteBatch batch) {
         this.batch = batch;
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         buttons = new TownButtonInitializer(batch, camera);
@@ -30,7 +29,6 @@ public class TownScreen implements Screen {
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/main.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/bad.png"));
         backgroundList.add((Texture) DResourceManager.getInstance().get("sectors/good.png"));
-        buttons.setMaxXPos(backgroundList.size() * Gdx.graphics.getWidth());
         ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
@@ -77,7 +75,7 @@ public class TownScreen implements Screen {
         buttons.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private OrthographicCamera camera;
     private TownButtonInitializer buttons;
 

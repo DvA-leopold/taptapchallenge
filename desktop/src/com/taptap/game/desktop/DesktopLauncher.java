@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.useGL30 = false;
 		config.title = "TapTap";
-		config.height = 640;
-		config.width = 800;
+		config.height = 600;
+		config.width = 1000;
         new LwjglApplication(new TapTap(), config);
 	}
 }

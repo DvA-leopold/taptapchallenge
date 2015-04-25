@@ -65,7 +65,7 @@ public class HelpScreen implements Screen {
         buttons.dispose();
     }
 
-    private final SpriteBatch batch;
+    final private SpriteBatch batch;
     private Buttons buttons;
 
     private Texture background;
