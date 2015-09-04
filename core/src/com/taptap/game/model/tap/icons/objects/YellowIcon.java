@@ -16,7 +16,7 @@ public class YellowIcon implements Icon {
 
     public YellowIcon(Vector2 spawnBoarder, final World world) {
         tapSprite = new Sprite(image);
-        tapSprite.setSize(Gdx.graphics.getWidth() * 0.2f, Gdx.graphics.getHeight() * 0.2f);
+        tapSprite.setSize(ICON_SIZE_X, ICON_SIZE_Y);
         tapSprite.setPosition(
                 MathUtils.random(spawnBoarder.x + 20, Gdx.graphics.getWidth() - tapSprite.getWidth()),
                 MathUtils.random(0, Gdx.graphics.getHeight() - tapSprite.getHeight() - spawnBoarder.y - 20)

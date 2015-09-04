@@ -20,8 +20,8 @@ import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class RecordScreen implements Screen {
-    public RecordScreen(final SpriteBatch batch){
-        this.batch = batch;
+    public RecordScreen(){
+        this.batch = ((TapTap) Gdx.app.getApplicationListener()).getSpriteBatch();
         float buttonWidth = Gdx.graphics.getWidth()*0.35f;
         float buttonHeight = Gdx.graphics.getHeight()*0.2f;
 
@@ -73,7 +73,7 @@ public class RecordScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
             }
         });
     }
@@ -98,6 +98,7 @@ public class RecordScreen implements Screen {
     public void dispose() {
         stage.dispose();
     }
+
 
     final private Stage stage;
     final private Table table;

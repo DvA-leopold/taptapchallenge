@@ -21,29 +21,29 @@ public final class TapTap extends Game {
         musicManager = new MusicManager();
         // first screen
         if (debug.isWindows()) {
-            mainBatch = new SpriteBatch(5000, DebugShader.createDefaultShader());
+            spriteBatch = new SpriteBatch(5000, DebugShader.createDefaultShader());
         } else {
-            mainBatch = new SpriteBatch();
+            spriteBatch = new SpriteBatch();
         }
-        setScreen(new LoadScreen(mainBatch));
+        setScreen(new LoadScreen());
     }
 
     @Override
     public void render() {
         super.render();
-        debug.render(mainBatch);
-        VersionHandler.render(mainBatch);
+        debug.render(spriteBatch);
+        VersionHandler.render(spriteBatch);
     }
 
     @Override
     public void dispose() {
         musicManager.dispose();
         DResourceManager.getInstance().dispose();
-        mainBatch.dispose();
+        spriteBatch.dispose();
         debug.dispose();
     }
 
-    //TODO: change to not static
+    //TODO: full redo storageManager
     public static StorageManager getStorage() {
         return storage;
     }
@@ -52,9 +52,14 @@ public final class TapTap extends Game {
         return musicManager;
     }
 
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+
     private Debug debug;
-    private static StorageManager storage;
+    static private StorageManager storage;
     private MusicManager musicManager;
 
-    private SpriteBatch mainBatch;
+    private SpriteBatch spriteBatch;
 }

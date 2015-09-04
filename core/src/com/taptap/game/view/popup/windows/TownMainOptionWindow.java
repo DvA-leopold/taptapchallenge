@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Disposable;
 import com.taptap.game.TapTap;
 import com.taptap.game.internationalization.I18NBundleMy;
+import com.taptap.game.model.music.player.MusicManager;
 
-public class OptionWindow extends Window {
-    public OptionWindow(String title, Skin skin) {
+public class TownMainOptionWindow extends Window implements Disposable {
+    public TownMainOptionWindow(String title, Skin skin) {
         super(title, skin);
         this.setSize(Gdx.graphics.getWidth() * 0.7f, Gdx.graphics.getHeight() * 0.7f);
         this.setPosition(
@@ -27,9 +29,11 @@ public class OptionWindow extends Window {
     public void createButtons() {
         soundButton = new CheckBox(null, skin, "soundCheckBox");
         musicButton = new CheckBox(null, skin, "musicCheckBox");
-        languageButton = new TextButton(I18NBundleMy.getLangCodes(), skin);
+        musicButton.setChecked(!MusicManager.isMusicEnable());
+        languageButton = new TextButton(I18NBundleMy.getLanguageCode(), skin);
         deleteSavesButton = new TextButton(I18NBundleMy.getString("delete"), skin);
         closeButton = new Button(skin, "close");
+
         this.add(soundButton).width(buttonWidth * 2).height(buttonHeight).pad(10);
         this.add(musicButton).width(buttonWidth * 2).height(buttonHeight).pad(10);
         this.add(closeButton).width(buttonWidth / 2).height(buttonHeight / 2).top().right();
@@ -55,7 +59,9 @@ public class OptionWindow extends Window {
         languageButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                I18NBundleMy.initLangCode(new String[]{"en", "EN", "VAR1"});
+                I18NBundleMy.changeLanguage();
+                languageButton.setText(I18NBundleMy.getLanguageCode());
+                deleteSavesButton.setText(I18NBundleMy.getString("delete"));
             }
         });
         deleteSavesButton.addListener(new ClickListener() {
@@ -72,12 +78,18 @@ public class OptionWindow extends Window {
         });
     }
 
-    private final Skin skin;
+    @Override
+    public void dispose() {
+        //skin.dispose();
+    }
 
+
+    final private Skin skin;
     private CheckBox soundButton, musicButton;
     private TextButton languageButton, deleteSavesButton;
-    private Button closeButton;
 
+    private Button closeButton;
     private float buttonWidth;
+
     private float buttonHeight;
 }

@@ -11,19 +11,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.WidgetsGroup;
 
-public class GameButtonsInitializer implements Buttons {
-    public GameButtonsInitializer(final Batch batch) {
-        float buttonSize = Gdx.graphics.getHeight()*0.15f;
+public class GameScreenWidgetsGroup implements WidgetsGroup {
+    public GameScreenWidgetsGroup(final Batch batch) {
+        float buttonSize = Gdx.graphics.getHeight() * 0.15f;
         stage = new Stage(
                 new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 batch);
         Skin skin = (Skin) DResourceManager.getInstance().
-                get("skins/game_menu/buttons/option_menu/optionIconSkin.json");
+                get("skins/game_menu/buttons/option_menu/optionWindowSkin.json");
         table = new Table(skin);
 
-        optionButton = new Button(skin, "popUpMenuButton");
+        optionButton = new Button(skin, "default");
         table.setFillParent(true);
         table.add(optionButton).
                 padTop(-Gdx.graphics.getHeight() + buttonSize).
@@ -40,7 +40,7 @@ public class GameButtonsInitializer implements Buttons {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 table.setVisible(false);
-                gameWorld.changeWorldState(GameWorld.States.GAME_PAUSED);
+                GameWorld.changeWorldState(GameWorld.States.GAME_PAUSED);
             }
         });
     }
@@ -63,6 +63,7 @@ public class GameButtonsInitializer implements Buttons {
     public void setVisible(boolean visible) {
         table.setVisible(visible);
     }
+
 
     final private Stage stage;
     final private Table table;

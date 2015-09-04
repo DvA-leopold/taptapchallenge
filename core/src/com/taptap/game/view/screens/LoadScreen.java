@@ -6,12 +6,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.taptap.game.TapTap;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
 
 public class LoadScreen implements Screen {
-    public LoadScreen(final SpriteBatch batch) {
-        this.batch = batch;
+    public LoadScreen() {
+        this.batch = ((TapTap) Gdx.app.getApplicationListener()).getSpriteBatch();
     }
 
     @Override
@@ -27,7 +28,8 @@ public class LoadScreen implements Screen {
         }
         batch.end();
         if (progress>=100){
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
+            ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().initialize();
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
         }
     }
 
@@ -64,6 +66,7 @@ public class LoadScreen implements Screen {
         barHorizontalMid.dispose();
     }
 
+
     private Texture barHorizontalMid;
-    private SpriteBatch batch;
+    final private SpriteBatch batch;
 }

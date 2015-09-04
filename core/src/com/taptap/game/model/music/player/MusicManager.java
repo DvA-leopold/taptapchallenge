@@ -23,22 +23,24 @@ public class MusicManager {
     }
 
     /**
+     * this method must be called before using this class first time
+     */
+    public void initialize() {
+        mainGameMusic = (Music) DResourceManager.
+                getInstance().
+                get("music/Black Vortex.mp3");
+        additionMusic = (Music) DResourceManager.
+                getInstance().
+                get("music/The Path of the Goblin King.mp3");
+    }
+
+    /**
      * every screen should register the <code>MusicType</code> which will playMusic
      *
      * @param sClass    class of the current screen
      * @param musicType instance of <code>MusicType</code> enum class
      */
     public void registerMusic(Class<? extends Screen> sClass, MusicTypes musicType) {
-        if (mainGameMusic == null) {
-            mainGameMusic = (Music) DResourceManager.
-                    getInstance().
-                    get("music/Black Vortex.mp3");
-        }
-        if (additionMusic == null) {
-            additionMusic = (Music) DResourceManager.
-                    getInstance().
-                    get("music/The Path of the Goblin King.mp3");
-        }
         musicTable.put(sClass, musicType);
     }
 
@@ -51,6 +53,7 @@ public class MusicManager {
         }
     }
 
+    //TODO оптимизировать, убрать промежуточную остановку музыки при переключении экрана
     public void playMusic() {
         if (musicEnableFlag) {
             Class<? extends Screen> sClass = ((Game) Gdx.app.getApplicationListener()).getScreen().getClass();

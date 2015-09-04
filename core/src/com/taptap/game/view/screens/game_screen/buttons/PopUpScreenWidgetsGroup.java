@@ -12,10 +12,10 @@ import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.WidgetsGroup;
 
-public class PopUpButtonInitializer implements Buttons {
-    public PopUpButtonInitializer(final Batch batch) {
+public class PopUpScreenWidgetsGroup implements WidgetsGroup {
+    public PopUpScreenWidgetsGroup(final Batch batch) {
         stage = new Stage(
                 new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()),
                 batch);
@@ -30,7 +30,7 @@ public class PopUpButtonInitializer implements Buttons {
         Skin skin = (Skin) DResourceManager.getInstance().
                 get("skins/game_menu/buttons/pop_up/popUpSkin.json");
 
-        skin.getFont("blackFont").setScale(2, 2);
+        skin.getFont("blackFont").getData().setScale(2, 2);
         resumeGameButton = new TextButton(I18NBundleMy.getString("return"), skin, "popUpButtons");
         optionGameButton = new TextButton(I18NBundleMy.getString("options"), skin, "popUpButtons");
         exitMainMenuButton = new TextButton(I18NBundleMy.getString("exit"), skin, "popUpButtons");
@@ -51,49 +51,46 @@ public class PopUpButtonInitializer implements Buttons {
         stage.addActor(pauseWindow);
     }
 
-    //TODO: change this window to custom OptionWindow from popup package
     public void optionStageInit(final Stage stage) {
         float buttonWidth = Gdx.graphics.getWidth() * 0.1f;
         float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
         Skin skinOptions = (Skin) DResourceManager.getInstance().
-                get("skins/game_menu/buttons/option_menu/optionIconSkin.json");
+                get("skins/game_menu/buttons/option_menu/optionWindowSkin.json");
 
-        musicControl = new CheckBox(null, skinOptions, "stateOption");
+        musicControl = new CheckBox(null, skinOptions, "musicCheckBox");
         musicControl.setChecked(!MusicManager.isMusicEnable());
-        soundControl = new CheckBox(null, skinOptions, "stateOption");
-        back = new Button(skinOptions, "arrow");
+        soundControl = new CheckBox(null, skinOptions, "soundCheckBox");
+        back = new Button(skinOptions, "back");
 
-        skinOptions.getFont("whiteFont").setScale(2, 2);
-        final Label musicLabel = new Label(I18NBundleMy.getString("music1"), skinOptions);
-        final Label soundLabel = new Label(I18NBundleMy.getString("sound"), skinOptions);
-
-        optionWindow = new Window("options", skinOptions);
-        optionWindow.setFillParent(true);
-        optionWindow.padTop(Value.percentHeight(0.35f)).padRight(Value.percentWidth(0.20f));
-        optionWindow.add(musicLabel).center();
-        optionWindow.add(musicControl).width(buttonWidth).height(buttonHeight);
+        optionWindow = new Window(I18NBundleMy.getString("options"), skinOptions);
+        optionWindow.setSize(Gdx.graphics.getWidth() * 0.7f, Gdx.graphics.getHeight() * 0.7f);
+        optionWindow.setPosition(
+                Gdx.graphics.getWidth() * 0.5f - optionWindow.getWidth() * 0.5f,
+                Gdx.graphics.getHeight() * 0.5f - optionWindow.getHeight() * 0.5f);
+        optionWindow.add(back).width(buttonWidth * 0.7f).height(buttonHeight * 0.7f).
+                top().right().expandX().colspan(2);
         optionWindow.row();
-        optionWindow.add(soundLabel).center();
-        optionWindow.add(soundControl).width(buttonWidth).height(buttonHeight);
-        optionWindow.row();
-        optionWindow.add(back).width(buttonWidth).height(buttonHeight).bottom().left().expand();
+        optionWindow.add(musicControl).width(buttonWidth).height(buttonHeight).pad(10);
+        optionWindow.add(soundControl).width(buttonWidth).height(buttonHeight).pad(10);
 
         optionWindow.setVisible(false);
+        optionWindow.setModal(true);
+        optionWindow.debug();
         stage.addActor(optionWindow);
     }
 
     @Override
     public void setListeners(final GameWorld gameWorld) {
         initOptionListeners();
-        initMenuListeners(gameWorld);
+        initMenuListeners();
     }
 
-    public void initMenuListeners(final GameWorld gameWorld) {
+    public void initMenuListeners(/*final GameWorld gameWorld*/) {
         resumeGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
+                GameWorld.changeWorldState(GameWorld.States.GAME_RUNNING);
                 pauseWindow.setVisible(false);
             }
         });
@@ -107,7 +104,7 @@ public class PopUpButtonInitializer implements Buttons {
         exitMainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                gameWorld.changeWorldState(GameWorld.States.GAME_EXIT);
+                GameWorld.changeWorldState(GameWorld.States.GAME_EXIT);
                 pauseWindow.setVisible(false);
             }
         });
@@ -154,6 +151,7 @@ public class PopUpButtonInitializer implements Buttons {
     public void dispose() {
         stage.dispose();
     }
+
 
     private Window optionWindow, pauseWindow;
     final private Stage stage;

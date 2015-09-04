@@ -13,22 +13,20 @@ import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.game_screen.GameScreen;
 import com.taptap.game.view.screens.help_screen.HelpScreen;
 import com.taptap.game.view.screens.records_screen.RecordScreen;
-import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.WidgetsGroup;
 import com.taptap.game.view.screens.town_screen.TownScreen;
 
-public class MenuButtonInitializer implements Buttons {
-    public MenuButtonInitializer(final SpriteBatch batch) {
-        this.batch = batch;
+public class MenuScreenWidgetsGroup implements WidgetsGroup {
+    public MenuScreenWidgetsGroup(final SpriteBatch batch) {
         float buttonWidth = Gdx.graphics.getWidth() * 0.4f;
         float buttonHeight = Gdx.graphics.getHeight() * 0.15f;
 
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = (Skin) DResourceManager.getInstance().
                 get("skins/main_menu/buttons/menuSkin.json");
-        skin.getFont("blackFont").setScale(2, 2);
+        skin.getFont("blackFont").getData().setScale(2, 2);
 
         Label heading = new Label(I18NBundleMy.getString("game_name"), skin);
         buttonPlay = new TextButton(I18NBundleMy.getString("play"), skin, "mainButtons");
@@ -65,21 +63,21 @@ public class MenuButtonInitializer implements Buttons {
 
     public void setListeners(final GameWorld gameWorld) {
         buttonPlay.addListener(new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new TownScreen(batch));
-        }
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new TownScreen());
+            }
         });
         buttonHelp.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new HelpScreen(batch));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new HelpScreen());
             }
         });
         buttonRecords.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new RecordScreen(batch));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new RecordScreen());
             }
         });
         soundButton.addListener(new ClickListener() {
@@ -107,7 +105,6 @@ public class MenuButtonInitializer implements Buttons {
         stage.dispose();
     }
 
-    final private SpriteBatch batch;
 
     final private Stage stage;
     final private Table table;

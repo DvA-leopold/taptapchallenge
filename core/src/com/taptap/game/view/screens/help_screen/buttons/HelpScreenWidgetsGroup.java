@@ -14,15 +14,13 @@ import com.taptap.game.internationalization.I18NBundleMy;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
 import com.taptap.game.view.screens.mainmenu_screen.MainMenuScreen;
-import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.WidgetsGroup;
 
-public class HelpButtonInitializer implements Buttons {
-    public HelpButtonInitializer(final SpriteBatch batch){
-        this.batch = batch;
-        float buttonWidth = Gdx.graphics.getWidth()*0.2f;
-        float buttonHeight = Gdx.graphics.getHeight()*0.25f;
+public class HelpScreenWidgetsGroup implements WidgetsGroup {
+    public HelpScreenWidgetsGroup(final SpriteBatch batch) {
+        float buttonSize = Gdx.graphics.getWidth() * 0.3f;
 
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()), batch);
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         Skin skin = (Skin) DResourceManager.getInstance().
                 get("skins/help_menu/buttons/helpSkin.json");
         Table table = new Table(skin);
@@ -30,9 +28,9 @@ public class HelpButtonInitializer implements Buttons {
 
         table.setFillParent(true);
         table.add(button).
-                padRight(Gdx.graphics.getWidth()-buttonWidth).
-                padTop(Gdx.graphics.getHeight()-buttonHeight).
-                height(buttonHeight).width(buttonWidth).reset();
+                padRight(Gdx.graphics.getWidth() - buttonSize).
+                padTop(Gdx.graphics.getHeight() - buttonSize).
+                height(buttonSize).width(buttonSize).reset();
         stage.addActor(table);
     }
 
@@ -47,7 +45,7 @@ public class HelpButtonInitializer implements Buttons {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(batch));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
             }
         });
         Gdx.input.setInputProcessor(stage);
@@ -59,15 +57,13 @@ public class HelpButtonInitializer implements Buttons {
     }
 
     @Override
-    public void setVisible(boolean visible) {
-    }
+    public void setVisible(boolean visible) { }
 
     @Override
     public void dispose() {
         stage.dispose();
     }
 
-    final private SpriteBatch batch;
     private TextButton button;
     private Stage stage;
 }

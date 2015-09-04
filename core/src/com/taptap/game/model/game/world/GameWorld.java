@@ -2,33 +2,27 @@ package com.taptap.game.model.game.world;
 
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.taptap.game.TapTap;
 import com.taptap.game.model.game.world.bodies.SunBody;
 import com.taptap.game.model.tap.icons.ObjectsFactory;
 import com.taptap.game.model.tap.icons.objects.Icon;
-import com.taptap.game.view.screens.Buttons;
-import com.taptap.game.view.screens.game_screen.buttons.GameButtonsInitializer;
-import com.taptap.game.view.screens.game_screen.buttons.PopUpButtonInitializer;
 
 import java.util.List;
 
 public class GameWorld {
-    public GameWorld(final InputMultiplexer inputMultiplexer) {
+    public GameWorld() {
         Box2D.init();
         world = new World(new Vector2(0, 0), true);
-        this.inputMultiplexer = inputMultiplexer;
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        objects = new ObjectsFactory(camera, world);
+        objects = new ObjectsFactory(world);
 
         rayHandler = new RayHandler(world);
         rayHandler.setCombinedMatrix(camera.combined);
@@ -54,22 +48,17 @@ public class GameWorld {
             }
         }
     }
-
+/*
     public void initializeActors(final SpriteBatch batch) {
-        buttonsArray = new Buttons[]{new GameButtonsInitializer(batch), new PopUpButtonInitializer(batch)};
-        for (Buttons button : buttonsArray) {
+        widgetsGroupArray = new WidgetsGroup[] {new GameScreenWidgetsGroup(batch), new PopUpScreenWidgetsGroup(batch)};
+        for (WidgetsGroup button : widgetsGroupArray) {
             inputMultiplexer.addProcessor(button.getStage());
             button.setListeners(this);
         }
-        //inputMultiplexer.addProcessor(objects.getGestureDetector());
     }
-
+*/
     public RayHandler getRayHandler() {
         return rayHandler;
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
     }
 
     public World getWorld() {
@@ -77,26 +66,29 @@ public class GameWorld {
     }
 
     /**
-     * every state changes should be made only by this func
-     * @param state, state to change with */
-    public void changeWorldState(States state) {
-        switch (state) {
+     * every newWorldState changes should be made only by this func
+     * @param newWorldState, newWorldState to change with */
+    public static void changeWorldState(States newWorldState) {
+        switch (newWorldState) {
             case GAME_PREPARING:
                 //inputMultiplexer.removeProcessor(objects.getGestureDetector());
                 break;
             case GAME_RUNNING:
-                inputMultiplexer.addProcessor(objects.getGestureDetector());
-                buttonsArray[0].setVisible(true);
+                //inputMultiplexer.addProcessor(objects.getGestureDetector());
+                //widgetsGroupArray[0].setVisible(true);
                 break;
             case GAME_PAUSED:
-                inputMultiplexer.removeProcessor(objects.getGestureDetector());
-                buttonsArray[1].setVisible(true);
+                //inputMultiplexer.removeProcessor(objects.getGestureDetector());
+
+                //widgetsGroupArray[1].setVisible(true);
                 break;
             case GAME_EXIT:
+                /*
                 TapTap.getStorage().saveDataValue(
                         "player " + TapTap.getStorage().getAllData().size(),
                         getTotalScore()
                 );
+                */
                 // switch to another screen in gameRenderer
                 break;
             case GAME_OVER:
@@ -106,10 +98,10 @@ public class GameWorld {
 
                 break;
         }
-        worldState = state;
+        worldState = newWorldState;
     }
 
-    public States getWorldState() {
+    public static States getWorldState() {
         return worldState;
     }
 
@@ -129,14 +121,14 @@ public class GameWorld {
         return totalTime;
     }
 
-    public Buttons[] getButtonsArray() {
-        return buttonsArray;
+    public GestureDetector getFactoryGestureDetector() {
+        return objects.getGestureDetector();
     }
 
     public void dispose() {
-        for (Buttons button : buttonsArray) {
-            button.dispose();
-        }
+        //for (WidgetsGroup button : widgetsGroupArray) {
+        //    button.dispose();
+        //}
         rayHandler.getLightMapBuffer().dispose();
         rayHandler.getLightMapTexture().dispose();
         rayHandler.dispose();
@@ -157,16 +149,17 @@ public class GameWorld {
         GAME_EXIT
     }
 
+
+
     private float totalTime = 150;
 
-    private Buttons[] buttonsArray;
+    //private WidgetsGroup[] widgetsGroupArray;
 
-    private States worldState = States.GAME_PREPARING;
+    private static States worldState = States.GAME_PREPARING;
     private ObjectsFactory objects;
     private SunBody sun;
 
     private World world;
-    final private InputMultiplexer inputMultiplexer;
     private RayHandler rayHandler;
 
     final private OrthographicCamera camera;

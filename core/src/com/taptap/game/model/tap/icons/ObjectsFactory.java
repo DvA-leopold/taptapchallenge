@@ -1,12 +1,10 @@
 package com.taptap.game.model.tap.icons;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -20,15 +18,15 @@ import java.util.List;
 import java.util.Vector;
 
 public class ObjectsFactory {
-    public ObjectsFactory(final Camera camera, final World world) {
+    public ObjectsFactory(final World world) {
         this.world = world;
         boarder = new Vector2(Gdx.graphics.getHeight() * 0.05f, Gdx.graphics.getWidth() * 0.05f);
-        initListener(camera);
+        initListener();
         tapIconsList = new LinkedList<>();
+        //TODO this class need huge optimisations
     }
 
-    private void initListener(final Camera camera) { //todo need huge optimisations
-        final Vector3 touchPoint = new Vector3();
+    private void initListener() {
         final Array<Vector2> array = new Array<>(4);
         final Vector2[] mass = new Vector2[4];
         for (int i = 0; i < mass.length; ++i) {
@@ -39,12 +37,11 @@ public class ObjectsFactory {
         GestureDetector.GestureAdapter gestureAdapter = new GestureDetector.GestureAdapter() {
             @Override
             public boolean tap(float x, float y, int count, int button) {
-                camera.unproject(touchPoint.set(x, y, 0)); // TODO: - y + getWidth
                 for (int i = 0; i < tapIconsList.size(); ++i) {
                     fillArrayWithCords(array, mass, i);
-                    if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
-                            tapIconsList.get(i) instanceof YellowIcon &&
-                            count == 2) {
+                    if (Intersector.isPointInPolygon(array,
+                            new Vector2(x, -y + Gdx.graphics.getHeight())) &&
+                            tapIconsList.get(i) instanceof YellowIcon && count == 2) {
                         totalScore += (tapIconsList.get(i).getScore());
                         tapIconsList.remove(i).destroyBody();
                         break;
@@ -56,10 +53,9 @@ public class ObjectsFactory {
 
             @Override
             public boolean longPress(float x, float y) {
-                camera.unproject(touchPoint.set(x, y, 0));
                 for (int i = 0; i < tapIconsList.size(); ++i) {
                     fillArrayWithCords(array, mass, i);
-                    if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y)) &&
+                    if (Intersector.isPointInPolygon(array, new Vector2(x, -y + Gdx.graphics.getHeight())) &&
                             tapIconsList.get(i) instanceof RedIcon) {
                         totalScore += tapIconsList.get(i).getScore();
                         tapIconsList.remove(i).destroyBody();
@@ -73,10 +69,9 @@ public class ObjectsFactory {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 if (panFlag.get(0)) {
-                    camera.unproject(touchPoint.set(x, y, 0));
-                    for (int i = tapIconsList.size() - 1; i >= 0; --i) { // todo try to do this better
+                    for (int i = tapIconsList.size() - 1; i >= 0; --i) { // todo improve
                         fillArrayWithCords(array, mass, i);
-                        if (Intersector.isPointInPolygon(array, new Vector2(touchPoint.x, touchPoint.y))
+                        if (Intersector.isPointInPolygon(array, new Vector2(x, -y + Gdx.graphics.getHeight()))
                                 && tapIconsList.get(i) instanceof BlueIcon) {
                             totalScore += tapIconsList.get(i).getScore();
                             tapIconsList.remove(i).destroyBody();
@@ -133,6 +128,7 @@ public class ObjectsFactory {
         }
         return totalScore;
     }
+
 
     public GestureDetector getGestureDetector() {
         return gestureDetector;

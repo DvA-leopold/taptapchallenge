@@ -15,8 +15,8 @@ public class VersionHandler {
             version = stringWithoutInitData.
                     replaceAll("major=", "v").
                     replaceAll("minor=", ".").
-                    replaceAll("patch=", ".");
-
+                    replaceAll("patch=", ".").
+                    replaceAll("\n", "");
         } else {
             version = "";
         }
@@ -24,7 +24,7 @@ public class VersionHandler {
     }
 
     private static void setScale() {
-        fontStandard.setScale(1f);
+        fontStandard.getData().setScale(1f);
     }
 
     public static void render(final SpriteBatch batch) {

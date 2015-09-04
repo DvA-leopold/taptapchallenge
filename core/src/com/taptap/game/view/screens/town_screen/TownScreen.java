@@ -9,16 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.town_screen.buttons.TownButtonInitializer;
+import com.taptap.game.view.screens.town_screen.buttons.TownScreenWidgetsGroup;
 
 import java.util.LinkedList;
 
 public class TownScreen implements Screen {
-    public TownScreen(final SpriteBatch batch) {
-        this.batch = batch;
+    public TownScreen() {
+        this.batch = ((TapTap) Gdx.app.getApplicationListener()).getSpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        buttons = new TownButtonInitializer(batch, camera);
+        buttons = new TownScreenWidgetsGroup(batch, camera);
         ((TapTap) Gdx.app.getApplicationListener()).
                 getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.ADD_MUSIC);
     }
@@ -75,9 +75,10 @@ public class TownScreen implements Screen {
         buttons.dispose();
     }
 
+
     final private SpriteBatch batch;
     private OrthographicCamera camera;
-    private TownButtonInitializer buttons;
+    private TownScreenWidgetsGroup buttons;
 
     private LinkedList<Texture> backgroundList;
 }

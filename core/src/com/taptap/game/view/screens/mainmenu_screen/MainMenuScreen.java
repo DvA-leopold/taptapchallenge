@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.mainmenu_screen.buttons.MenuButtonInitializer;
+import com.taptap.game.view.screens.mainmenu_screen.buttons.MenuScreenWidgetsGroup;
 
 public class MainMenuScreen implements Screen {
-    public MainMenuScreen(final SpriteBatch batch) {
-        this.batch = batch;
-        buttons = new MenuButtonInitializer(batch);
+    public MainMenuScreen() {
+        this.batch = ((TapTap) Gdx.app.getApplicationListener()).getSpriteBatch();
+        buttons = new MenuScreenWidgetsGroup(batch);
         background = (Texture) DResourceManager.getInstance().
                 get("skins/main_menu/background/bg_desert.png");
         camera = new OrthographicCamera();
@@ -48,8 +48,7 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-    }
+    public void resize(int width, int height) { }
 
     @Override
     public void pause() {
@@ -66,9 +65,10 @@ public class MainMenuScreen implements Screen {
         buttons.dispose();
     }
 
+
     final private SpriteBatch batch;
     private OrthographicCamera camera;
-    private MenuButtonInitializer buttons;
+    private MenuScreenWidgetsGroup buttons;
 
     private Texture background;
 }

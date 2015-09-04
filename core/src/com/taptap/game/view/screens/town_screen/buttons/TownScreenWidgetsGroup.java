@@ -13,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.popup.windows.OptionWindow;
+import com.taptap.game.view.popup.windows.TownMainOptionWindow;
 import com.taptap.game.view.popup.windows.TrainingCampWindow;
-import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.WidgetsGroup;
 import com.taptap.game.view.screens.game_screen.GameScreen;
 
-public class TownButtonInitializer implements Buttons {
-    public TownButtonInitializer(final SpriteBatch batch, final OrthographicCamera camera) {
+public class TownScreenWidgetsGroup implements WidgetsGroup {
+    public TownScreenWidgetsGroup(final SpriteBatch batch, final OrthographicCamera camera) {
         this.camera = camera;
         float buttonSize = Gdx.graphics.getWidth() * 0.1f;
         tableXaxesPosition = Gdx.graphics.getWidth() * 0.5f;
@@ -29,12 +29,12 @@ public class TownButtonInitializer implements Buttons {
                 getInstance().get("skins/town_menu/buttons/townSkin.json");
         initTableAndButtons(skin, buttonSize);
 
-        optionWindow = new OptionWindow("",
+        townMainOptionWindow = new TownMainOptionWindow("",
                 (Skin) DResourceManager.getInstance().
-                        get("skins/pop_up/option_window/optionWindowSkin.json")
+                        get("skins/pop_up/town_option_window/optionWindowSkin.json")
         );
-        optionWindow.initButtonSize(buttonSize, buttonSize);
-        optionWindow.createButtons();
+        townMainOptionWindow.initButtonSize(buttonSize, buttonSize);
+        townMainOptionWindow.createButtons();
 
         trainingCampWindow = new TrainingCampWindow("",
                 (Skin) DResourceManager.getInstance().
@@ -46,7 +46,7 @@ public class TownButtonInitializer implements Buttons {
         stage.addActor(table);
         stage.addActor(options);
         stage.addActor(testLevelButton);
-        stage.addActor(optionWindow);
+        stage.addActor(townMainOptionWindow);
         stage.addActor(trainingCampWindow);
     }
 
@@ -59,7 +59,7 @@ public class TownButtonInitializer implements Buttons {
     @Override
     public void setListeners(GameWorld gameWorld) {
         InputMultiplexer gestureMultiplexer = new InputMultiplexer();
-        optionWindow.setListeners();
+        townMainOptionWindow.setListeners();
         trainingCamp.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -97,7 +97,7 @@ public class TownButtonInitializer implements Buttons {
         options.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                optionWindow.setVisible(true);
+                townMainOptionWindow.setVisible(true);
             }
         });
 
@@ -111,10 +111,10 @@ public class TownButtonInitializer implements Buttons {
         GestureDetector gestureDetector = new GestureDetector(new GestureDetector.GestureAdapter() {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
-                if (!optionWindow.isVisible() && !trainingCampWindow.isVisible()) {
+                if (!townMainOptionWindow.isVisible() && !trainingCampWindow.isVisible()) {
                     camera.position.add(-deltaX, 0, 0);
                     table.setPosition(tableXaxesPosition += deltaX, Gdx.graphics.getHeight() / 2, 0);
-                    testLevelButton.setPosition(testLevelButton.getX()+deltaX, testLevelButton.getY());
+                    testLevelButton.setPosition(testLevelButton.getX() + deltaX, testLevelButton.getY());
                 }
                 return super.pan(x, y, deltaX, deltaY);
             }
@@ -127,6 +127,8 @@ public class TownButtonInitializer implements Buttons {
     @Override
     public void dispose() {
         stage.dispose();
+        townMainOptionWindow.dispose();
+        trainingCampWindow.dispose();
     }
 
     @Override
@@ -146,9 +148,11 @@ public class TownButtonInitializer implements Buttons {
         wallOfFame = new Button(skin);
         bank = new Button(skin);
         mail = new Button(skin);
+
         options = new Button(skin);
         options.setSize(buttonSize, buttonSize);
         options.setPosition(0, Gdx.graphics.getHeight() - buttonSize);
+
         testLevelButton = new Button(skin);
         testLevelButton.setSize(buttonSize, buttonSize);
         testLevelButton.setPosition(Gdx.graphics.getWidth() + 100, 300);
@@ -162,6 +166,7 @@ public class TownButtonInitializer implements Buttons {
         //table.debug();
     }
 
+
     final private Stage stage;
     private Table table;
     private Button
@@ -174,7 +179,7 @@ public class TownButtonInitializer implements Buttons {
 
     private Button testLevelButton;
 
-    final private OptionWindow optionWindow;
+    final private TownMainOptionWindow townMainOptionWindow;
     final private TrainingCampWindow trainingCampWindow;
 
     final private OrthographicCamera camera;

@@ -1,16 +1,20 @@
 package com.taptap.game.model.tap.icons.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public interface Icon {
-    public int getScore();
-    public Sprite getSprite();
+    int getScore();
+    Sprite getSprite();
 
-    public float getX();
-    public float getY();
+    float getX();
+    float getY();
 
-    public float getWidth();
-    public float getHeight();
+    float getWidth();
+    float getHeight();
 
-    public void destroyBody();
+    void destroyBody();
+
+    float ICON_SIZE_X = Gdx.graphics.getHeight() * 0.25f;
+    float ICON_SIZE_Y = Gdx.graphics.getWidth() * 0.25f;
 }

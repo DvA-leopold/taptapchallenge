@@ -9,15 +9,28 @@ import com.taptap.game.TapTap;
 import com.taptap.game.model.game.world.GameWorld;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.view.renderer.GameRenderer;
+import com.taptap.game.view.screens.WidgetsGroup;
+import com.taptap.game.view.screens.game_screen.buttons.GameScreenWidgetsGroup;
+import com.taptap.game.view.screens.game_screen.buttons.PopUpScreenWidgetsGroup;
 
 public class GameScreen implements Screen {
     public GameScreen(final SpriteBatch batch) {
         inputMultiplexer = new InputMultiplexer();
 
-        gameWorld = new GameWorld(inputMultiplexer);
+        gameWorld = new GameWorld();
         gameRenderer = new GameRenderer(batch, gameWorld);
 
-        gameWorld.initializeActors(batch);
+        gameScreenWidgetGroup = new GameScreenWidgetsGroup(batch);
+        popUpScreenWidgetGroup = new PopUpScreenWidgetsGroup(batch);
+
+        //gameWorld.initializeActors(batch);
+        inputMultiplexer.addProcessor(gameScreenWidgetGroup.getStage());
+        inputMultiplexer.addProcessor(popUpScreenWidgetGroup.getStage());
+        inputMultiplexer.addProcessor(gameWorld.getFactoryGestureDetector());
+
+        gameScreenWidgetGroup.setListeners(null);
+        popUpScreenWidgetGroup.setListeners(null);
+
         ((TapTap) Gdx.app.getApplicationListener()).
                 getMusicManager().registerMusic(this.getClass(), MusicManager.MusicTypes.MAIN_MUSIC);
     }
@@ -29,6 +42,9 @@ public class GameScreen implements Screen {
 
         gameWorld.update();
         gameRenderer.render();
+
+        gameScreenWidgetGroup.render();
+        popUpScreenWidgetGroup.render();
     }
 
     @Override
@@ -50,7 +66,9 @@ public class GameScreen implements Screen {
     @Override
     public void pause() {
         ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().pauseMusic();
-        gameWorld.changeWorldState(GameWorld.States.GAME_PAUSED);
+        if (GameWorld.getWorldState() != GameWorld.States.GAME_PAUSED) {
+            GameWorld.changeWorldState(GameWorld.States.GAME_PAUSED);
+        }
     }
 
     @Override
@@ -64,7 +82,9 @@ public class GameScreen implements Screen {
         gameWorld.dispose();
     }
 
+
     final private InputMultiplexer inputMultiplexer;
+    final private WidgetsGroup gameScreenWidgetGroup, popUpScreenWidgetGroup;
     final private GameWorld gameWorld;
     final private GameRenderer gameRenderer;
 }

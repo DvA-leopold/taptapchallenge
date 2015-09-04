@@ -8,13 +8,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.taptap.game.TapTap;
 import com.taptap.game.model.music.player.MusicManager;
 import com.taptap.game.model.resource.manager.DResourceManager;
-import com.taptap.game.view.screens.help_screen.buttons.HelpButtonInitializer;
-import com.taptap.game.view.screens.Buttons;
+import com.taptap.game.view.screens.help_screen.buttons.HelpScreenWidgetsGroup;
+import com.taptap.game.view.screens.WidgetsGroup;
 
 public class HelpScreen implements Screen {
-    public HelpScreen(final SpriteBatch batch) {
-        this.batch = batch;
-        buttons = new HelpButtonInitializer(batch);
+    public HelpScreen() {
+        this.batch = ((TapTap) Gdx.app.getApplicationListener()).getSpriteBatch();
+        widgetsGroup = new HelpScreenWidgetsGroup(batch);
 
         background = (Texture) DResourceManager.getInstance().
                 get("skins/help_menu/bg_grasslands.png");
@@ -31,7 +31,7 @@ public class HelpScreen implements Screen {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.enableBlending();
         batch.end();
-        buttons.render();
+        widgetsGroup.render();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class HelpScreen implements Screen {
 
     @Override
     public void show() {
-        buttons.setListeners(null);
+        widgetsGroup.setListeners(null);
         ((TapTap) Gdx.app.getApplicationListener()).getMusicManager().playMusic();
     }
 
@@ -62,11 +62,11 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
-        buttons.dispose();
+        widgetsGroup.dispose();
     }
 
     final private SpriteBatch batch;
-    private Buttons buttons;
+    private WidgetsGroup widgetsGroup;
 
     private Texture background;
 }
